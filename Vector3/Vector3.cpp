@@ -1,5 +1,8 @@
 #include "Vector3.h"
 #include <math.h>
+#include <cassert>
+
+const double PI = 3.141592653589793238463;
 
 Vector3::Vector3() :
 	x_(0.0f),
@@ -35,11 +38,7 @@ Vector3::~Vector3()
 
 void Vector3::Normalize()
 {
-	// TODO: add an assert. We can't divide by 0!
-	if (!module_)
-	{
-		return;
-	}
+	assert(module_);
 
 	x_ /= module_;
 	y_ /= module_;
@@ -74,14 +73,10 @@ double Vector3::angle_between(const Vector3& vector)
 {
 	float dot = this->dot_product(vector);
 	double product = module_ * vector.getModule();
-	// TODO: add an assert here to verify product.
-	// retrieving 0 is not a correct answer
-	if (!product)
-	{
-		return 0;
-	}
+	assert(product);
 	double cosAngle = (dot / (product));
-	return acos(cosAngle); // in radians
+	// convert from radians to degrees
+	return acos(cosAngle) * 180 / PI;
 }
 
 Vector3& Vector3::operator+(const Vector3& vector) const
