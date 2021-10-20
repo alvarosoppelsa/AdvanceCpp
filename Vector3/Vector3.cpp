@@ -1,8 +1,9 @@
 #include "Vector3.h"
+
+#define _USE_MATH_DEFINES
+
 #include <math.h>
 #include <cassert>
-
-const double PI = 3.141592653589793238463;
 
 Vector3::Vector3() :
 	x_(0.0f),
@@ -76,7 +77,7 @@ double Vector3::angle_between(const Vector3& vector)
 	assert(product);
 	double cosAngle = (dot / (product));
 	// convert from radians to degrees
-	return acos(cosAngle) * 180 / PI;
+	return acos(cosAngle) * 180 / M_PI;
 }
 
 Vector3& Vector3::operator+(const Vector3& vector) const
