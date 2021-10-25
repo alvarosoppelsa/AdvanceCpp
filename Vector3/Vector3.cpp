@@ -10,7 +10,9 @@ Vector3<T>::Vector3() :
 	x_(0),
 	y_(0),
 	z_(0),
-	module_(0)
+	module_(0),
+	isModuleCalculated_(true)
+
 {
 }
 
@@ -18,22 +20,19 @@ template<typename T>
 Vector3<T>::Vector3(T x, T y, T z) :
 	x_(x),
 	y_(y),
-	z_(z)
+	z_(z),
+	module_(0),
+	isModuleCalculated_(false)
 {
-	// Do we need to calculate this here?
-	// or is better to do it in getModule() function
-	module_ = sqrt( pow(static_cast<double>(x_), 2) + 
-					pow(static_cast<double>(y_), 2) +
-					pow(static_cast<double>(z_), 2));
 }
 
-// What happen when types are different?
 template<typename T>
 Vector3<T>::Vector3(const Vector3& vector) :
 	x_(static_cast<T>(vector.getX())),
 	y_(static_cast<T>(vector.getY())),
 	z_(static_cast<T>(vector.getZ())),
-	module_(vector.getModule())
+	module_(vector.getModule()),
+	isModuleCalculated_(false) // I don't trust anybody :(
 {
 }
 
@@ -43,19 +42,18 @@ Vector3<T>::~Vector3()
 }
 
 template<typename T>
-Vector3<double>* Vector3<T>::Normalize()
+Vector3<double>* Vector3<T>::Normalize() const
 {
 	assert(module_);
 
 	return new Vector3<double>(
-		(double)x_ / module_,
-		(double)y_ / module_,
-		(double)z_ / module_);
-
+		static_cast<double>(x_) / this->getModule(),
+		static_cast<double>(y_) / this->getModule(),
+		static_cast<double>(z_) / this->getModule());
 }
 
 template<typename T>
-double Vector3<T>::distance_to(const Vector3& vector)
+double Vector3<T>::distance_to(const Vector3& vector) const
 {
 	return sqrt(pow((static_cast<double>(x_) - static_cast<double>(vector.getX())), 2) +
 			    pow((static_cast<double>(y_) - static_cast<double>(vector.getY())), 2) +
@@ -63,7 +61,7 @@ double Vector3<T>::distance_to(const Vector3& vector)
 }
 
 template<typename T>
-double Vector3<T>::dot_product(const Vector3& vector)
+double Vector3<T>::dot_product(const Vector3& vector) const
 {
 	return (static_cast<double>(x_) * static_cast<double>(vector.getX()) +
 			static_cast<double>(y_) * static_cast<double>(vector.getY()) +
@@ -71,7 +69,7 @@ double Vector3<T>::dot_product(const Vector3& vector)
 }
 
 template<typename T>
-Vector3<T>* Vector3<T>::cross_product(const Vector3& vector)
+Vector3<T>* Vector3<T>::cross_product(const Vector3& vector) const
 {
 	return new Vector3<T>(
 		y_ * vector.getZ() - z_ * vector.getY(),
@@ -80,10 +78,10 @@ Vector3<T>* Vector3<T>::cross_product(const Vector3& vector)
 }
 
 template<typename T>
-double Vector3<T>::angle_between(const Vector3& vector)
+double Vector3<T>::angle_between(const Vector3& vector) const
 {
 	double dot = this->dot_product(vector);
-	double product = module_ * vector.getModule();
+	double product = this->getModule() * vector.getModule();
 	assert(product);
 	double cosAngle = (dot / (product));
 	// from radians to degrees
@@ -97,6 +95,19 @@ Vector3<T> Vector3<T>::operator+(const Vector3& vector) const
 		x_ + static_cast<T>(vector.getX()),
 		y_ + static_cast<T>(vector.getY()),
 		z_ + static_cast<T>(vector.getZ()));
+}
+
+template<typename T>
+double Vector3<T>::getModule() const
+{
+	if (!isModuleCalculated_)
+	{
+		module_ = sqrt(pow(static_cast<double>(x_), 2) +
+					pow(static_cast<double>(y_), 2) +
+					pow(static_cast<double>(z_), 2));
+		isModuleCalculated_ = true;
+	}
+	return module_;
 }
 
 // Available types:
