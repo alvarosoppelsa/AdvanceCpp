@@ -43,7 +43,7 @@ Vector3<T>::~Vector3()
 }
 
 template<typename T>
-Vector3<double>* Vector3<T>::Normalize()
+Vector3<double>* Vector3<T>::Normalize() const
 {
 	assert(module_);
 
@@ -55,7 +55,7 @@ Vector3<double>* Vector3<T>::Normalize()
 }
 
 template<typename T>
-double Vector3<T>::distance_to(const Vector3& vector)
+double Vector3<T>::distance_to(const Vector3& vector) const
 {
 	return sqrt(pow((static_cast<double>(x_) - static_cast<double>(vector.getX())), 2) +
 			    pow((static_cast<double>(y_) - static_cast<double>(vector.getY())), 2) +
@@ -63,7 +63,7 @@ double Vector3<T>::distance_to(const Vector3& vector)
 }
 
 template<typename T>
-double Vector3<T>::dot_product(const Vector3& vector)
+double Vector3<T>::dot_product(const Vector3& vector) const
 {
 	return (static_cast<double>(x_) * static_cast<double>(vector.getX()) +
 			static_cast<double>(y_) * static_cast<double>(vector.getY()) +
@@ -71,7 +71,7 @@ double Vector3<T>::dot_product(const Vector3& vector)
 }
 
 template<typename T>
-Vector3<T>* Vector3<T>::cross_product(const Vector3& vector)
+Vector3<T>* Vector3<T>::cross_product(const Vector3& vector) const
 {
 	return new Vector3<T>(
 		y_ * vector.getZ() - z_ * vector.getY(),
@@ -80,7 +80,7 @@ Vector3<T>* Vector3<T>::cross_product(const Vector3& vector)
 }
 
 template<typename T>
-double Vector3<T>::angle_between(const Vector3& vector)
+double Vector3<T>::angle_between(const Vector3& vector) const
 {
 	double dot = this->dot_product(vector);
 	double product = module_ * vector.getModule();

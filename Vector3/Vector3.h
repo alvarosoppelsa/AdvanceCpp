@@ -12,12 +12,12 @@ public:
 	~Vector3();
 
 	// Client has to delete returned pointer
-	Vector3<double>* Normalize();
-	double distance_to(const Vector3& vector);
-	double dot_product(const Vector3& vector);
+	Vector3<double>* Normalize() const;
+	double distance_to(const Vector3& vector) const;
+	double dot_product(const Vector3& vector) const;
 	// Client has to delete returned pointer
-	Vector3<T>* cross_product(const Vector3& vector);
-	double angle_between(const Vector3& vector);
+	Vector3<T>* cross_product(const Vector3& vector) const;
+	double angle_between(const Vector3& vector) const;
 
 	Vector3 operator + (const Vector3& vector) const;
 	
