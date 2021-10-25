@@ -5,11 +5,14 @@
 #include <math.h>
 #include <cassert>
 
+// Vector3 doesn't initialize its members because usually 
+// it's call for a huge amount of times.
+// Avoiding initializing to 0 save a lot of time
 template<typename T>
 Vector3<T>::Vector3() :
-	x_(0),
-	y_(0),
-	z_(0),
+	x_(T(0)),
+	y_(T(0)),
+	z_(T(0)),
 	module_(0)
 {
 }
@@ -22,17 +25,16 @@ Vector3<T>::Vector3(T x, T y, T z) :
 {
 	// Do we need to calculate this here?
 	// or is better to do it in getModule() function
-	module_ = sqrt( pow(static_cast<double>(x_), 2) + 
-					pow(static_cast<double>(y_), 2) +
-					pow(static_cast<double>(z_), 2));
+	module_ = sqrt( square((double)x_) + 
+					square((double)y_) +
+					square((double)z_));
 }
 
-// What happen when types are different?
 template<typename T>
-Vector3<T>::Vector3(const Vector3& vector) :
-	x_(static_cast<T>(vector.getX())),
-	y_(static_cast<T>(vector.getY())),
-	z_(static_cast<T>(vector.getZ())),
+Vector3<T>::Vector3(const Vector3<T>& vector) :
+	x_(vector.getX()),
+	y_(vector.getY()),
+	z_(vector.getZ()),
 	module_(vector.getModule())
 {
 }
@@ -43,11 +45,11 @@ Vector3<T>::~Vector3()
 }
 
 template<typename T>
-Vector3<double>* Vector3<T>::Normalize() const
+Vector3<double> Vector3<T>::Normalize() const
 {
 	assert(module_);
-
-	return new Vector3<double>(
+	// Avoid dividing. Use factor instead
+	return Vector3<double>(
 		(double)x_ / module_,
 		(double)y_ / module_,
 		(double)z_ / module_);
@@ -55,28 +57,28 @@ Vector3<double>* Vector3<T>::Normalize() const
 }
 
 template<typename T>
-double Vector3<T>::distance_to(const Vector3& vector) const
+double Vector3<T>::distance_to(const Vector3<T>& vector) const
 {
-	return sqrt(pow((static_cast<double>(x_) - static_cast<double>(vector.getX())), 2) +
-			    pow((static_cast<double>(y_) - static_cast<double>(vector.getY())), 2) +
-				pow((static_cast<double>(z_) - static_cast<double>(vector.getZ())), 2));
+	return sqrt(square(x_ - (double)vector.x_) +
+				square(y_ - (double)vector.y_) +
+				square(z_ - (double)vector.z_));
 }
 
 template<typename T>
-double Vector3<T>::dot_product(const Vector3& vector) const
+double Vector3<T>::dot_product(const Vector3<T>& vector) const
 {
-	return (static_cast<double>(x_) * static_cast<double>(vector.getX()) +
-			static_cast<double>(y_) * static_cast<double>(vector.getY()) +
-			static_cast<double>(z_) * static_cast<double>(vector.getZ()));
+	return ((double)x_ * (double)vector.x_ +
+			(double)y_ * (double)vector.y_ +
+			(double)z_ * (double)vector.z_);
 }
 
 template<typename T>
-Vector3<T>* Vector3<T>::cross_product(const Vector3& vector) const
+Vector3<T> Vector3<T>::cross_product(const Vector3<T>& vector) const
 {
-	return new Vector3<T>(
-		y_ * vector.getZ() - z_ * vector.getY(),
-		x_ * vector.getZ() - z_ * vector.getX(),
-		x_ * vector.getY() - y_ * vector.getX());
+	return Vector3<T>(
+		y_ * vector.z_ - z_ * vector.y_,
+		x_ * vector.z_ - z_ * vector.x_,
+		x_ * vector.y_ - y_ * vector.x_);
 }
 
 template<typename T>
@@ -86,7 +88,7 @@ double Vector3<T>::angle_between(const Vector3& vector) const
 	double product = module_ * vector.getModule();
 	assert(product);
 	double cosAngle = (dot / (product));
-	// from radians to degrees
+	// Internally we always work in radians
 	return acos(cosAngle) * 180 / M_PI;
 }
 
