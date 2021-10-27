@@ -23,22 +23,20 @@ void testVector(Vector3<T>& vecA, Vector3<T>& vecB)
     Vector3<T> vecC = vecA + vecB;
     std::cout << "\nAddition C: ";
     printVector(vecC);
-    Vector3<double>* normC = vecC.Normalize();
+    Vector3<double> normC = vecC.Normalize();
     std::cout << "\nNormalized C: ";
-    printVector(*normC);
+    printVector(normC);
 
-    Vector3<T>* crossVector = vecA.cross_product(vecB);
+    Vector3<T> crossVector = vecA.cross_product(vecB);
     std::cout << "\nCross Vector A & B: ";
-    printVector(*crossVector);
+    printVector(crossVector);
 
     double dotProduct = vecA.dot_product(vecB);
     std::cout << "\nDot Product A & B: " << dotProduct << "\n";
 
     double distance = vecA.distance_to(vecB);
     std::cout << "\nDistance A & B: " << distance << "\n";
-    
-    delete normC;
-    delete crossVector;
+
 }
 
 int main()
@@ -66,13 +64,5 @@ int main()
     testVector(*vecDoubleA, *vecDoubleB);
     delete vecDoubleA;
     delete vecDoubleB;
-
-    //std::cout << "\nTesting different types Vector3\n";
-    //Vector3<int>* vecInteger = new Vector3<int>();
-    //Vector3<float>* vecFloat = new Vector3<float>();
-
-    //testVector(*vecInteger, *vecFloat);
-    //delete vecInteger;
-    //delete vecFloat;
 }
 
