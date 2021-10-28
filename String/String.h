@@ -15,8 +15,8 @@ public:
 	String operator + (const String& b) const;
 	bool operator == (const String& b) const;
 
-	void clear();
-	size_t lenght() const;
+	void clear() { return str.clear(); }
+	size_t lenght() const { return str.size(); }
 	void printContent() const;
 
 private:
