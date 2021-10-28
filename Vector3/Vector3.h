@@ -5,6 +5,7 @@
 #include <math.h>
 #include <cassert>
 
+// small number to compare floats & doubles
 #define EPSILON 1e-5f;
 
 // Template class should be implemented on the header
@@ -35,6 +36,7 @@ private:
 	T y_;
 	T z_;
 	double module_;
+	// inline functions
 	T square(const T& a) const { return a * a; }
 	bool notNull(const T a) const { return a > EPSILON; }
 };
