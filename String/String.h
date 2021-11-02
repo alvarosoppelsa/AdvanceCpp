@@ -13,6 +13,7 @@ public:
 
 	// operator overloads
 	String operator + (const String& b) const;
+	String operator=(const String&& b) const;
 	bool operator == (const String& b) const;
 
 	void clear();

@@ -39,6 +39,11 @@ String String::operator+(const String& b) const
 	return retString;
 }
 
+String String::operator=(const String&& b) const
+{
+	return std::move(String(b));
+}
+
 bool String::operator==(const String& b) const
 {
 	bool equals = true;
