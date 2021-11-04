@@ -9,59 +9,24 @@ String2 GetMeAString() { return String2("This is a string"); }
 
 int main()
 {
-    std::cout << "Construct from char* : \n";
-    String2 string("Hello World!");
-    string.printContent();
+	String2 str1("String 1");
+	str1.printContent();
 
-    std::cout << "Copy Constructor: \n";
-    String2 string1(string);
-    string1.printContent();
+	String2	str2 = "String 2";
+	str2.printContent();
 
-    std::cout << "Move Construct: \n";
-    String2 string2(std::move(string));
-    string2.printContent();
+	std::cout << "Copy str1 to str3\n";
+	String2 str3 = str1;
+	str3.printContent();
 
-    assert((string1 == string2));
-    if (string1 == string2)
-    {
-        std::cout << "Strings are equals!!\n";
-    }
+	std::cout << "Move str3 into str4\n";
+	String2 str4 = std::move(str3);
+	str3.printContent();
+	str4.printContent();
 
-    String2 string3 = string1 + string2;
-    string3.printContent();
+	assert(str1 == str4);
+	std::cout << "Equal strings!\n";
 
-    assert(!(string2 == string3));
-    if (string3 == string2)
-    {
-        std::cout << "Strings shouldn't be equal!!\n";
-    }
-    else
-    {
-        std::cout << "Strings are different\n";
-    }
-
-    String2 string4("Hello World?");
-    string4.printContent();
-    assert(!(string4 == string2));
-    if (string2 == string4)
-    {
-        std::cout << "Strings shouldn't be equal!!\n";
-    }
-    else
-    {
-        std::cout << "Strings are different\n";
-    }
-
-    String2 string5 = GetMeAString();
-    string5.printContent();
-
-    assert(string5 == "This is a string");
-    if (string5 == "This is a string")
-    {
-        std::cout << "Strings are equals!!\n";
-    }
-    std::cout << "Lenght: " << string5.Length() << "\n";
-    std::cout << "Clear content: " << "\n";
-    string5.Clear();
-    string5.printContent();
+	assert(str4 == "String 1");
+	std::cout << "Equal strings!\n";
 }
