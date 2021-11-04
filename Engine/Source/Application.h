@@ -8,6 +8,7 @@ class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
 class ModuleInput;
+class ModuleProgram;
 class ModuleRenderExercise;
 
 class Application
@@ -22,9 +23,11 @@ public:
 	bool CleanUp();
 
 public:
-	ModuleRender* renderer = nullptr;
-	ModuleWindow* window = nullptr;
-	ModuleInput* input = nullptr;
+	ModuleRender* renderer			= nullptr;
+	ModuleWindow* window			= nullptr;
+	ModuleInput* input				= nullptr;
+	ModuleProgram* program			= nullptr;
+	ModuleRenderExercise* exercise  = nullptr;
 
 private:
 
