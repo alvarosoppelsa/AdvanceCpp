@@ -31,6 +31,11 @@ int main()
 	std::cout << "Equal strings!\n";
 
 	std::cout << "Get me a string function\n";
-	string str5 = GetMeAString();
+	string str5 = GetMeAString();	// Here is calling char* constructor. How could be improved?
+	str5.printContent();
+	std::cout << "Length: " << str5.Length() << "\n";
+
+	std::cout << "Clear function\n";
+	str5.Clear();
 	str5.printContent();
 }
