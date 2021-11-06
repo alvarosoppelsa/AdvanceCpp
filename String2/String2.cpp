@@ -1,78 +1,58 @@
 #include "String2.h"
 #include <iostream>
 
-String2::String2()
+string::string()
 {
-	this->length = 0;
-	this->data = new char;
-	*this->data = '\0';
+	length = 0;
+	data = nullptr;
 }
 
-String2::String2(const char* str)
+string::string(const char* str)
 {
-	std::cout << "Char Constructor\n";
-	this->length = strlen(str);
-	this->data = new char[length + 1];
+	std::cout << "Char* Constructor\n";
+
+	length = strlen(str);
+	data = new char[length + 1];
 	memcpy(data, str, length + 1);
 }
 
-String2::String2(char*&& str) noexcept
-{
-	std::cout << "Char Move Constructor\n";
-	this->length = strlen(str);
-	this->data = str;
-}
-
-String2::String2(size int_size)
-{
-	data = new char[int_size];
-	length = int_size;
-	for (size i = 0; i < int_size; ++i)
-	{
-		data[i] = '\0';
-	}
-}
-
-String2::String2(const String2& string)
+string::string(const string& str)
 {
 	std::cout << "Copy Constructor\n";
-	length = string.length;
+
+	length = str.length;
 	data = new char[length + 1];
-	memcpy(data, string.data, length + 1);
+	memcpy(data, str.data, length + 1);
 }
 
-String2::String2(String2&& string) noexcept
+string::string(string&& str) noexcept
 {
 	std::cout << "Move Constructor\n";
 
-	length = string.length;
-	data = string.data;
+	length = str.length;
+	data = str.data;
 
-	string.data = nullptr;
-	string.length = 0;
+	str.data = nullptr;
+	str.length = 0;
 }
 
-String2::~String2()
+string::~string()
 {
-	std::cout << "Destructor";
-	if (data != nullptr)
-	{
-		std::cout << " - data: " << data; 
-		delete data;
-	}
-	std::cout << "\n";
+	std::cout << "Destructor\n";
+	delete data;
 }
 
-bool String2::operator==(const String2& string) const
+bool string::operator==(const string& str) const
 {
-	std::cout << "Reference == operator\n";
-	if (this->length != string.length)
+	std::cout << "operator==\n";
+
+	if (length != str.length)
 	{
 		return false;
 	}
-	for (size_t it = 0; it < this->length; ++it)
+	for (size_t it = 0; it < length; ++it)
 	{
-		if (this->data[it] != string.data[it])
+		if (data[it] != str.data[it])
 		{
 			return false;
 		}
@@ -80,66 +60,50 @@ bool String2::operator==(const String2& string) const
 	return true;
 }
 
-bool String2::operator==(String2&& string) noexcept
-{
-	std::cout << "Movement == operator\n";
-	if (this->length != string.length)
-	{
-		return false;
-	}
-	for (size_t it = 0; it < this->length; ++it)
-	{
-		if (this->data[it] != string.data[it])
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-String2& String2::operator=(const String2& string)
+string& string::operator=(const string& str)
 {
 	std::cout << "Assignment operator\n";
+
 	delete[] data;
-	length = string.length;
+	length = str.length;
 	data = new char[length + 1];
-	memcpy(data, string.data, length + 1);
+	memcpy(data, str.data, length + 1);
 	return *this;
 }
 
-String2& String2::operator=(String2&& string) noexcept
+string& string::operator=(string&& str) noexcept
 {
 	std::cout << "Movement operator\n";
 
-	if (this != &string)
+	if (this != &str)
 	{
 		delete[] data;
 
-		data = string.data;
-		length = string.length;
+		data = str.data;
+		length = str.length;
 
-		string.data = nullptr;
-		string.length = 0;
+		str.data = nullptr;
+		str.length = 0;
 	}
 	return *this;
 }
 
-String2 String2::operator+(const String2& string) const
+string string::operator+(const string& str) const
 {
-	char* newString = new char[length + string.length + 1];
+	char* newString = new char[length + str.length + 1];
 	std::copy_n(data, length, newString);
-	std::copy_n(string.data, string.length + 1, newString + length);
-	return String2(newString);
+	std::copy_n(str.data, str.length + 1, newString + length);
+	return string(newString);
 }
 
-void String2::Clear()
+void string::Clear()
 {
 	delete[] data;
 	length = 0;
 	data = nullptr;
 }
 
-void String2::printContent()
+void string::printContent()
 {
 	for (size it = 0; it < this->length; ++it)
 	{
@@ -148,7 +112,7 @@ void String2::printContent()
 	std::cout << "\n";
 }
 
-inline size String2::strlen(const char* str)
+inline size string::strlen(const char* str)
 {
 	size_t count = 0;
 	while (*str != '\0')

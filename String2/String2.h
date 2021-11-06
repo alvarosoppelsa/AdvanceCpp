@@ -2,23 +2,20 @@
 
 typedef unsigned int size;
 
-class String2
+class string
 {
 
 public:
-	String2();
-	String2(const char* data);
-	String2(char*&& data) noexcept;
-	String2(size int_size);
-	String2(const String2& string);
-	String2(String2&& string) noexcept;
-	~String2();
+	string();
+	string(const char* data);
+	string(const string& string);
+	string(string&& string) noexcept;
+	~string();
 
-	bool operator==(const String2& string) const;
-	bool operator==(String2&& string) noexcept;
-	String2& operator=(const String2& string);
-	String2& operator=(String2&& string) noexcept;
-	String2 operator+(const String2& string) const;
+	bool operator==(const string& string) const;
+	string& operator=(const string& string);
+	string& operator=(string&& string) noexcept;
+	string operator+(const string& string) const;
 
 	const size Length() const { return this->length; }
 	void Clear();
