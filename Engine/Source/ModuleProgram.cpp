@@ -4,5 +4,5 @@ bool ModuleProgram::Init()
 {
 
 
-    return false;
+    return true;
 }
