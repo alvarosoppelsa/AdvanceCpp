@@ -13,7 +13,6 @@ String::String(const String& b)
 
 String::String(String&& b) : str(b.str)
 {
-	b.clear();
 }
 
 String::String(const char* b)
@@ -23,6 +22,7 @@ String::String(const char* b)
 	{
 		str.push_back(*b);
 	}
+	str.push_back('\0');
 }
 
 String::~String()
@@ -62,16 +62,6 @@ bool String::operator==(const String& b) const
 	}
 
 	return equals;
-}
-
-void String::clear()
-{
-	str.clear();
-}
-
-size_t String::lenght() const
-{
-	return str.size();
 }
 
 void String::printContent() const
