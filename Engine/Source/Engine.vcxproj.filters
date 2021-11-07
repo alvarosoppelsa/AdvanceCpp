@@ -53,5 +53,22 @@
     <Filter Include="Modules\SourceFiles">
       <UniqueIdentifier>{d6fdcbe9-2464-41e4-b2a7-76cf7495778a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{751fffde-6bb7-41a9-9865-869cffd7a3d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Vertex">
+      <UniqueIdentifier>{aec2c533-cd21-4dc1-a524-f604fdc5ba08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Fragments">
+      <UniqueIdentifier>{c4532477-9c60-4b48-b203-4a39ec1cfc8e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Shaders\fragment_triangle.txt">
+      <Filter>Shaders\Fragments</Filter>
+    </Text>
+    <Text Include="Shaders\vertex_triangle.txt">
+      <Filter>Shaders\Vertex</Filter>
+    </Text>
   </ItemGroup>
 </Project>

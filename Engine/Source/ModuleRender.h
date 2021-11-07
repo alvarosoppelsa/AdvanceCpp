@@ -19,6 +19,13 @@ public:
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
 
+	void RenderVBO(unsigned vbo);
+	
 private:
 	void* context;
+	unsigned int vbo;
+	unsigned int vao;
+	unsigned int vertex_id;
+	unsigned int fragment_id;
+	unsigned int program;
 };
