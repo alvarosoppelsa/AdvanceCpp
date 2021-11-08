@@ -5,6 +5,7 @@
 class ModuleEditor : public Module
 {
 public:
-	bool Init();
+	bool Init() override;
+	bool CleanUp() override;
 };
 

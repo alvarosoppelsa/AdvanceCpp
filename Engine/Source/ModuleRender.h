@@ -20,9 +20,8 @@ public:
 	void WindowResized(unsigned width, unsigned height);
 
 	void RenderVBO(unsigned vbo);
-	
-private:
 	void* context;
+private:
 	unsigned int vbo;
 	unsigned int vao;
 	unsigned int vertex_id;
