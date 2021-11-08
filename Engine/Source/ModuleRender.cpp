@@ -6,8 +6,8 @@
 #include "GL/glew.h"
 #include <cassert>
 
-const char* FRAGMENT_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\fragment_triangle.glsl";
-const char* VERTEX_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\vertex_triangle.glsl";
+const char* FRAGMENT_SHADER_FILE = ".\Shaders\\fragment_triangle.glsl";
+const char* VERTEX_SHADER_FILE = ".\Shaders\\vertex_triangle.glsl";
 
 unsigned int CreateTriangleVBO()
 {
