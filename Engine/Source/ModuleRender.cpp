@@ -6,8 +6,6 @@
 #include "GL/glew.h"
 #include <cassert>
 
-
-
 static void APIENTRY openglCallbackFunction(
 	GLenum source,
 	GLenum type,
@@ -104,6 +102,7 @@ update_status ModuleRender::Update()
 update_status ModuleRender::PostUpdate()
 {
 	SDL_GL_SwapWindow(App->window->window);
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -114,6 +113,7 @@ bool ModuleRender::CleanUp()
 
 	//Destroy window
 	SDL_GL_DeleteContext(context);
+	
 	return true;
 }
 

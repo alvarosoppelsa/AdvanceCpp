@@ -12,15 +12,15 @@ public:
 	ModuleRender();
 	~ModuleRender();
 
+	void* context;
+
 	bool Init();
 	update_status PreUpdate();
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
-
 	void RenderVBO(unsigned vbo);
-	void* context;
 private:
 
 };

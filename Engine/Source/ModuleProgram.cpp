@@ -94,9 +94,7 @@ ModuleProgram::ModuleProgram(std::string& vertex_path, std::string& fragment_pat
 	FragmentPath = fragment_path;
 }
 
-ModuleProgram::ModuleProgram(
-	std::string&& vertex_path, 
-	std::string&& fragment_path) :
+ModuleProgram::ModuleProgram(std::string&& vertex_path, std::string&& fragment_path) :
 	vao(0),
 	vertex_id(0),
 	fragment_id(0),
