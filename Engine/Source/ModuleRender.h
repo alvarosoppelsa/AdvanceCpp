@@ -22,9 +22,5 @@ public:
 	void RenderVBO(unsigned vbo);
 	void* context;
 private:
-	unsigned int vbo;
-	unsigned int vao;
-	unsigned int vertex_id;
-	unsigned int fragment_id;
-	unsigned int program;
+
 };
