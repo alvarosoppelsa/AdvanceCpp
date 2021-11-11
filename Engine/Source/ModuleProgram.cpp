@@ -1,14 +1,15 @@
 #include "ModuleProgram.h"
 #include <GL/glew.h>
+#include <cassert>
 
 const char* FRAGMENT_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\fragment_triangle.glsl";
 const char* VERTEX_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\vertex_triangle.glsl";
-
 char* ModuleProgram::LoadShaderSource(const char* shader_file_name)
 {
 	char* data = nullptr;
 	FILE* file = nullptr;
-	fopen_s(&file, shader_file_name, "rb");
+	errno_t error = fopen_s(&file, shader_file_name, "rb");
+	assert(!error);
 	if (file)
 	{
 		fseek(file, 0, SEEK_END);
