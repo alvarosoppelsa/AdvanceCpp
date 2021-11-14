@@ -16,6 +16,7 @@ public:
 private:
 	bool show_demo_window;
 	bool show_console;
+	bool show_about_window;
 	ImVec4 clear_color;
 };
 

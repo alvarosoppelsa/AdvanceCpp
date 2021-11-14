@@ -14,6 +14,7 @@ bool ModuleEditor::Init()
     ImGui_ImplOpenGL3_Init();
     show_demo_window = true;
     show_console = true;
+    show_about_window = false;
     clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     return true;
 }
@@ -35,6 +36,7 @@ update_status ModuleEditor::Update()
         ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
         ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
         ImGui::Checkbox("Show Console", &show_console);
+        ImGui::Checkbox("About", &show_about_window);
 
         ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
         ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
@@ -48,25 +50,25 @@ update_status ModuleEditor::Update()
         ImGui::End();
     }
 
-    if (ImGui::BeginMenu("Help"))
+    // About
+    if (show_about_window)
     {
-
-        ImGui::EndMenu();
+        ImGui::Begin("About", &show_about_window);
+        ImGui::Text("Super Awesome Engine");
+        ImGui::Text("This is some description about the engine.");
+        ImGui::Text("Alvaro Soppelsa");
+        ImGui::Text("ImGui - SDL - glew - OpenGL");
+        ImGui::Text("GNU GPL");
+        ImGui::End();
     }
 
-    //// Console
-    //if (show_console)
-    //{
-    //    ImGui::Begin("Console", &show_console);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-    //    while (!App->console_output.empty())
-    //    {
-    //        ImGui::TextUnformatted(App->console_output.front());
-    //        App->console_output.pop();
-    //    }
-    //    //if (ImGui::Button("Close Me"))
-    //    //    show_another_window = false;
-    //    ImGui::End();
-    //}
+    // Console
+    if (show_console)
+    {
+        ImGui::Begin("Console", &show_console);
+        ImGui::Text("Add console outputs here");
+        ImGui::End();
+    }
 
     return UPDATE_CONTINUE;
 }
