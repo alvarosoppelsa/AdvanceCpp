@@ -117,11 +117,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Shaders\fragment_triangle.txt">
+    <None Include="Shaders\fragment_triangle.glsl">
       <Filter>Shaders\Fragments</Filter>
-    </Text>
-    <Text Include="Shaders\vertex_triangle.txt">
+    </None>
+    <None Include="Shaders\vertex_triangle.glsl">
       <Filter>Shaders\Vertex</Filter>
-    </Text>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,5 +1,7 @@
 #pragma once
 
+#define NOMINMAX
+
 #include<list>
 #include "Globals.h"
 #include "Module.h"

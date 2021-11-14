@@ -41,7 +41,7 @@ void ModuleRenderExercise::CreateTriangleVBO(unsigned int vbo)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 }
 
-void ModuleRenderExercise::RenderVBO(unsigned vbo)
+void ModuleRenderExercise::RenderVBO(unsigned int vbo)
 {
 	// size = 3 float per vertex
 	// stride = 0 is equivalent to stride = sizeof(float)*3

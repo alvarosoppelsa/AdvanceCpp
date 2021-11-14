@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\glew\include;.\SDL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\MathGeoLib\include;.\glew\include;.\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -181,8 +181,8 @@
     <ClInclude Include="ModuleWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Shaders\fragment_triangle.txt" />
-    <Text Include="Shaders\vertex_triangle.txt" />
+    <None Include="Shaders\fragment_triangle.glsl" />
+    <None Include="Shaders\vertex_triangle.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,10 @@
 #pragma once
 
+#define NOMINMAX
+
 #include "Module.h"
+#include <Math/float4x4.h>
+#include <MathGeoLib.h>
 #include <string>
 
 class ModuleProgram : public Module
@@ -23,6 +27,11 @@ private:
 	unsigned int program;
 	std::string VertexPath;
 	std::string FragmentPath;
+
+	float4x4 model;
+	float4x4 proj;
+	float4x4 view;
+	Frustum frustum;
 
 	char* LoadShaderSource(const char* shader_file_name);
 	unsigned int CompileShader(unsigned type, const char* source);
