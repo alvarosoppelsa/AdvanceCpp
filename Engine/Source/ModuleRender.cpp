@@ -5,6 +5,8 @@
 #include "SDL.h"
 #include "GL/glew.h"
 #include <cassert>
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_opengl3.h"
 
 static void APIENTRY openglCallbackFunction(
 	GLenum source,
@@ -101,8 +103,9 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	SDL_GL_SwapWindow(App->window->window);
-	
 	return UPDATE_CONTINUE;
 }
 
