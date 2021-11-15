@@ -28,9 +28,9 @@ int main(int argc, char ** argv)
 		switch (state)
 		{
 		case MAIN_CREATION:
-
-			LOG("Application Creation --------------");
+			
 			App = new Application();
+			LOG("Application Creation --------------");
 			state = MAIN_START;
 			break;
 

@@ -5,7 +5,6 @@
 #include "ModuleInput.h"
 #include "ModuleProgram.h"
 #include "ModuleRenderExercise.h"
-#include "ModuleEditor.h"
 
 Application::Application()
 {

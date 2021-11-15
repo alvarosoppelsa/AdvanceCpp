@@ -7,6 +7,8 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+#define MAX_CONSOLE_OUTPUT 20
+
 bool ModuleEditor::Init()
 {
     ImGui::CreateContext();
@@ -66,10 +68,14 @@ update_status ModuleEditor::Update()
     if (show_console)
     {
         ImGui::Begin("Console", &show_console);
-        ImGui::Text("Add console outputs here");
+        // If vector size is greater than the max console output show MAX_CONSOLE_OUTPUT, otherwise show all content from 0 to size
+        for (auto it = console_outputs.size() > MAX_CONSOLE_OUTPUT ? console_outputs.size() - MAX_CONSOLE_OUTPUT : 0;
+            it < console_outputs.size(); ++it)
+        {
+            ImGui::Text(console_outputs[it]);
+        }
         ImGui::End();
     }
-
     return UPDATE_CONTINUE;
 }
 
@@ -84,4 +90,9 @@ bool ModuleEditor::CleanUp()
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 	return true;
+}
+
+void ModuleEditor::ConsoleLog(char* line)
+{
+    console_outputs.push_back(line);
 }

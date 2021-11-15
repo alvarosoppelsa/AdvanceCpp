@@ -3,6 +3,7 @@
 #include<list>
 #include "Globals.h"
 #include "Module.h"
+#include "ModuleEditor.h"
 
 class ModuleRender;
 class ModuleWindow;
