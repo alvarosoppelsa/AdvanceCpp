@@ -2,8 +2,9 @@
 #include <GL/glew.h>
 #include <cassert>
 
-const char* FRAGMENT_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\fragment_triangle.glsl";
-const char* VERTEX_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\vertex_triangle.glsl";
+const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\fragment_triangle.glsl";
+const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\vertex_triangle.glsl";
+
 char* ModuleProgram::LoadShaderSource(const char* shader_file_name)
 {
 	char* data = nullptr;
@@ -128,7 +129,9 @@ bool ModuleProgram::Init()
 	glDeleteShader(fragment_id);
 	glDeleteShader(vertex_id);
 	glGenVertexArrays(1, &vao);
-
+	// Because of the malloc call in LoadShaderSource...
+	free((void*)vertexShaderSource);
+	free((void*)fragmentShaderSource);
 	return true;
 }
 
