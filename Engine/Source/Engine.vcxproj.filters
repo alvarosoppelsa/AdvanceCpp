@@ -43,6 +43,9 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules\SourceFiles</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCamara.cpp">
+      <Filter>Modules\SourceFiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -94,6 +97,9 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">
+      <Filter>Modules\HeaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamara.h">
       <Filter>Modules\HeaderFiles</Filter>
     </ClInclude>
   </ItemGroup>

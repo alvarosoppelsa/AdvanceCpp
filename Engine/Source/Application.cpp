@@ -1,10 +1,12 @@
 #pragma once
+
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleProgram.h"
 #include "ModuleRenderExercise.h"
+#include "ModuleCamara.h"
 
 Application::Application()
 {
@@ -15,6 +17,7 @@ Application::Application()
 	modules.push_back(editor	= new ModuleEditor());
 	modules.push_back(program	= new ModuleProgram());
 	modules.push_back(exercise	= new ModuleRenderExercise());
+	//modules.push_back(camera	= new ModuleCamera());
 }
 
 Application::~Application()
@@ -55,8 +58,10 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for(std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
+	for (std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
+	{
 		ret = (*it)->CleanUp();
+	}
 
 	return ret;
 }
