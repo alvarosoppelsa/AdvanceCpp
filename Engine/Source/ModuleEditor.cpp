@@ -7,10 +7,11 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-#define MAX_CONSOLE_OUTPUT 20
+#define MAX_CONSOLE_OUTPUT 10000
 
 bool ModuleEditor::Init()
 {
+    this->initialized = true;
     ImGui::CreateContext();
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
     ImGui_ImplOpenGL3_Init();
