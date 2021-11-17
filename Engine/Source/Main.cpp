@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <cstdlib>
 #include "Application.h"
 #include "ModuleRender.h"
 #include "Globals.h"
