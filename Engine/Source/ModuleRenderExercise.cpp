@@ -31,10 +31,18 @@ update_status ModuleRenderExercise::Update()
 
 void ModuleRenderExercise::CreateTriangleVBO(unsigned int vbo)
 {
-	float vertices[] = {
-	-1.0f, -1.0f, 0.0f,
-	 1.0f, -1.0f, 0.0f,
-	 0.0f,  1.0f, 0.0f
+	float vertices[] = 
+	{
+		-0.5f, -0.5f, 0.0f,	// 0
+		 0.5f, -0.5f, 0.0f, // 1
+		 0.5f,  0.5f, 0.0f, // 2
+		-0.5f, 0.5f, 0.0f,	// 3
+	};
+
+	unsigned int indeces[] =
+	{
+		0, 1, 2,
+		0, 2, 3
 	};
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo); // set vbo active
@@ -49,7 +57,7 @@ void ModuleRenderExercise::RenderVBO(unsigned int vbo)
 	glEnableVertexAttribArray(0);
 
 	// 1 triangle to draw = 3 vertices
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	assert(glGetError() == GL_NO_ERROR);
 }
 

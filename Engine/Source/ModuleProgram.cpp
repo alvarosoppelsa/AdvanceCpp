@@ -2,10 +2,12 @@
 #include <Geometry/Frustum.h>
 #include <GL/glew.h>
 #include <cassert>
+#include "Math/float3.h"
+#include "Math/float4x4.h"
+#include "IL/il.h"
 
-
-const char* FRAGMENT_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\fragment_triangle.glsl";
-const char* VERTEX_SHADER_FILE = "C:\\Users\\SoppelsA\\OneDrive - HP Inc\\Documents\\Personal Folder\\Master UPC\\C++Programming\\Homework\\AdvanceCpp\\Engine\\Source\\Shaders\\vertex_triangle.glsl";
+const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\fragment_triangle.glsl";
+const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\vertex_triangle.glsl";
 
 char* ModuleProgram::LoadShaderSource(const char* shader_file_name)
 {
@@ -87,22 +89,23 @@ ModuleProgram::ModuleProgram() :
 	VertexPath = VERTEX_SHADER_FILE;
 	FragmentPath = FRAGMENT_SHADER_FILE;
 
-	model = float4x4::FromTRS(
-		float3(2.0f, 0.0f, 0.0f),
-		float4x4::RotateZ(pi / 4.0f),
-		float3(2.0f, 1.0f, 0.0f));
-	view = float4x4::LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, float3::unitY);
+	// TODO: triangle transformation
+	//model = float4x4::FromTRS(
+	//	float3(2.0f, 0.0f, 0.0f),
+	//	float4x4::RotateZ(pi / 4.0f),
+	//	float3(2.0f, 1.0f, 0.0f));
+	//view = float4x4::LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, float3::unitY);
 
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
+	//frustum.type = FrustumType::PerspectiveFrustum;
+	//frustum.pos = float3::zero;
+	//frustum.front = -float3::unitZ;
+	//frustum.up = float3::unitY;
 
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * frustum.AspectRatio());
-	proj = frustum.ProjectionMatrix();
+	//frustum.nearPlaneDistance = 0.1f;
+	//frustum.farPlaneDistance = 100.0f;
+	//frustum.verticalFov = math::pi / 4.0f;
+	//frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * frustum.AspectRatio());
+	//proj = frustum.ProjectionMatrix();
 }
 
 ModuleProgram::ModuleProgram(std::string& vertex_path, std::string& fragment_path) :
@@ -125,10 +128,6 @@ ModuleProgram::ModuleProgram(std::string&& vertex_path, std::string&& fragment_p
 	FragmentPath = std::move(fragment_path);
 	vertex_path.clear();
 	fragment_path.clear();
-}
-
-ModuleProgram::~ModuleProgram()
-{
 }
 
 bool ModuleProgram::Init()
@@ -154,10 +153,11 @@ bool ModuleProgram::Init()
 
 update_status ModuleProgram::Update()
 {
-	glUseProgram(program); 
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
+	glUseProgram(program);
+	// TODO: triangle transformation
+	//glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
 	glBindVertexArray(vao);
 	
 	return UPDATE_CONTINUE;

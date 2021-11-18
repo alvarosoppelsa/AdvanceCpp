@@ -13,7 +13,7 @@ public:
 	ModuleProgram();
 	ModuleProgram(std::string& vertex_path, std::string& fragment_path);
 	ModuleProgram(std::string&& vertex_path, std::string&& fragment_path);
-	~ModuleProgram();
+	~ModuleProgram() = default;
 	
 	bool Init() override;
 	update_status Update() override;
@@ -28,6 +28,7 @@ private:
 	std::string VertexPath;
 	std::string FragmentPath;
 
+	// from MathGeoLib
 	float4x4 model;
 	float4x4 proj;
 	float4x4 view;
