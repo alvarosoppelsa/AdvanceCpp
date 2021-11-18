@@ -2,6 +2,10 @@
 
 static const char* texture_image_path = "..\\Source\\Textures\\lenna_100_dpi.jpg";
 
+ModuleTexture::ModuleTexture()
+{
+}
+
 bool ModuleTexture::Init()
 {
 	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
@@ -10,9 +14,9 @@ bool ModuleTexture::Init()
 		return UPDATE_ERROR;
 	}
 	ilInit();											/* Initialization of DevIL */
-	ilGenImages(1, &texid);							/* Generation of one image name */
+	ilGenImages(1, &texid);							    /* Generation of one image name */
 	ilBindImage(texid);									/* Binding of image name */
-	success = ilLoadImage("texture_image_path");	/* Loading of image "image.jpg" */
+	success = ilLoadImage("texture_image_path");	    /* Loading of image "image.jpg" */
 
     if (!success)
     {

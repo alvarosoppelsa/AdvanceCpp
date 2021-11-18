@@ -105,7 +105,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\DevIL Windows SDK\lib\x64\Release;.\assimp;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc141-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
