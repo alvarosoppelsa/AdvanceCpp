@@ -43,7 +43,9 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules\SourceFiles</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTexture.cpp" />
+    <ClCompile Include="ModuleTexture.cpp">
+      <Filter>Modules\SourceFiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -98,7 +100,9 @@
       <Filter>Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ModuleTexture.h" />
+    <ClInclude Include="ModuleTexture.h">
+      <Filter>Modules\HeaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
