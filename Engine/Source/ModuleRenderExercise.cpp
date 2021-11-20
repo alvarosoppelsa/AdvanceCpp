@@ -42,15 +42,20 @@ void ModuleRenderExercise::CreateTriangleVBO(unsigned int vbo)
 		-1.0f,  1.0f, 0.0f,   // ← v3 pos
 		-1.0f, -1.0f, 0.0f,   // ← v0 pos
 
-		 1.0f, 0.0f,         // ← v1 texcoord
 		 0.0f, 0.0f,         // ← v0 texcoord
-		 0.5f, 1.0f,         // ← v2 texcoord
+		 1.0f, 0.0f,         // ← v1 texcoord
+		 1.0f, 1.0f,         // ← v2 texcoord
+
+		 1.0f, 1.0f,         // ← v2 texcoord
+		 0.0f, 1.0f,         // ← v3 texcoord
+		 0.0f, 0.0f,         // ← v0 texcoord
+
 	};
 
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo); // set vbo active
-	glBufferData(GL_ARRAY_BUFFER, (6 * 3 + 3 * 2) * sizeof(float), buffer, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (6 * 3 + 6 * 2) * sizeof(float), buffer, GL_STATIC_DRAW);
 }
 
 void ModuleRenderExercise::CreateSquareVBO(unsigned int vbo, unsigned int ebo)

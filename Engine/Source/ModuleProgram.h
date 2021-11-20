@@ -7,8 +7,12 @@
 #include <MathGeoLib.h>
 #include <string>
 
+class ModuleTexture;
+
 class ModuleProgram : public Module
 {
+	friend ModuleTexture;
+
 public:
 	ModuleProgram();
 	ModuleProgram(std::string& vertex_path, std::string& fragment_path);

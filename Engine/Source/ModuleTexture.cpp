@@ -54,7 +54,6 @@ bool ModuleTexture::Init()
 	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 	{
 		iluFlipImage();
-        iluMirror();
 	}
 
     glActiveTexture(GL_TEXTURE0);
