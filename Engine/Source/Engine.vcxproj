@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\DevIL Windows SDK\include;..\..\MathGeoLib\include;.\assimp\;.\glew\include;.\SDL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\Modules\inc;..\..\DevIL Windows SDK\include;..\..\MathGeoLib\include;.\assimp\;.\glew\include;.\debug draw;.\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SDL\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\Modules\inc;..\..\DevIL Windows SDK\include;..\..\MathGeoLib\include;.\assimp\;.\glew\include;.\debug draw;.\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -153,13 +153,14 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ModuleEditor.cpp" />
-    <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModuleProgram.cpp" />
-    <ClCompile Include="ModuleRender.cpp" />
-    <ClCompile Include="ModuleRenderExercise.cpp" />
-    <ClCompile Include="ModuleTexture.cpp" />
-    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Modules\src\ModuleDebugDraw.cpp" />
+    <ClCompile Include="Modules\src\ModuleEditor.cpp" />
+    <ClCompile Include="Modules\src\ModuleInput.cpp" />
+    <ClCompile Include="Modules\src\ModuleProgram.cpp" />
+    <ClCompile Include="Modules\src\ModuleRender.cpp" />
+    <ClCompile Include="Modules\src\ModuleRenderExercise.cpp" />
+    <ClCompile Include="Modules\src\ModuleTexture.cpp" />
+    <ClCompile Include="Modules\src\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -174,14 +175,15 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
-    <ClInclude Include="Module.h" />
-    <ClInclude Include="ModuleEditor.h" />
-    <ClInclude Include="ModuleInput.h" />
-    <ClInclude Include="ModuleProgram.h" />
-    <ClInclude Include="ModuleRender.h" />
-    <ClInclude Include="ModuleRenderExercise.h" />
-    <ClInclude Include="ModuleTexture.h" />
-    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Modules\inc\Module.h" />
+    <ClInclude Include="Modules\inc\ModuleDebugDraw.h" />
+    <ClInclude Include="Modules\inc\ModuleEditor.h" />
+    <ClInclude Include="Modules\inc\ModuleInput.h" />
+    <ClInclude Include="Modules\inc\ModuleProgram.h" />
+    <ClInclude Include="Modules\inc\ModuleRender.h" />
+    <ClInclude Include="Modules\inc\ModuleRenderExercise.h" />
+    <ClInclude Include="Modules\inc\ModuleTexture.h" />
+    <ClInclude Include="Modules\inc\ModuleWindow.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
