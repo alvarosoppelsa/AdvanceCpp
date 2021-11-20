@@ -1,3 +1,4 @@
+
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
 
@@ -595,6 +596,11 @@ bool ModuleDebugDraw::Init()
     return true;
 }
 
+update_status ModuleDebugDraw::PreUpdate()
+{
+    return UPDATE_CONTINUE;
+}
+
 
 bool ModuleDebugDraw::CleanUp()
 {
@@ -609,6 +615,11 @@ bool ModuleDebugDraw::CleanUp()
 update_status  ModuleDebugDraw::Update()
 {
 	return UPDATE_CONTINUE;
+}
+
+update_status ModuleDebugDraw::PostUpdate()
+{
+    return UPDATE_CONTINUE;
 }
 
 void ModuleDebugDraw::Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height)

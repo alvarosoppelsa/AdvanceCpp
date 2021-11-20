@@ -20,7 +20,9 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
-	void RenderVBO(unsigned vbo);
+
 private:
+	int Width = 0;
+	int Height = 0;
 
 };

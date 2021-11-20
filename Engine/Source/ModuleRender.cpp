@@ -6,6 +6,16 @@
 #include "GL/glew.h"
 #include <cassert>
 
+ModuleRender::ModuleRender() : 
+	context(nullptr)
+{
+}
+
+// Destructor
+ModuleRender::~ModuleRender()
+{
+}
+
 static void APIENTRY openglCallbackFunction(
 	GLenum source,
 	GLenum type,
@@ -23,16 +33,6 @@ static void APIENTRY openglCallbackFunction(
 		LOG("Aborting...\n");
 		abort();
 	}
-}
-
-ModuleRender::ModuleRender() : 
-	context(nullptr)
-{
-}
-
-// Destructor
-ModuleRender::~ModuleRender()
-{
 }
 
 // Called before render is available
@@ -89,10 +89,8 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	int width = 0;
-	int height = 0;
-	SDL_GetWindowSize(App->window->window, &width, &height);
-	glViewport(0, 0, width, height);
+	SDL_GetWindowSize(App->window->window, &Width, &Height);
+	glViewport(0, 0, Width, Height);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -120,4 +118,3 @@ bool ModuleRender::CleanUp()
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
 }
-

@@ -1,5 +1,7 @@
 #pragma once
 
+#define NOMINMAX
+
 #include<list>
 #include "Globals.h"
 #include "Module.h"
@@ -9,6 +11,7 @@ class ModuleWindow;
 class ModuleTextures;
 class ModuleInput;
 class ModuleProgram;
+class ModuleTexture;
 class ModuleRenderExercise;
 
 class Application
@@ -27,6 +30,7 @@ public:
 	ModuleWindow* window			= nullptr;
 	ModuleInput* input				= nullptr;
 	ModuleProgram* program			= nullptr;
+	ModuleTexture* texture			= nullptr;
 	ModuleRenderExercise* exercise  = nullptr;
 
 private:

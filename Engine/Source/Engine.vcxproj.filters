@@ -19,7 +19,6 @@
     <ClCompile Include="ModuleRenderExercise.cpp">
       <Filter>Modules\SourceFiles</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
@@ -40,6 +39,12 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Modules\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTexture.cpp">
+      <Filter>Modules\SourceFiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +69,6 @@
     <ClInclude Include="ModuleRenderExercise.h">
       <Filter>Modules\HeaderFiles</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>ImGui</Filter>
     </ClInclude>
@@ -92,6 +96,13 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Modules\HeaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ModuleTexture.h">
+      <Filter>Modules\HeaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -117,11 +128,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Shaders\fragment_triangle.txt">
+    <None Include="Shaders\fragment_triangle.glsl">
       <Filter>Shaders\Fragments</Filter>
-    </Text>
-    <Text Include="Shaders\vertex_triangle.txt">
+    </None>
+    <None Include="Shaders\vertex_triangle.glsl">
       <Filter>Shaders\Vertex</Filter>
+    </None>
+    <None Include="Shaders\VertexShaderWithUniforms.glsl">
+      <Filter>Shaders\Vertex</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="FragmentShaderWithUniforms.glsl">
+      <Filter>Shaders\Fragments</Filter>
     </Text>
   </ItemGroup>
 </Project>
