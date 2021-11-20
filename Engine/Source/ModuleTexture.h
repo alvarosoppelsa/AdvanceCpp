@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Module.h"
-#include "ImGui/imgui_impl_opengl3_loader.h"
+#include "GL/glew.h"
 #include <IL/il.h>
 
 class ModuleTexture : public Module
@@ -13,6 +13,7 @@ public:
 
 	bool Init() override;
 	update_status Update() override;
+	update_status PostUpdate() override;
 	bool CleanUp() override;
 
 private:

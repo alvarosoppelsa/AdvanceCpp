@@ -13,7 +13,7 @@ public:
 private:
 	void CreateTriangleVBO(unsigned int Vbo);
 	void CreateSquareVBO(unsigned int vbo, unsigned int ebo);
-	void RenderVBO(unsigned int vbo, unsigned int ebo);
+	void RenderVBO(unsigned int vbo);
 	void DestroyVBO(unsigned int vbo);
 	unsigned int Vbo;
 	unsigned int Ebo;

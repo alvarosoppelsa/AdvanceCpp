@@ -6,8 +6,48 @@
 #include "Math/float4x4.h"
 #include "IL/il.h"
 
-const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\fragment_triangle.glsl";
-const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\vertex_triangle.glsl";
+const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\FragmentShaderWithUniforms.glsl";
+const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\VertexShaderWithUniforms.glsl";
+
+bool ModuleProgram::Init()
+{
+	// Load Source Code & Compile Vertex Shader
+	const char* vertexShaderSource = LoadShaderSource(VertexPath.c_str());
+	vertex_id = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
+
+	// Load Source Code & Compile Fragment Shader
+	const char* fragmentShaderSource = LoadShaderSource(FragmentPath.c_str());
+	fragment_id = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
+	// Link already Compiled Program
+	program = CreateProgram(vertex_id, fragment_id);
+
+	// Once is linked it can be destroyed
+	glDeleteShader(fragment_id);
+	glDeleteShader(vertex_id);
+	glGenVertexArrays(1, &vao);
+
+	return true;
+}
+
+update_status ModuleProgram::Update()
+{
+	glUseProgram(program);
+	// TODO: triangle transformation
+	//glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
+	glBindVertexArray(vao);
+
+	return UPDATE_CONTINUE;
+}
+
+bool ModuleProgram::CleanUp()
+{
+	glDeleteProgram(program);
+
+	return true;
+}
 
 char* ModuleProgram::LoadShaderSource(const char* shader_file_name)
 {
@@ -128,44 +168,4 @@ ModuleProgram::ModuleProgram(std::string&& vertex_path, std::string&& fragment_p
 	FragmentPath = std::move(fragment_path);
 	vertex_path.clear();
 	fragment_path.clear();
-}
-
-bool ModuleProgram::Init()
-{
-	// Load Source Code & Compile Vertex Shader
-	const char* vertexShaderSource = LoadShaderSource(VertexPath.c_str());
-	vertex_id = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
-
-	// Load Source Code & Compile Fragment Shader
-	const char* fragmentShaderSource = LoadShaderSource(FragmentPath.c_str());
-	fragment_id = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-	// Link already Compiled Program
-	program = CreateProgram(vertex_id, fragment_id);
-
-	// Once is linked it can be destroyed
-	glDeleteShader(fragment_id);
-	glDeleteShader(vertex_id);
-	glGenVertexArrays(1, &vao);
-
-	return true;
-}
-
-update_status ModuleProgram::Update()
-{
-	glUseProgram(program);
-	// TODO: triangle transformation
-	//glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
-	glBindVertexArray(vao);
-	
-	return UPDATE_CONTINUE;
-}
-
-bool ModuleProgram::CleanUp()
-{
-	glDeleteProgram(program);
-	
-	return true;
 }

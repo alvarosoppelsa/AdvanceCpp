@@ -186,10 +186,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment_triangle.glsl" />
+    <None Include="Shaders\VertexShaderWithUniforms.glsl" />
     <None Include="Shaders\vertex_triangle.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="FragmentShaderWithUniforms.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

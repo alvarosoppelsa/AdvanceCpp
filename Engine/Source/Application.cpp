@@ -16,7 +16,7 @@ Application::Application()
 	modules.push_back(renderer	= new ModuleRender());
 	modules.push_back(input		= new ModuleInput());
 	modules.push_back(program	= new ModuleProgram());
-	//modules.push_back(texture	= new ModuleTexture());
+	modules.push_back(texture	= new ModuleTexture());
 	modules.push_back(exercise	= new ModuleRenderExercise());
 }
 
