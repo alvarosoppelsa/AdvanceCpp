@@ -31,7 +31,7 @@ public:
 	ModuleWindow* window			= nullptr;
 	ModuleInput* input				= nullptr;
 	ModuleProgram* program			= nullptr;
-	ModuleDebugDraw* draw			= nullptr;
+	ModuleDebugDraw* ddraw			= nullptr;
 	ModuleTexture* texture			= nullptr;
 	ModuleRenderExercise* exercise  = nullptr;
 

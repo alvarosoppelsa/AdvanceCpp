@@ -28,9 +28,9 @@ static void APIENTRY openglCallbackFunction(
 	(void)source; (void)type; (void)id;
 	(void)severity; (void)length; (void)userParam;
 	fprintf(stderr, "%s\n", message);
-	LOG(message);
+	ENGINE_LOG(message);
 	if (severity == GL_DEBUG_SEVERITY_HIGH) {
-		LOG("Aborting...\n");
+		ENGINE_LOG("Aborting...\n");
 		abort();
 	}
 }
@@ -47,15 +47,15 @@ bool ModuleRender::Init()
 
 	GLenum err = glewInit();
 	// … check for errors
-	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	ENGINE_LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	// Should be 2.0
 
-	LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	ENGINE_LOG("Vendor: %s", glGetString(GL_VENDOR));
+	ENGINE_LOG("Renderer: %s", glGetString(GL_RENDERER));
+	ENGINE_LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	ENGINE_LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-	LOG("Creating Renderer context");
+	ENGINE_LOG("Creating Renderer context");
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); // desired version
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
@@ -107,7 +107,7 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	LOG("Destroying renderer");
+	ENGINE_LOG("Destroying renderer");
 
 	//Destroy window
 	SDL_GL_DeleteContext(context);

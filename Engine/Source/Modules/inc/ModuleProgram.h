@@ -1,16 +1,11 @@
 #pragma once
 
-#define NOMINMAX
-
 #include "Module.h"
 #include <MathGeoLib.h>
 #include <string>
 
-class ModuleTexture;
-
 class ModuleProgram : public Module
 {
-	friend ModuleTexture;
 
 public:
 	ModuleProgram();
@@ -22,12 +17,13 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
+	unsigned int program;
 
 private:
 	unsigned int vao;
 	unsigned int vertex_id;
 	unsigned int fragment_id;
-	unsigned int program;
+
 	std::string VertexPath;
 	std::string FragmentPath;
 
