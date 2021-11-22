@@ -20,7 +20,7 @@ ModuleRenderExercise::~ModuleRenderExercise()
 bool ModuleRenderExercise::Init()
 {
 	//Create_2Triangles_Texture_6Vertices(Vbo);
-	//Create_Triangle_NoTexture_3Vertices(Vbo);
+	Create_Triangle_NoTexture_3Vertices(Vbo);
 	return true;
 }
 
@@ -34,19 +34,12 @@ update_status ModuleRenderExercise::Update()
 {
 	//Render_2Triangles_Texture_6Vertices();
 
-	//Render_Triangle_Transformation();
-
-
-
+	Render_Triangle_Transformation();
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRenderExercise::PostUpdate()
 {
-	//App->ddraw->Draw(View, Proj, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
-
 	return UPDATE_CONTINUE;
 }
 
@@ -66,42 +59,42 @@ void ModuleRenderExercise::Create_Triangle_NoTexture_3Vertices(unsigned int vbo)
 
 void ModuleRenderExercise::Render_Triangle_Transformation()
 {
-	unsigned int prog = App->program->program;
+	//unsigned int prog = App->program->program;
 
-	// TODO: retrieve model view and projection
-	Frustum frustum;
-	//frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumRightHanded);
-	//frustum.pos = float3::zero;
-	frustum.SetPos(float3(0.0f, 0.1f, 0.0f));
-	//frustum.front = -float3::unitZ;
-	frustum.SetFront(-float3::unitZ);
-	//frustum.up = float3::unitY;
-	frustum.SetUp(float3::unitY);
-	//frustum.nearPlaneDistance = 0.1f;
-	//frustum.farPlaneDistance = 100.0f;
-	frustum.SetViewPlaneDistances(0.1f, 100.0f);
+	//// TODO: retrieve model view and projection
+	//Frustum frustum;
+	////frustum.type = FrustumType::PerspectiveFrustum;
+	//frustum.SetKind(FrustumProjectiveSpace::FrustumSpaceGL, FrustumRightHanded);
+	////frustum.pos = float3::zero;
+	//frustum.SetPos(float3(0.0f, 0.1f, 0.0f));
+	////frustum.front = -float3::unitZ;
+	//frustum.SetFront(-float3::unitZ);
+	////frustum.up = float3::unitY;
+	//frustum.SetUp(float3::unitY);
+	////frustum.nearPlaneDistance = 0.1f;
+	////frustum.farPlaneDistance = 100.0f;
+	//frustum.SetViewPlaneDistances(0.1f, 100.0f);
 
-	float verticalFov = math::pi / 4.0f;
-	float aspectRatio = SCREEN_WIDTH / SCREEN_HEIGHT;
-	float horizontalFov = 2.f * atanf(tanf(verticalFov * 0.5f) * aspectRatio);
-	frustum.SetVerticalFovAndAspectRatio(verticalFov, aspectRatio);
-	frustum.SetHorizontalFovAndAspectRatio(horizontalFov, aspectRatio);
-	
+	//float verticalFov = math::pi / 4.0f;
+	//float aspectRatio = SCREEN_WIDTH / SCREEN_HEIGHT;
+	//float horizontalFov = 2.f * atanf(tanf(verticalFov * 0.5f) * aspectRatio);
+	//frustum.SetVerticalFovAndAspectRatio(verticalFov, aspectRatio);
+	//frustum.SetHorizontalFovAndAspectRatio(horizontalFov, aspectRatio);
+	//
 
-	Proj  = frustum.ProjectionMatrix();
-	View  = float4x4::FromTRS(float3(2.0f, 0.0f, 0.0f), float4x4::RotateZ(pi / 4.0f), float3(2.0f, 1.0f, 0.0f));
-	Model = float4x4::LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, float3::unitY);
+	//Proj  = frustum.ProjectionMatrix();
+	//View  = float4x4::FromTRS(float3(2.0f, 0.0f, 0.0f), float4x4::RotateZ(pi / 4.0f), float3(2.0f, 1.0f, 0.0f));
+	//Model = float4x4::LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, float3::unitY);
 
-	Proj.Transpose();
-	Model.Transpose();
-	View.Transpose();
-	GLfloat matrix = 1.0f;
-	glUseProgram(prog);
-	glUniformMatrix4fv(glGetUniformLocation(prog, "model"), 1, GL_TRUE, &matrix);
-	glUniformMatrix4fv(glGetUniformLocation(prog, "view"), 1, GL_TRUE, &matrix);
-	glUniformMatrix4fv(glGetUniformLocation(prog, "proj"), 1, GL_TRUE, &matrix);
-	
+	//Proj.Transpose();
+	//Model.Transpose();
+	//View.Transpose();
+	//GLfloat matrix = 1.0f;
+	//glUseProgram(prog);
+	//glUniformMatrix4fv(glGetUniformLocation(prog, "model"), 1, GL_TRUE, &matrix);
+	//glUniformMatrix4fv(glGetUniformLocation(prog, "view"), 1, GL_TRUE, &matrix);
+	//glUniformMatrix4fv(glGetUniformLocation(prog, "proj"), 1, GL_TRUE, &matrix);
+	//
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 

@@ -33,10 +33,6 @@ bool ModuleProgram::Init()
 update_status ModuleProgram::Update()
 {
 	glUseProgram(program);
-	// TODO: triangle transformation
-	//glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
 	glBindVertexArray(vao);
 
 	return UPDATE_CONTINUE;

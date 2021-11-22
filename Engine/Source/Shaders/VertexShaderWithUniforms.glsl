@@ -11,6 +11,6 @@ out vec2 uv0;
 
 void main()
 {
-	gl_Position = vec4(vertex_position, 1.0);
+	gl_Position = proj * vec4(vertex_position, 1.0);
 	uv0 = vertex_uv0;
 }

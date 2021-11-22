@@ -175,6 +175,7 @@
     <ClCompile Include="..\..\MathGeoLib\Algorithm\Random\LCG.cpp">
       <Filter>3rdParty\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -466,6 +467,7 @@
     <ClInclude Include="debug draw\debugdraw.h">
       <Filter>3rdParty\DebugDraw</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
