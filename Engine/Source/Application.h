@@ -40,7 +40,6 @@ public:
 	ModuleTexture* texture			= nullptr;
 	ModuleRenderExercise* exercise  = nullptr;
 	ModuleEditor* editor			= nullptr;
-	ModuleCamera* camera			= nullptr;
 private:
 	std::list<Module*> modules;
 };

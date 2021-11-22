@@ -620,6 +620,7 @@ update_status  ModuleDebugDraw::Update()
     glLineWidth(1.0f);
     float d = 200.0f;
     glBegin(GL_LINES);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     for (float i = -d; i <= d; i += 1.0f)
     {
         glVertex3f(i, 0.0f, -d);
