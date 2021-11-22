@@ -165,6 +165,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ILogObserver.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="ModuleTexture.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment_triangle.glsl" />

@@ -9,8 +9,11 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleCamara.h"
 
+#include "Timer.h"
+
 Application::Application()
 {
+	timer = new Timer();
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window	= new ModuleWindow());
 	modules.push_back(renderer	= new ModuleRender());
@@ -44,6 +47,8 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 
+	timer->Start();
+	
 	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
 
@@ -53,6 +58,7 @@ update_status Application::Update()
 	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 
+	ENGINE_LOG("Update Modules time in milliseconds: %d", timer->Read());
 	return ret;
 }
 

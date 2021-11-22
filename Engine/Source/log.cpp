@@ -1,8 +1,11 @@
 #pragma once
 #include "Globals.h"
 #include "Application.h"
+#include "ILogObserver.h"
 
+// TODO: This should be a class
 static std::vector<char*> temp_console;
+static std::vector<ILogObserver*> observers;
 
 void log(const char file[], int line, const char* format, ...)
 {
@@ -17,21 +20,28 @@ void log(const char file[], int line, const char* format, ...)
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);
 
-	// If ModuleEditor is not initialized we store data in a temporal vector until we are able to send data
-	if (App->editor->IsInitialized() && temp_console.empty())
+	if (!observers.empty())
 	{
-		App->editor->ConsoleLog(tmp_string2);
-	}
-	else if (App->editor->IsInitialized() && !temp_console.empty())
-	{
-		for (auto it = temp_console.begin(); it < temp_console.end(); ++it)
+		for (auto it = observers.begin(); it != observers.end(); ++it)
 		{
-			App->editor->ConsoleLog(*it);
+			(*it)->Log(tmp_string2);
 		}
 	}
-	else
-	{
-		temp_console.push_back(tmp_string2);
-	}
+}
 
+void subscribe(ILogObserver* observer)
+{
+	observers.push_back(observer);
+}
+
+void unsubscribe(ILogObserver* observer)
+{
+	for (auto it = observers.begin(); it != observers.end(); ++it)
+	{
+		if ((*it) == observer)
+		{
+			observers.erase(it);
+			return;
+		}
+	}
 }

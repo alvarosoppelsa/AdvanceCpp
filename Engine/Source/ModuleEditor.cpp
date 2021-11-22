@@ -20,6 +20,7 @@ bool ModuleEditor::Init()
     show_console = true;
     show_about_window = false;
     clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    SubscribeToLogger();
     return true;
 }
 
@@ -133,10 +134,26 @@ bool ModuleEditor::CleanUp()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
+    UnsubscribeToLogger();
 	return true;
 }
 
 void ModuleEditor::ConsoleLog(char* line)
 {
     console_outputs.push_back(line);
+}
+
+void ModuleEditor::SubscribeToLogger()
+{
+    subscribe(this);
+}
+
+void ModuleEditor::UnsubscribeToLogger()
+{
+    unsubscribe(this);
+}
+
+void ModuleEditor::Log(char* msg)
+{
+    ConsoleLog(msg);
 }

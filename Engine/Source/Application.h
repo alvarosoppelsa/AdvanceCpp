@@ -16,6 +16,7 @@ class ModuleTexture;
 class ModuleRenderExercise;
 class ModuleEditor;
 class ModuleCamera;
+class Timer;
 
 class Application
 {
@@ -39,6 +40,7 @@ public:
 	ModuleCamera* camera			= nullptr;
 private:
 	std::list<Module*> modules;
+	Timer* timer;
 };
 
 extern Application* App;
