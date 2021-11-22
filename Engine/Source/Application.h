@@ -5,6 +5,7 @@
 #include<list>
 #include "Globals.h"
 #include "Module.h"
+#include "ModuleEditor.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -13,6 +14,8 @@ class ModuleInput;
 class ModuleProgram;
 class ModuleTexture;
 class ModuleRenderExercise;
+class ModuleEditor;
+class ModuleCamera;
 
 class Application
 {
@@ -32,11 +35,10 @@ public:
 	ModuleProgram* program			= nullptr;
 	ModuleTexture* texture			= nullptr;
 	ModuleRenderExercise* exercise  = nullptr;
-
+	ModuleEditor* editor			= nullptr;
+	ModuleCamera* camera			= nullptr;
 private:
-
 	std::list<Module*> modules;
-
 };
 
 extern Application* App;

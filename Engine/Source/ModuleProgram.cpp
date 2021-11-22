@@ -49,6 +49,9 @@ bool ModuleProgram::CleanUp()
 	return true;
 }
 
+const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\fragment_triangle.glsl";
+const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\vertex_triangle.glsl";
+
 char* ModuleProgram::LoadShaderSource(const char* shader_file_name)
 {
 	char* data = nullptr;
