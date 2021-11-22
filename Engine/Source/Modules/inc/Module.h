@@ -14,6 +14,7 @@ public:
 
 	virtual bool Init() 
 	{
+		initialized = true;
 		return true; 
 	}
 
@@ -36,4 +37,9 @@ public:
 	{ 
 		return true; 
 	}
+
+	virtual bool IsInitialized() { return initialized; }
+
+protected:
+	bool initialized = false;
 };

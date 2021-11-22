@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <cstdlib>
 #include "Application.h"
 #include "ModuleRender.h"
 #include "Globals.h"
@@ -29,8 +29,8 @@ int main(int argc, char ** argv)
 		{
 		case MAIN_CREATION:
 
-			ENGINE_LOG("Application Creation --------------");
 			App = new Application();
+			ENGINE_LOG("Application Created --------------");
 			state = MAIN_START;
 			break;
 
