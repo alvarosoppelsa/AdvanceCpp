@@ -5,6 +5,8 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleProgram.h"
+#include "ModuleDebugDraw.h"
+#include "ModuleCamera.h"
 #include "ModuleTexture.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleCamara.h"
@@ -13,13 +15,12 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window	= new ModuleWindow());
-	modules.push_back(renderer	= new ModuleRender());
 	modules.push_back(input		= new ModuleInput());
-	modules.push_back(editor	= new ModuleEditor());
+	modules.push_back(camera	= new ModuleCamera());
+	modules.push_back(renderer	= new ModuleRender());
 	modules.push_back(program	= new ModuleProgram());
-	modules.push_back(texture	= new ModuleTexture());
-	modules.push_back(exercise	= new ModuleRenderExercise());
-	//modules.push_back(camera	= new ModuleCamera());
+	modules.push_back(editor	= new ModuleEditor());
+	modules.push_back(ddraw     = new ModuleDebugDraw());
 }
 
 Application::~Application()
@@ -63,6 +64,8 @@ bool Application::CleanUp()
 	for (std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
 	{
 		ret = (*it)->CleanUp();
+		delete* it;
+		*it = nullptr;
 	}
 
 	return ret;
