@@ -25,7 +25,7 @@ bool ModuleCamera::Init()
     SetAspectRatio(screenSurface->w, screenSurface->h);
     SetHorizontalFov(90.0f);
     SetPlaneDistances(0.1f, 100.0f);
-    SetPosition(float3(5.0f, 1.0f, 10.0f));
+    SetPosition(float3(1.0f, 1.0f, 5.0f));
     float3x3 rotation = float3x3::identity;
     CameraFrustum.SetFront(rotation.WorldZ());
     CameraFrustum.SetUp(rotation.WorldY());
