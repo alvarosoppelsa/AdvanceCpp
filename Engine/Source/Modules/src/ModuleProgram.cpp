@@ -6,41 +6,44 @@
 #include "Math/float4x4.h"
 #include "IL/il.h"
 
-const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\FragmentShaderWithUniforms.glsl";
-const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\VertexShaderWithUniforms.glsl";
+static const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\FragmentShaderWithUniforms.glsl";
+static const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\VertexShaderWithUniforms.glsl";
 
 bool ModuleProgram::Init()
 {
 	// Load Source Code & Compile Vertex Shader
-	const char* vertexShaderSource = LoadShaderSource(VertexPath.c_str());
-	vertex_id = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
+	const char* vertexShaderSource = LoadShaderSource(VertexShaderPath.c_str());
+	VertexId = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
 
 	// Load Source Code & Compile Fragment Shader
-	const char* fragmentShaderSource = LoadShaderSource(FragmentPath.c_str());
-	fragment_id = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+	const char* fragmentShaderSource = LoadShaderSource(FragmentShaderPath.c_str());
+	FragmentId = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
 	// Link already Compiled Program
-	program = CreateProgram(vertex_id, fragment_id);
+	ProgramId = CreateProgram(VertexId, FragmentId);
+
+	glUseProgram(ProgramId);
 
 	// Once is linked it can be destroyed
-	glDeleteShader(fragment_id);
-	glDeleteShader(vertex_id);
-	glGenVertexArrays(1, &vao);
+	glDeleteShader(FragmentId);
+	glDeleteShader(VertexId);
 
 	return true;
 }
 
+update_status ModuleProgram::PreUpdate()
+{
+	return UPDATE_CONTINUE;
+}
+
 update_status ModuleProgram::Update()
 {
-	glUseProgram(program);
-	glBindVertexArray(vao);
-
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleProgram::CleanUp()
 {
-	glDeleteProgram(program);
+	glDeleteProgram(ProgramId);
 
 	return true;
 }
@@ -117,51 +120,19 @@ unsigned int ModuleProgram::CreateProgram(unsigned vtx_shader, unsigned frg_shad
 }
 
 ModuleProgram::ModuleProgram() :
-	vao(0),
-	vertex_id(0),
-	fragment_id(0),
-	program(0)
+	VertexId(0),
+	FragmentId(0),
+	ProgramId(0)
 {
-	VertexPath = VERTEX_SHADER_FILE;
-	FragmentPath = FRAGMENT_SHADER_FILE;
-
-	// TODO: triangle transformation
-	//model = float4x4::FromTRS(
-	//	float3(2.0f, 0.0f, 0.0f),
-	//	float4x4::RotateZ(pi / 4.0f),
-	//	float3(2.0f, 1.0f, 0.0f));
-	//view = float4x4::LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, float3::unitY);
-
-	//frustum.type = FrustumType::PerspectiveFrustum;
-	//frustum.pos = float3::zero;
-	//frustum.front = -float3::unitZ;
-	//frustum.up = float3::unitY;
-
-	//frustum.nearPlaneDistance = 0.1f;
-	//frustum.farPlaneDistance = 100.0f;
-	//frustum.verticalFov = math::pi / 4.0f;
-	//frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * frustum.AspectRatio());
-	//proj = frustum.ProjectionMatrix();
+	VertexShaderPath = VERTEX_SHADER_FILE;
+	FragmentShaderPath = FRAGMENT_SHADER_FILE;
 }
 
 ModuleProgram::ModuleProgram(std::string& vertex_path, std::string& fragment_path) :
-	vao(0),
-	vertex_id(0),
-	fragment_id(0),
-	program(0)
+	VertexId(0),
+	FragmentId(0),
+	ProgramId(0)
 {
-	VertexPath = vertex_path;
-	FragmentPath = fragment_path;
-}
-
-ModuleProgram::ModuleProgram(std::string&& vertex_path, std::string&& fragment_path) :
-	vao(0),
-	vertex_id(0),
-	fragment_id(0),
-	program(0)
-{
-	VertexPath = std::move(vertex_path);
-	FragmentPath = std::move(fragment_path);
-	vertex_path.clear();
-	fragment_path.clear();
+	VertexShaderPath = vertex_path;
+	FragmentShaderPath = fragment_path;
 }

@@ -21,12 +21,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void WindowsSizeChanged();
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 
 	//The surface contained by the window
-	SDL_Surface* screen_surface = NULL;
+	SDL_Surface* ScreenSurface = NULL;
+
+	int RefreshRate;
 };
 
 #endif // __ModuleWindow_H__

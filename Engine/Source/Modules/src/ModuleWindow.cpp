@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -45,8 +46,12 @@ bool ModuleWindow::Init()
 		{
 			//Get window surface
 			
-			screen_surface = SDL_GetWindowSurface(window);
+			ScreenSurface = SDL_GetWindowSurface(window);
 		}
+
+		SDL_DisplayMode mode;
+		SDL_GetDisplayMode(0, 0, &mode);
+		RefreshRate = mode.refresh_rate;
 	}
 
 	return ret;
@@ -66,5 +71,14 @@ bool ModuleWindow::CleanUp()
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
+}
+
+void ModuleWindow::WindowsSizeChanged()
+{
+	// Update window surface so it is correct
+	SDL_UpdateWindowSurface(window);
+	ScreenSurface = SDL_GetWindowSurface(window);
+	App->renderer->WindowResized(ScreenSurface->w, ScreenSurface->h);
+	//App->camera->WindowResized(screen_surface->w, screen_surface->h);
 }
 

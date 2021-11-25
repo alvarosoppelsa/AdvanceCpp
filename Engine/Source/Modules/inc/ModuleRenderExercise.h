@@ -10,12 +10,13 @@ public:
 
 	bool Init() override;
 	bool CleanUp() override;
+	update_status PreUpdate() override;
 	update_status Update() override;
 	update_status PostUpdate() override;
 
 private:
 	void Create_Triangle_NoTexture_3Vertices(unsigned int vbo);
-	void Render_Triangle_Transformation();
+	void Render_Triangle_Transformation(unsigned int vbo);
 
 	void Create_2Triangles_Texture_6Vertices(unsigned int vbo);
 	void Render_2Triangles_Texture_6Vertices();

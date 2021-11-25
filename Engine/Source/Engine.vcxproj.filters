@@ -547,13 +547,11 @@
     <None Include="..\..\MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>3rdParty\MathGeoLib\Geometry</Filter>
     </None>
+    <None Include="Shaders\FragmentShaderWithUniforms.glsl">
+      <Filter>Shaders\Fragments</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="FragmentShaderWithUniforms.glsl">
-      <Filter>Shaders\Fragments</Filter>
-    </Text>
   </ItemGroup>
 </Project>

@@ -18,7 +18,7 @@ void log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 
 	// If ModuleEditor is not initialized we store data in a temporal vector until we are able to send data
-	if (App->editor->IsInitialized() && temp_console.empty())
+	/*if (App->editor->IsInitialized() && temp_console.empty())
 	{
 		App->editor->ConsoleLog(tmp_string2);
 	}
@@ -32,6 +32,6 @@ void log(const char file[], int line, const char* format, ...)
 	else
 	{
 		temp_console.push_back(tmp_string2);
-	}
+	}*/
 
 }

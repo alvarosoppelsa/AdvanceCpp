@@ -6,8 +6,12 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
 
+class ModuleRenderExercise;
+
 class ModuleRender : public Module
 {
+	friend ModuleRenderExercise;
+
 public:
 	ModuleRender();
 	~ModuleRender();

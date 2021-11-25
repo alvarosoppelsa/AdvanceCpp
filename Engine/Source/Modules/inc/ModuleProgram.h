@@ -9,29 +9,22 @@ class ModuleProgram : public Module
 
 public:
 	ModuleProgram();
-	ModuleProgram(std::string& vertex_path, std::string& fragment_path);
-	ModuleProgram(std::string&& vertex_path, std::string&& fragment_path);
+	ModuleProgram(std::string& vertexPath, std::string& fragmentPath);
 	~ModuleProgram() = default;
 	
 	bool Init() override;
+	update_status PreUpdate() override;
 	update_status Update() override;
 	bool CleanUp() override;
 
-	unsigned int program;
+	unsigned int ProgramId;
 
 private:
-	unsigned int vao;
-	unsigned int vertex_id;
-	unsigned int fragment_id;
+	unsigned int VertexId;
+	unsigned int FragmentId;
 
-	std::string VertexPath;
-	std::string FragmentPath;
-
-	// from MathGeoLib
-	float4x4 model;
-	float4x4 proj;
-	float4x4 view;
-	Frustum frustum;
+	std::string VertexShaderPath;
+	std::string FragmentShaderPath;
 
 	char* LoadShaderSource(const char* shader_file_name);
 	unsigned int CompileShader(unsigned type, const char* source);

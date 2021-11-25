@@ -3,47 +3,34 @@
 #include "MathGeoLib.h"
 #include "Application.h"
 #include "ModuleProgram.h"
+#include "ModuleWindow.h"
+
+static const float DEGTORAD = math::pi / 180.0;
+
+ModuleCamera::ModuleCamera()
+	: Locked(false)
+	, AspectRatio(0.0f)
+	, HorizontalFov(0.0f)
+	, NearDistance(0.0f)
+	, FarDistance(0.0f)
+	, LookPosition(float3::zero)
+	, Position(float3::zero)
+{
+}
 
 bool ModuleCamera::Init()
 {
+    CameraFrustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
+    SDL_Surface* screenSurface = App->window->ScreenSurface;
+    SetAspectRatio(screenSurface->w, screenSurface->h);
+    SetHorizontalFov(90.0f);
+    SetPlaneDistances(0.1f, 100.0f);
+    SetPosition(float3(5.0f, 1.0f, 10.0f));
+    float3x3 rotation = float3x3::identity;
+    CameraFrustum.SetFront(rotation.WorldZ());
+    CameraFrustum.SetUp(rotation.WorldY());
+    LookAt(float3(0.0f, 0.0f, 0.0f));
     return true;
-}
-
-update_status ModuleCamera::Update()
-{
-    //GLuint program = App->program->program;
-    Frustum frustum;
-    frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-    frustum.SetViewPlaneDistances(0.1f, 200.0f);
-    frustum.SetHorizontalFovAndAspectRatio(math::pi / 3, 1.3f); // 90 degrees
-    frustum.SetPos(float3(1.0f, 0.5f, -10.0f));
-    frustum.SetFront(float3::unitZ);
-    frustum.SetUp(float3::unitY);
-    float4x4 projectionGL = frustum.ProjectionMatrix().Transposed(); // < --Important to transpose!
-
-	//Send the frustum projection matrix to OpenGL
-    // direct mode would be:
-	glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(*projectionGL.v);
-
-    //frustum.SetPos(float3(0.0f, 0.25f, 0.0f));
-    //float3x3 rotationMatrix = float3x3(float3(0.3f, 0.2f, 0.7f), float3(0.2f, 0.2f, 0.2f), float3(0.5f, 0.5f, 0.5f)); // = some rotation value (or LookAt matrix)
-    //frustum.SetFront(rotationMatrix.WorldX());
-    //frustum.SetUp(rotationMatrix.WorldY());
-
-    //Send the frustum view matrix to OpenGL
-    // direct mode would be:
-    float4x4 viewGL = float4x4(frustum.ViewMatrix()).Transposed();
-    glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(*viewGL.v);
-
-    //float4x4 translationMatrix(float4(1.0f,0.0f,0.0f,0.0f), float4(0.0f, 1.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 1.0f, 0.0f), float4(0.0f, 0.0f, increment, 1.0f));
-    // Send to uniforms matrix
-	//glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &viewGL[0][0]);
-	//glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &projectionGL[0][0]);
-
-	return UPDATE_CONTINUE;
 }
 
 update_status ModuleCamera::PreUpdate()
@@ -51,7 +38,66 @@ update_status ModuleCamera::PreUpdate()
     return UPDATE_CONTINUE;
 }
 
+update_status ModuleCamera::Update()
+{
+	return UPDATE_CONTINUE;
+}
+
 bool ModuleCamera::CleanUp()
 {
     return true;
+}
+
+float4x4 ModuleCamera::GetViewMatrix()
+{
+    return float4x4(CameraFrustum.ViewMatrix());
+}
+
+float4x4 ModuleCamera::GetProjectionMAtrix()
+{
+    return CameraFrustum.ProjectionMatrix();
+}
+
+void ModuleCamera::SetPosition(const float3& position)
+{
+    CameraFrustum.SetPos(Position = position);
+}
+
+void ModuleCamera::Rotate(float pitch, float yaw)
+{
+}
+
+void ModuleCamera::SetAspectRatio(unsigned int width, unsigned int height)
+{
+    AspectRatio = (float)width / (float)height;
+    CameraFrustum.SetHorizontalFovAndAspectRatio(HorizontalFov, AspectRatio);
+}
+
+void ModuleCamera::SetHorizontalFov(float fovDegree)
+{
+    HorizontalFov = fovDegree * DEGTORAD;
+    CameraFrustum.SetHorizontalFovAndAspectRatio(HorizontalFov, AspectRatio);
+}
+
+void ModuleCamera::LookAt(const float3& position)
+{
+    float3 direction = LookPosition - CameraFrustum.Pos();
+    float3x3 lookDir = float3x3::LookAt(CameraFrustum.Front(), direction.Normalized(), CameraFrustum.Up(), float3::unitY);
+
+	CameraFrustum.SetFront(lookDir.MulDir(CameraFrustum.Front()).Normalized());
+    CameraFrustum.SetUp(lookDir.MulDir(CameraFrustum.Up()).Normalized());
+}
+
+void ModuleCamera::CameraController()
+{
+}
+
+void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
+{
+    CameraFrustum.SetViewPlaneDistances(NearDistance = nearDist, FarDistance = farDist);
+}
+
+void ModuleCamera::WindowResized(unsigned int width, unsigned int height)
+{
+    SetAspectRatio(width, height);
 }

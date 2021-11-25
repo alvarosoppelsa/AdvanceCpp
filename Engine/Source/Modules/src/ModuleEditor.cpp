@@ -15,15 +15,17 @@ bool ModuleEditor::Init()
     this->initialized = true;
     ImGui::CreateContext();
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
-    ImGui_ImplOpenGL3_Init();
+    ImGui_ImplOpenGL3_Init("#version 330");
     show_demo_window = true;
-    show_console = true;
+    show_console = false;
     show_about_window = false;
     clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     return true;
 }
 
-update_status ModuleEditor::Update()
+
+
+update_status ModuleEditor::PreUpdate()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -83,48 +85,16 @@ update_status ModuleEditor::Update()
 }
 
 
-update_status ModuleEditor::PreUpdate()
+update_status ModuleEditor::Update()
 {
-    
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
     return UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::PostUpdate()
 {
-    glLineWidth(0.5f);
-    float d = 200.0f;
-    glBegin(GL_LINES);
-    for (float i = -d; i <= d; i += 1.0f)
-    {
-        glVertex3f(i, 0.0f, -d);
-        glVertex3f(i, 0.0f, d);
-        glVertex3f(-d, 0.0f, i);
-        glVertex3f(d, 0.0f, i);
-    }
-    glEnd();
-
-    glLineWidth(1.0f);
-    glBegin(GL_LINES);
-    // red X
-    glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-    glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-    // green Y
-    glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-    glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-    glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-    // blue Z
-    glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-    glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-    glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-    glEnd();
-    glLineWidth(1.0f);
-
     return UPDATE_CONTINUE;
 }
 

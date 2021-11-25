@@ -16,6 +16,7 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 	void ConsoleLog(char* line);
+
 private:
 	bool show_demo_window;
 	bool show_console;

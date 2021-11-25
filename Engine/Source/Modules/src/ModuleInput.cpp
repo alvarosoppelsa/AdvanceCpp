@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
-#include "SDL/include/SDL.h"
 #include "ImGui/imgui_impl_sdl.h"
 
 ModuleInput::ModuleInput()
@@ -44,9 +43,13 @@ update_status ModuleInput::Update()
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                     App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
                 break;
+            case SDL_MOUSEMOTION:
+                MouseDeltaX = sdlEvent.motion.xrel;
+                MouseDeltaY = sdlEvent.motion.yrel;
         }
     }
-    keyboard = SDL_GetKeyboardState(NULL);
+    Keyboard = SDL_GetKeyboardState(NULL);
+    Mouse = SDL_GetMouseState(&MouseX, &MouseY);
 
     return UPDATE_CONTINUE;
 }

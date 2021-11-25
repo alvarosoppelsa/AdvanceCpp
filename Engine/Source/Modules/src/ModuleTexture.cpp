@@ -19,15 +19,6 @@ ModuleTexture::ModuleTexture()
 
 bool ModuleTexture::Init()
 {
-	glEnable(GL_TEXTURE_2D);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, 0.0, 100.0);
-    glMatrixMode(GL_MODELVIEW);
-    //glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    //glClearDepth(0.0f);
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
 	{
 		/* wrong DevIL version */
@@ -81,14 +72,21 @@ bool ModuleTexture::Init()
     return true;
 }
 
+update_status ModuleTexture::PreUpdate()
+{
+    return UPDATE_CONTINUE;
+}
+
 update_status ModuleTexture::Update()
 {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texid);
+    glUniform1i(glGetUniformLocation(App->program->ProgramId, "mytexture"), 0);
     return UPDATE_CONTINUE;
 }
 
 update_status ModuleTexture::PostUpdate()
 {
-    glUniform1i(glGetUniformLocation(App->program->program, "mytexture"), 0);
     return UPDATE_CONTINUE;
 }
 
