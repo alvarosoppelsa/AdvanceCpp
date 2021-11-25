@@ -19,8 +19,8 @@ public:
 
 private:
 	bool show_demo_window;
-	bool show_console;
-	bool show_about_window;
+	bool ShowConsole;
+	bool ShowAboutWindow;
 	ImVec4 clear_color;
 	std::vector<char*> console_outputs;
 };

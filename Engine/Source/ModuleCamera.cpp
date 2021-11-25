@@ -93,7 +93,13 @@ void ModuleCamera::LookAt(const float3& position)
 
 void ModuleCamera::CameraInputs()
 {
-    if(App->input->GetKeyboard(SDL_SCANCODE_W))
+    TranslationInputs();
+    RotationInputs();
+}
+
+void ModuleCamera::TranslationInputs()
+{
+    if (App->input->GetKeyboard(SDL_SCANCODE_W))
     {
         Position += CameraFrustum.Front() * CameraSpeed;
     }
@@ -114,6 +120,20 @@ void ModuleCamera::CameraInputs()
     }
 
     SetPosition(Position);
+}
+
+void ModuleCamera::RotationInputs()
+{
+    if (App->input->GetKeyboard(SDL_SCANCODE_Q))
+    {
+        HorizontalFov += HorizontalFov * CameraSpeed;
+    }
+
+    if (App->input->GetKeyboard(SDL_SCANCODE_E))
+    {
+        HorizontalFov -= HorizontalFov * CameraSpeed;
+    }
+    SetHorizontalFov(HorizontalFov);
 }
 
 void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
