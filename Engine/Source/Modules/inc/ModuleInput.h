@@ -17,6 +17,11 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	const unsigned GetKeyboard(SDL_Scancode key) const
+	{
+		return Keyboard[key];
+	}
+
 private:
 	const Uint8* Keyboard = NULL;
 	Uint32 Mouse;

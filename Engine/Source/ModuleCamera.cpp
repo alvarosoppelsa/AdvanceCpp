@@ -2,6 +2,7 @@
 #include "GL/glew.h"
 #include "MathGeoLib.h"
 #include "Application.h"
+#include "ModuleInput.h"
 #include "ModuleProgram.h"
 #include "ModuleWindow.h"
 
@@ -13,6 +14,7 @@ ModuleCamera::ModuleCamera()
 	, HorizontalFov(0.0f)
 	, NearDistance(0.0f)
 	, FarDistance(0.0f)
+	, CameraSpeed(5.0f)
 	, LookPosition(float3::zero)
 	, Position(float3::zero)
 {
@@ -40,6 +42,7 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
+    CameraInputs();
 	return UPDATE_CONTINUE;
 }
 
@@ -88,8 +91,29 @@ void ModuleCamera::LookAt(const float3& position)
     CameraFrustum.SetUp(lookDir.MulDir(CameraFrustum.Up()).Normalized());
 }
 
-void ModuleCamera::CameraController()
+void ModuleCamera::CameraInputs()
 {
+    if(App->input->GetKeyboard(SDL_SCANCODE_W))
+    {
+        Position += CameraFrustum.Front() * CameraSpeed;
+    }
+
+    if (App->input->GetKeyboard(SDL_SCANCODE_S))
+    {
+        Position -= CameraFrustum.Front() * CameraSpeed;
+    }
+
+    if (App->input->GetKeyboard(SDL_SCANCODE_D))
+    {
+        Position += CameraFrustum.WorldRight() * CameraSpeed;
+    }
+
+    if (App->input->GetKeyboard(SDL_SCANCODE_A))
+    {
+        Position -= CameraFrustum.WorldRight() * CameraSpeed;
+    }
+
+    SetPosition(Position);
 }
 
 void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
