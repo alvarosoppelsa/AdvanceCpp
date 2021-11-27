@@ -9,27 +9,21 @@ class Application;
 class ModuleWindow : public Module
 {
 public:
-
 	ModuleWindow();
-
-	// Destructor
 	virtual ~ModuleWindow();
 
-	// Called before quitting
 	bool Init();
-
-	// Called before quitting
 	bool CleanUp();
-
 	void WindowsSizeChanged();
 
-public:
-	//The window we'll be rendering to
-	SDL_Window* window = NULL;
+	void ToggleFullScreen();
 
-	//The surface contained by the window
+	SDL_Window* window = NULL;
 	SDL_Surface* ScreenSurface = NULL;
 
+private:
+
+	bool IsFullScreen = false;
 	int RefreshRate;
 };
 

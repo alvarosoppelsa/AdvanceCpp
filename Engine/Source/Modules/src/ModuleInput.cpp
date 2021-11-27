@@ -44,13 +44,23 @@ update_status ModuleInput::Update()
                     App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
                 break;
             case SDL_MOUSEMOTION:
-                MouseDeltaX = sdlEvent.motion.xrel;
-                MouseDeltaY = sdlEvent.motion.yrel;
+                Motion.X = sdlEvent.motion.xrel;
+                Motion.Y = sdlEvent.motion.yrel;
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                MouseButton = sdlEvent.button;
+                Motion = 0;
+                break;
+            case SDL_MOUSEBUTTONUP:
+                MouseButton = sdlEvent.button;
+                break;
+            case SDL_MOUSEWHEEL:
+                MouseWheel = sdlEvent.wheel;
+                break;
         }
     }
     Keyboard = SDL_GetKeyboardState(NULL);
     Mouse = SDL_GetMouseState(&MouseX, &MouseY);
-
     return UPDATE_CONTINUE;
 }
 

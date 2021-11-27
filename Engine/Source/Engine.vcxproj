@@ -99,13 +99,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\;.\Modules\inc;..\..\DevIL Windows SDK\include;..\..\MathGeoLib\;.\assimp\;.\glew\include;.\debug draw;.\SDL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\Modules\inc;..\..\Assimp\include;..\..\DevIL Windows SDK\include;..\..\MathGeoLib\;.\glew\include;.\debug draw;.\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\DevIL Windows SDK\lib\x64\Release;.\assimp;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\DevIL Windows SDK\lib\x64\Release;..\..\Assimp\lib;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc141-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -195,6 +195,8 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="Modules\src\ModuleDebugDraw.cpp" />
     <ClCompile Include="Modules\src\ModuleEditor.cpp" />
@@ -284,7 +286,6 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="debug draw\debugdraw.h" />
     <ClInclude Include="debug draw\debug_draw.hpp" />
-    <ClInclude Include="Dummy.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
@@ -295,6 +296,8 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="Modules\inc\Module.h" />
     <ClInclude Include="Modules\inc\ModuleDebugDraw.h" />

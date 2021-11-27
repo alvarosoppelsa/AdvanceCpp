@@ -30,6 +30,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	bool IsShutingDown() { return ShuttingDown; };
 public:
 	ModuleRender* renderer			= nullptr;
 	ModuleWindow* window			= nullptr;
@@ -42,6 +43,7 @@ public:
 	ModuleEditor* editor			= nullptr;
 private:
 	std::list<Module*> modules;
+	bool ShuttingDown;
 };
 
 extern Application* App;
