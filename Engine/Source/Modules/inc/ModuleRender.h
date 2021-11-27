@@ -5,6 +5,7 @@
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class Model;
 
 class ModuleRenderExercise;
 
@@ -28,5 +29,5 @@ public:
 private:
 	int Width = 0;
 	int Height = 0;
-
+	Model* Modelito;
 };

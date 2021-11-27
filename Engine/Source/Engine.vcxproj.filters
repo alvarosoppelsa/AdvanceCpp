@@ -26,28 +26,28 @@
       <Filter>3rdParty\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleDebugDraw.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleEditor.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleInput.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleProgram.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleRender.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleRenderExercise.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleTexture.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Modules\src\ModuleWindow.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="..\..\MathGeoLib\Time\Clock.cpp">
       <Filter>3rdParty\MathGeoLib\Time</Filter>
@@ -176,12 +176,17 @@
       <Filter>3rdParty\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
-      <Filter>Modules\SourceFiles</Filter>
+      <Filter>Application Modules\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Dummy.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>3rdParty\ImGui</Filter>
@@ -212,31 +217,31 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Modules\inc\ModuleDebugDraw.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleEditor.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleInput.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleProgram.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleRender.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleRenderExercise.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleTexture.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleWindow.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\Module.h">
-      <Filter>Modules</Filter>
+      <Filter>Application Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\..\MathGeoLib\MathBuildConfig.h">
       <Filter>3rdParty\MathGeoLib</Filter>
@@ -470,19 +475,16 @@
       <Filter>3rdParty\DebugDraw</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h">
-      <Filter>Modules\HeaderFiles</Filter>
+      <Filter>Application Modules\HeaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{ac96d51c-416e-4603-8cf9-3e66b3cf82b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\HeaderFiles">
-      <UniqueIdentifier>{cd0745c6-6cdf-4138-8048-f7d0f24b934e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\SourceFiles">
-      <UniqueIdentifier>{d6fdcbe9-2464-41e4-b2a7-76cf7495778a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{751fffde-6bb7-41a9-9865-869cffd7a3d9}</UniqueIdentifier>
     </Filter>
@@ -518,6 +520,21 @@
     </Filter>
     <Filter Include="3rdParty\DebugDraw">
       <UniqueIdentifier>{9c773116-a4bd-44f6-bfed-c1d3eb53bd4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application Modules">
+      <UniqueIdentifier>{ac96d51c-416e-4603-8cf9-3e66b3cf82b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application Modules\HeaderFiles">
+      <UniqueIdentifier>{cd0745c6-6cdf-4138-8048-f7d0f24b934e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application Modules\SourceFiles">
+      <UniqueIdentifier>{d6fdcbe9-2464-41e4-b2a7-76cf7495778a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdParty\Assimp">
+      <UniqueIdentifier>{7c701983-7468-4f78-9132-c64dd099c093}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{6d39e779-28ec-4bd6-8d7a-83170c9f1239}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -11,9 +11,12 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+#include "Model.h"
+
 ModuleRender::ModuleRender() : 
 	context(nullptr)
 {
+	Modelito = new Model();
 }
 
 // Destructor
@@ -77,6 +80,8 @@ bool ModuleRender::Init()
 
 	SDL_GetWindowSize(App->window->window, &Width, &Height);
 	glViewport(0, 0, Width, Height);
+
+	Modelito->Load("./Resources/Models/BakerHouse.fbx");
 
 	return true;
 }
