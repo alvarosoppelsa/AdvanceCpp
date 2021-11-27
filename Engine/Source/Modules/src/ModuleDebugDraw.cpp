@@ -1,6 +1,8 @@
 
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
+#include "Application.h"
+#include "ModuleCamera.h"
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
@@ -598,6 +600,10 @@ bool ModuleDebugDraw::Init()
 
 update_status ModuleDebugDraw::PreUpdate()
 {
+    float distanceToOrigin = App->camera->GetPosition().Distance(float3(0.0f, 0.0f, 0.0f));
+    GizmoSize = 0.1 * distanceToOrigin;
+    GizmoArrow = 0.01 * distanceToOrigin;
+    GridSize = 250 + (50 * (int)distanceToOrigin);
     return UPDATE_CONTINUE;
 }
 
@@ -614,8 +620,8 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
-    dd::xzSquareGrid(-500, 500, 0.1f, 1.0f, dd::colors::White);
-    dd::axisTriad(float4x4::identity, 0.2f, 2.0f);
+    dd::xzSquareGrid(-GridSize, GridSize, -0.01f, 1.0f, dd::colors::White);
+    dd::axisTriad(float4x4::identity, GizmoArrow, GizmoSize);
 
 	return UPDATE_CONTINUE;
 }

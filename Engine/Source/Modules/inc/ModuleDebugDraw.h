@@ -26,6 +26,9 @@ public:
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
+	int GridSize = 500;
+	float GizmoSize = 2.0f;
+	float GizmoArrow = 0.2f;
 };
 
 #endif /* _MODULE_DEBUGDRAW_H_ */

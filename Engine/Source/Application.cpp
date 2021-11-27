@@ -11,7 +11,7 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleCamara.h"
 
-Application::Application()
+Application::Application() : ShuttingDown(false)
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window	= new ModuleWindow());
@@ -59,6 +59,7 @@ update_status Application::Update()
 
 bool Application::CleanUp()
 {
+	ShuttingDown = true;
 	bool ret = true;
 
 	for (std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)

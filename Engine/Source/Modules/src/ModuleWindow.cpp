@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleCamera.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -42,13 +43,10 @@ bool ModuleWindow::Init()
 			ENGINE_LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
-		else
-		{
-			//Get window surface
-			
-			ScreenSurface = SDL_GetWindowSurface(window);
-		}
 
+		//Get window surface & configure
+		ScreenSurface = SDL_GetWindowSurface(window);
+		SDL_SetWindowResizable(window, SDL_TRUE);
 		SDL_DisplayMode mode;
 		SDL_GetDisplayMode(0, 0, &mode);
 		RefreshRate = mode.refresh_rate;
@@ -75,10 +73,23 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::WindowsSizeChanged()
 {
-	// Update window surface so it is correct
 	SDL_UpdateWindowSurface(window);
 	ScreenSurface = SDL_GetWindowSurface(window);
 	App->renderer->WindowResized(ScreenSurface->w, ScreenSurface->h);
-	//App->camera->WindowResized(screen_surface->w, screen_surface->h);
+	App->camera->SetAspectRatio(ScreenSurface->w, ScreenSurface->h);
+}
+
+void ModuleWindow::ToggleFullScreen()
+{
+	if (IsFullScreen)
+	{
+		SDL_SetWindowFullscreen(window, 0);
+		IsFullScreen = false;
+	}
+	else
+	{
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		IsFullScreen = true;
+	}
 }
 
