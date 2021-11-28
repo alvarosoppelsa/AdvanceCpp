@@ -2,21 +2,26 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "SDL.h"
-#include "GL/glew.h"
-#include <cassert>
-
+#include "ModuleProgram.h"
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
+#include "Model.h"
+
+#include <cassert>
+
+#include "SDL.h"
+#include "GL/glew.h"
+
+#include "Math/float4x4.h"
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-#include "Model.h"
+
 
 ModuleRender::ModuleRender() : 
 	context(nullptr)
 {
-	Modelito = new Model();
 }
 
 // Destructor
@@ -81,8 +86,8 @@ bool ModuleRender::Init()
 	SDL_GetWindowSize(App->window->window, &Width, &Height);
 	glViewport(0, 0, Width, Height);
 
-	Modelito->Load("./Resources/Models/BakerHouse.fbx");
-
+	Modelito = new Model("./Resources/Models/BakerHouse.fbx");
+	
 	return true;
 }
 
@@ -96,6 +101,8 @@ update_status ModuleRender::PreUpdate()
 
 update_status ModuleRender::Update()
 {
+	Modelito->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), float4x4::identity);
+
 	SDL_Surface* sdlSurface = App->window->ScreenSurface;
 	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), sdlSurface->w, sdlSurface->h);
 
