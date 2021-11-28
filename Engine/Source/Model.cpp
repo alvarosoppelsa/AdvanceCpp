@@ -130,7 +130,9 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
         if (!skip)
         {   // if texture hasn't been loaded already, load it
             Texture texture;
-            texture.Id = TextureFromFile(str.C_Str(), Directory);
+        	int texId = TextureFromFile(str.C_Str(), Directory);
+            assert(texId >= 0);
+            texture.Id = texId;
             texture.Type = typeName;
             texture.Path = str.C_Str();
             textures.push_back(texture);
@@ -146,7 +148,7 @@ void Model::Draw(const unsigned int programId, const float4x4& view, const float
 		Meshes[i].Draw(programId, view, proj, model);
 }
 
-unsigned int Model::TextureFromFile(const char* path, const std::string& directory)
+int Model::TextureFromFile(const char* path, const std::string& directory)
 {
 
     ILuint texid;
@@ -154,22 +156,22 @@ unsigned int Model::TextureFromFile(const char* path, const std::string& directo
     if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
     {
         /* wrong DevIL version */
-        return false;
+        return -1;
     }
     ilInit();											/* Initialization of DevIL */
     ilGenImages(1, &texid);							    /* Generation of one image name */
     ilBindImage(texid);									/* Binding of image name */
-    ILboolean success = ilLoadImage(path);	        /* Loading of image "image.jpg" */
+    ILboolean success = ilLoadImage(path);	            /* Loading of image "image.jpg" */
 
     if (success != IL_TRUE)
     {
-        return false;
+        return -1;
     }
     /* Convert every color component into unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
     success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); 
     if (success != IL_TRUE)
     {
-        return false;
+        return -1;
     }
 
     // TODO: Flip texture if upside down
@@ -200,4 +202,5 @@ unsigned int Model::TextureFromFile(const char* path, const std::string& directo
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     ilDeleteImages(1, &texid); /* Because we have already copied image data into texture data we can release memory used by image. */
+    return textureId;
 }
