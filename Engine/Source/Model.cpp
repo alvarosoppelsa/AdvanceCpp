@@ -161,7 +161,7 @@ int Model::TextureFromFile(const char* path, const std::string& directory)
     ilInit();
     ilGenImages(1, &texid);
     ilBindImage(texid);
-    std::string fullPath = directory + "/" + std::string(path);
+    std::string fullPath = directory + "\\" + std::string(path);
 	ILboolean success = ilLoadImage(fullPath.c_str());
 
     if (success != IL_TRUE)

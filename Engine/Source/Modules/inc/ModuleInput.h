@@ -27,6 +27,7 @@ public:
 
 	bool Init();
 	update_status Update();
+	update_status PostUpdate();
 	bool CleanUp();
 
 	const unsigned GetKeyboard(SDL_Scancode key) const
@@ -57,6 +58,7 @@ public:
 	}
 
 private:
+	char* DroppedFileDir;
 	const Uint8* Keyboard = NULL;
 	Uint32 Mouse;
 	SDL_MouseButtonEvent MouseButton;

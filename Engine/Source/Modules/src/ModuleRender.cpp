@@ -136,3 +136,13 @@ void ModuleRender::UpdateWindowSize()
 	SDL_GetWindowSize(App->window->window, &Width, &Height);
 	glViewport(0, 0, Width, Height);
 }
+
+bool ModuleRender::LoadModule(const char* filePath)
+{
+	if (RenderModel != nullptr)
+	{
+		delete RenderModel;
+	}
+	RenderModel = new Model(filePath);
+	return false;
+}

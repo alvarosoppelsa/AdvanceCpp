@@ -47,6 +47,7 @@ bool ModuleWindow::Init()
 		//Get window surface & configure
 		ScreenSurface = SDL_GetWindowSurface(window);
 		SDL_SetWindowResizable(window, SDL_TRUE);
+		SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 		SDL_DisplayMode mode;
 		SDL_GetDisplayMode(0, 0, &mode);
 		RefreshRate = mode.refresh_rate;
