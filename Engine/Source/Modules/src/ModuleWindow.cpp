@@ -27,8 +27,8 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
+		//int width = SCREEN_WIDTH;
+		//int height = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if(FULLSCREEN == true)
@@ -36,7 +36,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
 
 		if(window == NULL)
 		{
@@ -75,7 +75,7 @@ void ModuleWindow::WindowsSizeChanged()
 {
 	SDL_UpdateWindowSurface(window);
 	ScreenSurface = SDL_GetWindowSurface(window);
-	App->renderer->WindowResized(ScreenSurface->w, ScreenSurface->h);
+	App->renderer->UpdateWindowSize();
 	App->camera->SetAspectRatio(ScreenSurface->w, ScreenSurface->h);
 }
 

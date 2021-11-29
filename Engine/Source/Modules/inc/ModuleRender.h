@@ -24,10 +24,10 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
-	void WindowResized(unsigned width, unsigned height);
+	void UpdateWindowSize();
 
 private:
 	int Width = 0;
 	int Height = 0;
-	Model* Modelito;
+	Model* RenderModel;
 };

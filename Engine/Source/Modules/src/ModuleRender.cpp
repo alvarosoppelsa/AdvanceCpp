@@ -17,10 +17,11 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+static const char* bakerHouseModel = "./Resources/Models/BakerHouse.fbx";
 
-
-ModuleRender::ModuleRender() : 
-	context(nullptr)
+ModuleRender::ModuleRender() 
+	: context(nullptr)
+	, RenderModel(nullptr)
 {
 }
 
@@ -29,6 +30,7 @@ ModuleRender::~ModuleRender()
 {
 }
 
+// TODO: This function doesn't belong here
 static void APIENTRY openglCallbackFunction(
 	GLenum source,
 	GLenum type,
@@ -48,7 +50,6 @@ static void APIENTRY openglCallbackFunction(
 	}
 }
 
-// Called before render is available
 bool ModuleRender::Init()
 {	
 	ENGINE_LOG("Creating Renderer context");
@@ -86,7 +87,7 @@ bool ModuleRender::Init()
 	SDL_GetWindowSize(App->window->window, &Width, &Height);
 	glViewport(0, 0, Width, Height);
 
-	Modelito = new Model("./Resources/Models/BakerHouse.fbx");
+	RenderModel = new Model(bakerHouseModel);
 	
 	return true;
 }
@@ -101,7 +102,7 @@ update_status ModuleRender::PreUpdate()
 
 update_status ModuleRender::Update()
 {
-	Modelito->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), float4x4::identity);
+	RenderModel->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), float4x4::identity);
 
 	SDL_Surface* sdlSurface = App->window->ScreenSurface;
 	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), sdlSurface->w, sdlSurface->h);
@@ -130,7 +131,7 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::WindowResized(unsigned width, unsigned height)
+void ModuleRender::UpdateWindowSize()
 {
 	SDL_GetWindowSize(App->window->window, &Width, &Height);
 	glViewport(0, 0, Width, Height);
