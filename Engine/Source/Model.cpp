@@ -150,40 +150,40 @@ void Model::Draw(const unsigned int programId, const float4x4& view, const float
 
 int Model::TextureFromFile(const char* path, const std::string& directory)
 {
-
     ILuint texid;
 
     if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
     {
-        /* wrong DevIL version */
+        ENGINE_LOG("[ERROR] Wrong DevIl version. Cannot load texture");
         return -1;
     }
-    ilInit();											/* Initialization of DevIL */
-    ilGenImages(1, &texid);							    /* Generation of one image name */
-    ilBindImage(texid);     							/* Binding of image name */
+
+    ilInit();
+    ilGenImages(1, &texid);
+    ilBindImage(texid);
     std::string fullPath = directory + "/" + std::string(path);
-	ILboolean success = ilLoadImage(fullPath.c_str());	/* Loading of image "image.jpg" */
+	ILboolean success = ilLoadImage(fullPath.c_str());
 
     if (success != IL_TRUE)
     {
+        ENGINE_LOG("[ERROR] Couldn't load texture: %s", fullPath );
         return -1;
     }
-    /* Convert every color component into unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+
     success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); 
     if (success != IL_TRUE)
     {
         return -1;
     }
 
-    // TODO: Flip texture if upside down
-    //ILinfo ImageInfo;
-    //iluGetImageInfo(&ImageInfo);
-    //if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-    //{
-    //    iluFlipImage();
-    //}
+    ILinfo ImageInfo;
+    iluGetImageInfo(&ImageInfo);
+    if (ImageInfo.Origin == IL_ORIGIN_LOWER_LEFT)
+    {
+        iluFlipImage();
+    }
 
-    //glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
 
     GLuint textureId;
     glGenTextures(1, &textureId);
@@ -195,13 +195,9 @@ int Model::TextureFromFile(const char* path, const std::string& directory)
         ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
     // Texture parameters
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);   /* We will use linear interpolation for magnification filter */
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);   /* We will use linear interpolation for minifying filter */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);   // We will use linear interpolation for magnification filter
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);   // We will use linear interpolation for minifying filter
 
-    ilDeleteImages(1, &texid); /* Because we have already copied image data into texture data we can release memory used by image. */
+    ilDeleteImages(1, &texid); // Because we have already copied image data into texture data we can release memory used by image
     return textureId;
 }

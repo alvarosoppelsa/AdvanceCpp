@@ -7,10 +7,10 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
     Indices = indices;
     Textures = textures;
 
-    setupMesh();
+    SetupMesh();
 }
 
-void Mesh::setupMesh()
+void Mesh::SetupMesh()
 {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -18,9 +18,7 @@ void Mesh::setupMesh()
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
     glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertex), &Vertices[0], GL_STATIC_DRAW);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(unsigned int),
         &Indices[0], GL_STATIC_DRAW);
@@ -28,12 +26,15 @@ void Mesh::setupMesh()
     // vertex positions
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-    // vertex normals
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+
     // vertex texture coords
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+
+    // TODO: Enable normals when lighting
+    // vertex normals
+    //glEnableVertexAttribArray(1);
+    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
 
     glBindVertexArray(0);
 }
@@ -52,24 +53,21 @@ void Mesh::Draw(const unsigned int programId, const float4x4& view, const float4
     //        number = std::to_string(diffuseNr++);
     //    else if (name == "texture_specular")
     //        number = std::to_string(specularNr++);
-
     //    // TODO: Shader class is as our Program Module. Set float send a value to a uniform
     //    //shader.setFloat(("material." + name + number).c_str(), i);
     //    glBindTexture(GL_TEXTURE_2D, Textures[i].Id);
     //}
     //glActiveTexture(GL_TEXTURE0);
-
     //// draw mesh
     //glBindVertexArray(VAO);
     //glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     //glBindVertexArray(0);
-
-
     glUseProgram(programId);
     glUniformMatrix4fv(glGetUniformLocation(programId, "model"), 1, GL_TRUE, (const float*)&model);
     glUniformMatrix4fv(glGetUniformLocation(programId, "view"), 1, GL_TRUE, (const float*)&view);
     glUniformMatrix4fv(glGetUniformLocation(programId, "proj"), 1, GL_TRUE, (const float*)&proj);
     glActiveTexture(GL_TEXTURE0);
+    // TODO: We have to iterate if we have more textures
     glBindTexture(GL_TEXTURE_2D, Textures[0].Id);
     glUniform1i(glGetUniformLocation(programId, "diffuse"), 0);
     glBindVertexArray(VAO);
