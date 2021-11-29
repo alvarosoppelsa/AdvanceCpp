@@ -132,7 +132,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
             Texture texture;
         	int texId = TextureFromFile(str.C_Str(), Directory);
             assert(texId >= 0);
-            texture.Id = texId;
+            texture.Id = (unsigned)texId;
             texture.Type = typeName;
             texture.Path = str.C_Str();
             textures.push_back(texture);
@@ -160,8 +160,9 @@ int Model::TextureFromFile(const char* path, const std::string& directory)
     }
     ilInit();											/* Initialization of DevIL */
     ilGenImages(1, &texid);							    /* Generation of one image name */
-    ilBindImage(texid);									/* Binding of image name */
-    ILboolean success = ilLoadImage(path);	            /* Loading of image "image.jpg" */
+    ilBindImage(texid);     							/* Binding of image name */
+    std::string fullPath = directory + "/" + std::string(path);
+	ILboolean success = ilLoadImage(fullPath.c_str());	/* Loading of image "image.jpg" */
 
     if (success != IL_TRUE)
     {

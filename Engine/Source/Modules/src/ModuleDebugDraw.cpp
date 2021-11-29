@@ -603,7 +603,7 @@ update_status ModuleDebugDraw::PreUpdate()
     float distanceToOrigin = App->camera->GetPosition().Distance(float3(0.0f, 0.0f, 0.0f));
     GizmoSize = 0.1 * distanceToOrigin;
     GizmoArrow = 0.01 * distanceToOrigin;
-    GridSize = 250 + (50 * (int)distanceToOrigin);
+    GridSize = 500 + (50 * (int)distanceToOrigin);
     return UPDATE_CONTINUE;
 }
 
