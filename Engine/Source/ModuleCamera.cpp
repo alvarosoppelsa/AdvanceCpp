@@ -178,13 +178,24 @@ inline void ModuleCamera::RotationInputs()
     
     // Keyboard
     if (App->input->GetKeyboard(SDL_SCANCODE_UP))
+    {
         Rotate(ZoomSpeed, 0.0f);
+
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
+    {
         Rotate(-ZoomSpeed, 0.0f);
+
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
+    {
         Rotate(0.0f, ZoomSpeed);
+
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
+    {
         Rotate(0.0f, -ZoomSpeed);
+    }
 
     // Mouse
     if (App->input->GetMouseButton().button == SDL_BUTTON_RIGHT && App->input->GetMouseButton().state == SDL_PRESSED)
