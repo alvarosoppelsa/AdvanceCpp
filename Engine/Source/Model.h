@@ -15,6 +15,7 @@ public:
     Model(const char* file);
 
     void Draw(const unsigned int programId, const float4x4& view, const float4x4& proj, const float4x4& model);
+    bool IsValid() { return (!Directory.empty() && Meshes.size() != 0 && TexturesLoaded.size() != 0); }
 
 private:
     // model data

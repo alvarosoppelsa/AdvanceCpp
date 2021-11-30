@@ -67,8 +67,12 @@ void Mesh::Draw(const unsigned int programId, const float4x4& view, const float4
     glUniformMatrix4fv(glGetUniformLocation(programId, "view"), 1, GL_TRUE, (const float*)&view);
     glUniformMatrix4fv(glGetUniformLocation(programId, "proj"), 1, GL_TRUE, (const float*)&proj);
     glActiveTexture(GL_TEXTURE0);
-    // TODO: We have to iterate if we have more textures
-    glBindTexture(GL_TEXTURE_2D, Textures[0].Id);
+    for (unsigned int i = 0; i < Textures.size(); i++)
+    {
+    	// TODO: For more than one texture it's needed to change texture names. See example above
+        glBindTexture(GL_TEXTURE_2D, Textures[i].Id);
+    }
+
     glUniform1i(glGetUniformLocation(programId, "diffuse"), 0);
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, nullptr);

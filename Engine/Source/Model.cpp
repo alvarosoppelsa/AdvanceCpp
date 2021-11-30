@@ -28,7 +28,7 @@ void Model::Load(const char* file)
 		return;
 	}
 	std::string path = file;
-	Directory = path.substr(0, path.find_last_of('/'));
+	Directory = path.substr(0, path.find_last_of('\\'));
 
 	ProcessNode(scene->mRootNode, scene);
 }
@@ -145,7 +145,9 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
 void Model::Draw(const unsigned int programId, const float4x4& view, const float4x4& proj, const float4x4& model)
 {
 	for (unsigned int i = 0; i < Meshes.size(); i++)
-		Meshes[i].Draw(programId, view, proj, model);
+	{
+        Meshes[i].Draw(programId, view, proj, model);
+	}
 }
 
 int Model::TextureFromFile(const char* path, const std::string& directory)

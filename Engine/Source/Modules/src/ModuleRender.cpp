@@ -17,7 +17,7 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-static const char* bakerHouseModel = "./Resources/Models/BakerHouse.fbx";
+static const char* bakerHouseModel = ".\\Resources\\Models\\BakerHouse.fbx";
 
 ModuleRender::ModuleRender() 
 	: context(nullptr)
@@ -144,5 +144,6 @@ bool ModuleRender::LoadModule(const char* filePath)
 		delete RenderModel;
 	}
 	RenderModel = new Model(filePath);
-	return false;
+
+	return RenderModel->IsValid();
 }
