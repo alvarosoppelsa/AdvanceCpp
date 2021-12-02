@@ -19,12 +19,15 @@ ModuleCamera::ModuleCamera()
 	, FarDistance(0.0f)
 	, CameraSpeed(0.5f)
 	, RotateSpeed(0.01f)
-	, Angle(0.0f)
-	, Roll(1.0f, 0.0f, 0.0f)
-	, Pitch(0.0f, 1.0f, 0.0f)
-	, Yaw(0.0f, 0.0f, 1.0f)
+	, Roll(0.0f)
+	, Pitch(0.0f)
+	, Yaw(0.0f)
 	, LookPosition(float3::zero)
 	, Position(float3::zero)
+{
+}
+
+ModuleCamera::~ModuleCamera()
 {
 }
 
@@ -62,7 +65,13 @@ bool ModuleCamera::CleanUp()
 float4x4 ModuleCamera::GetViewMatrix()
 {
     // TODO: Return view matrix from roll, pitch & yaw values
+    Quat rotation = Quat();
+    rotation.RotateX(Pitch);
+    rotation.RotateY(Yaw);
+    rotation.RotateZ(Roll);
+    rotation.Inverse();
     return float4x4(CameraFrustum.ViewMatrix());
+    //return 
 }
 
 float4x4 ModuleCamera::GetProjectionMAtrix()
@@ -75,12 +84,13 @@ void ModuleCamera::SetPosition(const float3& position)
     CameraFrustum.SetPos(Position = position);
 }
 
-const float3& ModuleCamera::GetPosition()
+const float3& ModuleCamera::GetPosition() const
 {
     return Position;
 }
 
-void ModuleCamera::Rotate(float pitch, float yaw)
+// Deprecate below method
+void ModuleCamera::Rotate(float pitch = 0.0f, float yaw = 0.0f, float roll = 0.0f)
 {
     if (yaw > EPSILON || yaw < EPSILON)
     {
@@ -183,24 +193,40 @@ inline void ModuleCamera::RotationInputs()
     // Keyboard
     if (App->input->GetKeyboard(SDL_SCANCODE_UP))
     {
+        Pitch += RotateSpeed;
+        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
+        // Deprecate below
         Rotate(RotateSpeed, 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
     {
+        Pitch -= RotateSpeed;
+        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
+        // Deprecate below
         Rotate(-RotateSpeed, 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
     {
+        Yaw += RotateSpeed;
+        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
+        // Deprecate below
         Rotate(0.0f, RotateSpeed);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
     {
+        Yaw -= RotateSpeed;
+        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
+        // Deprecate below
         Rotate(0.0f, -RotateSpeed);
     }
 
     // Mouse
     if (App->input->GetMouseButton().button == SDL_BUTTON_RIGHT && App->input->GetMouseButton().state == SDL_PRESSED)
     {
+        Yaw += App->input->GetMouseMotion().X * RotateSpeed;
+        Pitch += App->input->GetMouseMotion().Y * RotateSpeed;
+        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
+        // Deprecate below
         int mouseMotionX = App->input->GetMouseMotion().X;
         int mouseMotionY = App->input->GetMouseMotion().Y;
         Rotate(-0.01 * (float)mouseMotionY, -0.01 * (float)mouseMotionX);

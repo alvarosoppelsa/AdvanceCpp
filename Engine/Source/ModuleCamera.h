@@ -20,8 +20,8 @@ public:
 	float4x4 GetProjectionMAtrix();
 
 	void SetPosition(const float3& position);
-	const float3& GetPosition();
-	void Rotate(float pitch, float yaw);
+	const float3& GetPosition() const;
+	void Rotate(float pitch, float yaw, float roll);
 
 	void SetAspectRatio(unsigned int width, unsigned int height);
 	float GetAspectRatio();
@@ -46,9 +46,9 @@ private:
 	float RotateSpeed;
 	float Angle;
 
-	float3 Roll;
-	float3 Pitch;
-	float3 Yaw;
+	float Roll;
+	float Pitch;
+	float Yaw;
 
 	float3 LookPosition;
 	float3 Position;

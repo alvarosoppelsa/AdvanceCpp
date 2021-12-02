@@ -16,6 +16,14 @@
 
 using namespace ImGui;
 
+ModuleEditor::ModuleEditor()
+{
+}
+
+ModuleEditor::~ModuleEditor()
+{
+}
+
 bool ModuleEditor::Init()
 {
     initialized = true;
