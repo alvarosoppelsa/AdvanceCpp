@@ -136,3 +136,7 @@ ModuleProgram::ModuleProgram(std::string& vertex_path, std::string& fragment_pat
 	VertexShaderPath = vertex_path;
 	FragmentShaderPath = fragment_path;
 }
+
+ModuleProgram::~ModuleProgram()
+{
+}

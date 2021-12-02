@@ -17,7 +17,6 @@ ModuleInput::ModuleInput()
 {
 }
 
-// Destructor
 ModuleInput::~ModuleInput()
 {
 }

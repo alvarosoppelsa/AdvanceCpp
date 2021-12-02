@@ -25,11 +25,11 @@ void log(const char file[], int line, const char* format, ...)
 	//If ModuleEditor is not initialized we store data in a temporal vector until we are able to send data
 	if (App->editor->IsInitialized() && temp_console.empty())
 	{
-		App->editor->ConsoleLog(tmp_string2);
+		App->editor->ConsoleLog(tmp_string);
 	}
 	else if (App->editor->IsInitialized() && !temp_console.empty())
 	{
-		temp_console.push_back(tmp_string2);
+		temp_console.push_back(tmp_string);
 		for (auto it = temp_console.begin(); it < temp_console.end(); ++it)
 		{
 			App->editor->ConsoleLog(*it);
@@ -37,6 +37,6 @@ void log(const char file[], int line, const char* format, ...)
 	}
 	else
 	{
-		temp_console.push_back(tmp_string2);
+		temp_console.push_back(tmp_string);
 	}
 }

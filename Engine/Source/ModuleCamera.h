@@ -9,7 +9,7 @@ class ModuleCamera : public Module
 {
 public:
 	ModuleCamera();
-	~ModuleCamera() = default;
+	~ModuleCamera();
 
 	bool Init() override;
 	update_status PreUpdate() override;

@@ -10,19 +10,18 @@ class ModuleWindow : public Module
 {
 public:
 	ModuleWindow();
-	virtual ~ModuleWindow();
+	~ModuleWindow();
 
-	bool Init();
-	bool CleanUp();
+	bool Init() override;
+	bool CleanUp() override;
+
 	void WindowsSizeChanged();
-
 	void ToggleFullScreen();
 
 	SDL_Window* window = NULL;
 	SDL_Surface* ScreenSurface = NULL;
 
 private:
-
 	bool IsFullScreen = false;
 	int RefreshRate;
 };
