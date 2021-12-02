@@ -1,10 +1,13 @@
-#include "ModuleCamera.h"
-#include "GL/glew.h"
-#include "MathGeoLib.h"
 #include "Application.h"
+#include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleProgram.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "Model.h"
+
+#include "GL/glew.h"
+#include "MathGeoLib.h"
 
 static const float DEGTORAD = math::pi / 180.0;
 static const float EPSILON = 1e-5;
@@ -16,6 +19,7 @@ ModuleCamera::ModuleCamera()
 	, FarDistance(0.0f)
 	, CameraSpeed(0.5f)
 	, RotateSpeed(0.01f)
+	, Angle(0.0f)
 	, Roll(1.0f, 0.0f, 0.0f)
 	, Pitch(0.0f, 1.0f, 0.0f)
 	, Yaw(0.0f, 0.0f, 1.0f)
@@ -175,23 +179,23 @@ inline void ModuleCamera::AspectInputs()
 inline void ModuleCamera::RotationInputs()
 {
     // TODO: improve calls to application
-    
+
     // Keyboard
     if (App->input->GetKeyboard(SDL_SCANCODE_UP))
     {
-        Rotate(ZoomSpeed, 0.0f);
+        Rotate(RotateSpeed, 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
     {
-        Rotate(-ZoomSpeed, 0.0f);
+        Rotate(-RotateSpeed, 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
     {
-        Rotate(0.0f, ZoomSpeed);
+        Rotate(0.0f, RotateSpeed);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
     {
-        Rotate(0.0f, -ZoomSpeed);
+        Rotate(0.0f, -RotateSpeed);
     }
 
     // Mouse
@@ -203,9 +207,13 @@ inline void ModuleCamera::RotationInputs()
     }
 
     // Orbit
-    if (App->input->IsModPressed(KMOD_ALT) && App->input->GetMouseButton().button == SDL_BUTTON_LEFT)
+    if (App->input->IsModPressed(KMOD_ALT)
+        && App->input->GetMouseButton().button == SDL_BUTTON_LEFT 
+        && App->input->GetMouseButton().state == SDL_PRESSED)
     {
-        ENGINE_LOG("Camera Input -> Oribiting");
+        float3 moduleOrigin = App->renderer->GetCurrentModel()->GetOrigin();
+        App->input->GetMouseMotion().X * RotateSpeed;
+        Look(moduleOrigin);
     }
 }
 

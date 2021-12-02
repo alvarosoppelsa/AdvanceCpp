@@ -40,12 +40,6 @@
     <ClCompile Include="Modules\src\ModuleRender.cpp">
       <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
-    <ClCompile Include="Modules\src\ModuleRenderExercise.cpp">
-      <Filter>Application Modules\SourceFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="Modules\src\ModuleTexture.cpp">
-      <Filter>Application Modules\SourceFiles</Filter>
-    </ClCompile>
     <ClCompile Include="Modules\src\ModuleWindow.cpp">
       <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
@@ -229,12 +223,6 @@
       <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleRender.h">
-      <Filter>Application Modules\HeaderFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Modules\inc\ModuleRenderExercise.h">
-      <Filter>Application Modules\HeaderFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Modules\inc\ModuleTexture.h">
       <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleWindow.h">

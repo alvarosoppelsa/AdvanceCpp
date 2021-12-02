@@ -29,6 +29,7 @@ void log(const char file[], int line, const char* format, ...)
 	}
 	else if (App->editor->IsInitialized() && !temp_console.empty())
 	{
+		temp_console.push_back(tmp_string2);
 		for (auto it = temp_console.begin(); it < temp_console.end(); ++it)
 		{
 			App->editor->ConsoleLog(*it);
@@ -36,6 +37,6 @@ void log(const char file[], int line, const char* format, ...)
 	}
 	else
 	{
-		temp_console.push_back(tmp_string);
+		temp_console.push_back(tmp_string2);
 	}
 }

@@ -20,11 +20,15 @@ public:
     const std::vector<Mesh>& GetMeshes() const { return Meshes; }
     const std::string& GetDirectory() const { return Directory; }
 
+	const float3& GetOrigin() const { return Position; }
+    void SetOrigin(const float3& position) { Position = position; }
+
 private:
     // model data
     std::vector<Mesh> Meshes;
     std::string Directory;
     std::vector<Texture> TexturesLoaded;
+    float3 Position;
 
     void Load(const char* file);
     void ProcessNode(aiNode* node, const aiScene* scene);

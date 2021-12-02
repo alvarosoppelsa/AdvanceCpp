@@ -182,11 +182,6 @@ void ModuleEditor::GeneralSettings()
         CameraSettings();
     }
 
-    if (CollapsingHeader("Camera Settings"))
-    {
-        CameraSettings();
-    }
-
     if (CollapsingHeader("Module Info"))
     {
         ModelSettings();

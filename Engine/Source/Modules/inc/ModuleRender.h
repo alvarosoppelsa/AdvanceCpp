@@ -11,8 +11,6 @@ class ModuleRenderExercise;
 
 class ModuleRender : public Module
 {
-	friend ModuleRenderExercise;
-
 public:
 	ModuleRender();
 	~ModuleRender();
@@ -28,6 +26,7 @@ public:
 	void UpdateWindowSize();
 	bool LoadModule(const char* filePath);
 	const Model* GetCurrentModel() const { return RenderModel; };
+
 private:
 	int Width = 0;
 	int Height = 0;

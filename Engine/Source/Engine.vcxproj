@@ -203,8 +203,6 @@
     <ClCompile Include="Modules\src\ModuleInput.cpp" />
     <ClCompile Include="Modules\src\ModuleProgram.cpp" />
     <ClCompile Include="Modules\src\ModuleRender.cpp" />
-    <ClCompile Include="Modules\src\ModuleRenderExercise.cpp" />
-    <ClCompile Include="Modules\src\ModuleTexture.cpp" />
     <ClCompile Include="Modules\src\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -305,8 +303,6 @@
     <ClInclude Include="Modules\inc\ModuleInput.h" />
     <ClInclude Include="Modules\inc\ModuleProgram.h" />
     <ClInclude Include="Modules\inc\ModuleRender.h" />
-    <ClInclude Include="Modules\inc\ModuleRenderExercise.h" />
-    <ClInclude Include="Modules\inc\ModuleTexture.h" />
     <ClInclude Include="Modules\inc\ModuleWindow.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

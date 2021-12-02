@@ -7,6 +7,7 @@
 #include "Math/float3.h"
 
 Model::Model(const char* file)
+	: Position(0.0f, 0.0f, 0.0f)
 {
 	Load(file);
 }

@@ -44,6 +44,7 @@ private:
 	float FarDistance;
 	float CameraSpeed;
 	float RotateSpeed;
+	float Angle;
 
 	float3 Roll;
 	float3 Pitch;
