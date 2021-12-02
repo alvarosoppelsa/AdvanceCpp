@@ -15,7 +15,7 @@ ModuleCamera::ModuleCamera()
 	, NearDistance(0.0f)
 	, FarDistance(0.0f)
 	, CameraSpeed(0.5f)
-	, ZoomSpeed(0.01f)
+	, RotateSpeed(0.01f)
 	, Roll(1.0f, 0.0f, 0.0f)
 	, Pitch(0.0f, 1.0f, 0.0f)
 	, Yaw(0.0f, 0.0f, 1.0f)
@@ -162,12 +162,12 @@ inline void ModuleCamera::AspectInputs()
 {
     if (App->input->GetKeyboard(SDL_SCANCODE_Q))
     {
-        ZoomOut();
+        ZoomOutFOV();
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_E))
     {
-        ZoomIn();
+        ZoomInFOV();
     }
     SetHorizontalFovInDegrees(HorizontalFovDegree);
 }
@@ -178,13 +178,21 @@ inline void ModuleCamera::RotationInputs()
     
     // Keyboard
     if (App->input->GetKeyboard(SDL_SCANCODE_UP))
-        Rotate(ZoomSpeed, 0.0f);
+    {
+        Rotate(RotateSpeed, 0.0f);
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
-        Rotate(-ZoomSpeed, 0.0f);
+    {
+        Rotate(-RotateSpeed, 0.0f);
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
-        Rotate(0.0f, ZoomSpeed);
+    {
+        Rotate(0.0f, RotateSpeed);
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
-        Rotate(0.0f, -ZoomSpeed);
+    {
+        Rotate(0.0f, -RotateSpeed);
+    }
 
     // Mouse
     if (App->input->GetMouseButton().button == SDL_BUTTON_RIGHT && App->input->GetMouseButton().state == SDL_PRESSED)
@@ -194,34 +202,39 @@ inline void ModuleCamera::RotationInputs()
         Rotate(-0.01 * (float)mouseMotionY, -0.01 * (float)mouseMotionX);
     }
 
-    // TODO: Until ModelInput fix it
-    //if (App->input->GetMouseWheelDeltaY() > 0)
-    //{
-    //    ZoomIn();
-    //}
-
-    //if (App->input->GetMouseWheelDeltaY() < 0)
-    //{
-    //    ZoomOut();
-    //}
+    // Orbit
+    if (App->input->IsModPressed(KMOD_ALT) && App->input->GetMouseButton().button == SDL_BUTTON_LEFT)
+    {
+        ENGINE_LOG("Camera Input -> Oribiting");
+    }
 }
 
-inline void ModuleCamera::ZoomOut()
+void ModuleCamera::ZoomInPosition()
+{
+    Position += CameraFrustum.Front() * CameraSpeed;
+}
+
+void ModuleCamera::ZoomOutPosition()
+{
+    Position -= CameraFrustum.Front() * CameraSpeed;
+}
+
+inline void ModuleCamera::ZoomOutFOV()
 {
     if (HorizontalFovDegree >= 120.0f)
     {
         return;
     }
-    HorizontalFovDegree += HorizontalFovDegree * ZoomSpeed;
+    HorizontalFovDegree += HorizontalFovDegree * RotateSpeed;
 }
 
-inline void ModuleCamera::ZoomIn()
+inline void ModuleCamera::ZoomInFOV()
 {
     if (HorizontalFovDegree <= 0.1)
     {
         return;
     }
-    HorizontalFovDegree -= HorizontalFovDegree * ZoomSpeed;
+    HorizontalFovDegree -= HorizontalFovDegree * RotateSpeed;
 }
 
 void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)

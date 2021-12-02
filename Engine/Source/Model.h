@@ -15,7 +15,10 @@ public:
     Model(const char* file);
 
     void Draw(const unsigned int programId, const float4x4& view, const float4x4& proj, const float4x4& model);
-    bool IsValid() { return (!Directory.empty() && Meshes.size() != 0 && TexturesLoaded.size() != 0); }
+
+	bool IsValid() { return (!Directory.empty() && Meshes.size() != 0 && TexturesLoaded.size() != 0); }
+    const std::vector<Mesh>& GetMeshes() const { return Meshes; }
+    const std::string& GetDirectory() const { return Directory; }
 
 private:
     // model data

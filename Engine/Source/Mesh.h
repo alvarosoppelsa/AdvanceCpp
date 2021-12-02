@@ -30,6 +30,10 @@ public:
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
     void Draw(const unsigned int programId, const float4x4& view, const float4x4& proj, const float4x4& model);
 
+    int GetNumVertices() const  { return Vertices.size(); }
+    int GetNumIndices()  const  { return Indices.size(); }
+    int GetNumTextures() const  { return Textures.size(); }
+
 private:
     //  render data
     unsigned int VAO;

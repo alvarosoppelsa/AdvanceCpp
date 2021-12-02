@@ -3,12 +3,14 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleCamera.h"
+#include "Model.h"
 
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
 #include <GL/glew.h>
 
-#include "ModuleCamera.h"
+
 
 #define MAX_CONSOLE_OUTPUT 100
 
@@ -81,6 +83,23 @@ inline void ModuleEditor::About()
     Text("ImGui - SDL - glew - OpenGL");
     Text("GNU GPL");
     End();
+}
+
+void ModuleEditor::ModelSettings()
+{
+    const Model* model = App->renderer->GetCurrentModel();
+    const std::vector<Mesh> meshes = model->GetMeshes();
+
+	Text("Model");
+	Text(model->GetDirectory().c_str());
+    for (int i = 0; i < meshes.size(); ++i)
+    {
+    	Text("Mesh #%d", i);
+        Text("Vertices: %d", meshes[i].GetNumVertices());
+        Text("Indices: %d", meshes[i].GetNumIndices());
+        Text("Textures: %d", meshes[i].GetNumTextures());
+       
+    }
 }
 
 inline void ModuleEditor::Console()
@@ -163,6 +182,15 @@ void ModuleEditor::GeneralSettings()
         CameraSettings();
     }
 
+    if (CollapsingHeader("Camera Settings"))
+    {
+        CameraSettings();
+    }
+
+    if (CollapsingHeader("Module Info"))
+    {
+        ModelSettings();
+    }
     End();
 }
 

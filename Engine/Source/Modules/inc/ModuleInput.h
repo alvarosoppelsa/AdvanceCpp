@@ -26,6 +26,7 @@ public:
 	~ModuleInput();
 
 	bool Init();
+	update_status PreUpdate();
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
@@ -50,17 +51,16 @@ public:
 		return MouseButton;
 	}
 
-	const int GetMouseWheelDeltaY()
+	bool IsModPressed(SDL_Keymod keymod)
 	{
-		// TODO: This does not work
-		WheelDeltaY = MouseWheel.y - WheelDeltaY;
-		return WheelDeltaY;
+		return (Keymod & keymod);
 	}
 
 private:
 	char* DroppedFileDir;
 	const Uint8* Keyboard = NULL;
 	Uint32 Mouse;
+	SDL_Keymod Keymod;
 	SDL_MouseButtonEvent MouseButton;
 	SDL_MouseWheelEvent MouseWheel;
 	MouseMotion Motion;

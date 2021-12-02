@@ -32,6 +32,9 @@ public:
 	void SetPlaneDistances(const float nearDist, const float farDist);
 	void SetDefaultValues();
 
+	void ZoomInPosition();
+	void ZoomOutPosition();
+
 private:
 	Frustum CameraFrustum;
 
@@ -40,7 +43,7 @@ private:
 	float NearDistance;
 	float FarDistance;
 	float CameraSpeed;
-	float ZoomSpeed;
+	float RotateSpeed;
 
 	float3 Roll;
 	float3 Pitch;
@@ -53,7 +56,8 @@ private:
 	void TranslationInputs();
 	void AspectInputs();
 	void RotationInputs();
-	void ZoomIn();
-	void ZoomOut();
+
+	void ZoomOutFOV();
+	void ZoomInFOV();
 };
 

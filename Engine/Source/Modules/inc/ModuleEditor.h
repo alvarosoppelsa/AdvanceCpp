@@ -16,6 +16,7 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
+
 	void ConsoleLog(char* line);
 
 private:
@@ -42,5 +43,8 @@ private:
 	// About
 	bool ShowAboutWindow;
 	void About();
+
+	// Model
+	void ModelSettings();
 };
 
