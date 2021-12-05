@@ -17,6 +17,7 @@ public:
 
 	void WindowsSizeChanged();
 	void ToggleFullScreen();
+	void SetSwapInterval(int swapInterval) const;
 
 	SDL_Window* window = NULL;
 	SDL_Surface* ScreenSurface = NULL;

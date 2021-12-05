@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Math/float4x4.h"
 #include "MathGeoLib.h"
+#include "Performance.h"
 
 class ModuleCamera : public Module
 {
@@ -42,8 +43,7 @@ private:
 	float HorizontalFovDegree;
 	float NearDistance;
 	float FarDistance;
-	float CameraSpeed;
-	float RotateSpeed;
+	float Speed;
 	float Angle;
 
 	float Roll;
@@ -58,6 +58,7 @@ private:
 	void AspectInputs();
 	void RotationInputs();
 
+	float GetSpeed() const;
 	void ZoomOutFOV();
 	void ZoomInFOV();
 };

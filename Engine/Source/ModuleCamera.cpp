@@ -17,8 +17,7 @@ ModuleCamera::ModuleCamera()
 	, HorizontalFovDegree(0.0f)
 	, NearDistance(0.0f)
 	, FarDistance(0.0f)
-	, CameraSpeed(0.5f)
-	, RotateSpeed(0.01f)
+	, Speed(0.01f)
 	, Roll(0.0f)
 	, Pitch(0.0f)
 	, Yaw(0.0f)
@@ -151,22 +150,22 @@ inline void ModuleCamera::TranslationInputs()
 {
     if (App->input->GetKeyboard(SDL_SCANCODE_W))
     {
-        Position += CameraFrustum.Front() * CameraSpeed;
+        Position += CameraFrustum.Front() * GetSpeed();
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_S))
     {
-        Position -= CameraFrustum.Front() * CameraSpeed;
+        Position -= CameraFrustum.Front() * GetSpeed();
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_D))
     {
-        Position += CameraFrustum.WorldRight() * CameraSpeed;
+        Position += CameraFrustum.WorldRight() * GetSpeed();
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_A))
     {
-        Position -= CameraFrustum.WorldRight() * CameraSpeed;
+        Position -= CameraFrustum.WorldRight() * GetSpeed();
     }
 
     SetPosition(Position);
@@ -193,38 +192,38 @@ inline void ModuleCamera::RotationInputs()
     // Keyboard
     if (App->input->GetKeyboard(SDL_SCANCODE_UP))
     {
-        Pitch += RotateSpeed;
+        Pitch += GetSpeed();
         ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
-        Rotate(RotateSpeed, 0.0f);
+        Rotate(GetSpeed(), 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
     {
-        Pitch -= RotateSpeed;
+        Pitch -= GetSpeed();
         ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
-        Rotate(-RotateSpeed, 0.0f);
+        Rotate(-GetSpeed(), 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
     {
-        Yaw += RotateSpeed;
+        Yaw += GetSpeed();
         ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
-        Rotate(0.0f, RotateSpeed);
+        Rotate(0.0f, GetSpeed());
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
     {
-        Yaw -= RotateSpeed;
+        Yaw -= GetSpeed();
         ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
-        Rotate(0.0f, -RotateSpeed);
+        Rotate(0.0f, -GetSpeed());
     }
 
     // Mouse
     if (App->input->GetMouseButton().button == SDL_BUTTON_RIGHT && App->input->GetMouseButton().state == SDL_PRESSED)
     {
-        Yaw += App->input->GetMouseMotion().X * RotateSpeed;
-        Pitch += App->input->GetMouseMotion().Y * RotateSpeed;
+        Yaw += App->input->GetMouseMotion().X * GetSpeed();
+        Pitch += App->input->GetMouseMotion().Y * GetSpeed();
         ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
         int mouseMotionX = App->input->GetMouseMotion().X;
@@ -238,19 +237,19 @@ inline void ModuleCamera::RotationInputs()
         && App->input->GetMouseButton().state == SDL_PRESSED)
     {
         float3 moduleOrigin = App->renderer->GetCurrentModel()->GetOrigin();
-        App->input->GetMouseMotion().X * RotateSpeed;
+        App->input->GetMouseMotion().X * GetSpeed();
         Look(moduleOrigin);
     }
 }
 
 void ModuleCamera::ZoomInPosition()
 {
-    Position += CameraFrustum.Front() * CameraSpeed;
+    Position += CameraFrustum.Front() * GetSpeed();
 }
 
 void ModuleCamera::ZoomOutPosition()
 {
-    Position -= CameraFrustum.Front() * CameraSpeed;
+    Position -= CameraFrustum.Front() * GetSpeed();
 }
 
 inline void ModuleCamera::ZoomOutFOV()
@@ -259,7 +258,7 @@ inline void ModuleCamera::ZoomOutFOV()
     {
         return;
     }
-    HorizontalFovDegree += HorizontalFovDegree * RotateSpeed;
+    HorizontalFovDegree += HorizontalFovDegree * GetSpeed();
 }
 
 inline void ModuleCamera::ZoomInFOV()
@@ -268,7 +267,12 @@ inline void ModuleCamera::ZoomInFOV()
     {
         return;
     }
-    HorizontalFovDegree -= HorizontalFovDegree * RotateSpeed;
+    HorizontalFovDegree -= HorizontalFovDegree * GetSpeed();
+}
+
+inline float ModuleCamera::GetSpeed() const
+{
+    return Speed * App->performance->GetDeltaTime();
 }
 
 void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)

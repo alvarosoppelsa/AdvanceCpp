@@ -5,6 +5,7 @@
 #include "ModuleCamera.h"
 
 ModuleWindow::ModuleWindow()
+	: RefreshRate(0)
 {
 }
 
@@ -49,6 +50,7 @@ bool ModuleWindow::Init()
 		SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 		SDL_DisplayMode mode;
 		SDL_GetDisplayMode(0, 0, &mode);
+		SetSwapInterval(1); // Vsync active
 		RefreshRate = mode.refresh_rate;
 	}
 
@@ -90,6 +92,15 @@ void ModuleWindow::ToggleFullScreen()
 	{
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		IsFullScreen = true;
+	}
+}
+
+void ModuleWindow::SetSwapInterval(int swapInterval) const
+{
+	ENGINE_LOG("ModuleWindow - SetSwapInterval: %d", swapInterval);
+	if (SDL_GL_SetSwapInterval(swapInterval) == -1)
+	{
+		SDL_GL_SetSwapInterval(1);
 	}
 }
 

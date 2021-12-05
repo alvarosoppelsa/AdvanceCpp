@@ -7,15 +7,12 @@ struct SDL_Renderer;
 struct SDL_Rect;
 class Model;
 
-class ModuleRenderExercise;
-
 class ModuleRender : public Module
 {
 public:
 	ModuleRender();
 	~ModuleRender();
 
-	void* context;
 
 	bool Init() override;
 	update_status PreUpdate() override;
@@ -26,9 +23,15 @@ public:
 	void UpdateWindowSize();
 	bool LoadModule(const char* filePath);
 	const Model* GetCurrentModel() const { return RenderModel; };
+	void* GetContext() const
+	{
+		assert(Context != nullptr);
+		return Context;
+	}
 
 private:
 	int Width = 0;
 	int Height = 0;
 	Model* RenderModel;
+	void* Context;
 };

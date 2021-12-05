@@ -20,13 +20,14 @@
 static const char* bakerHouseModel = ".\\Resources\\Models\\BakerHouse.fbx";
 
 ModuleRender::ModuleRender() 
-	: context(nullptr)
+	: Context(nullptr)
 	, RenderModel(nullptr)
 {
 }
 
 ModuleRender::~ModuleRender()
 {
+	delete RenderModel;
 }
 
 // TODO: This function doesn't belong here
@@ -60,7 +61,7 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); // we want to have a stencil buffer with 8 bits
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
-	context = SDL_GL_CreateContext(App->window->window);
+	Context = SDL_GL_CreateContext(App->window->window);
 
 	GLenum err = glewInit();
 
@@ -100,11 +101,10 @@ update_status ModuleRender::PreUpdate()
 }
 
 update_status ModuleRender::Update()
-{
+{	
 	RenderModel->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), float4x4::identity);
 
-	SDL_Surface* sdlSurface = App->window->ScreenSurface;
-	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), sdlSurface->w, sdlSurface->h);
+	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), Width, Height);
 
 	// Note: Debug draw disables blending
 	glEnable(GL_BLEND);
@@ -125,7 +125,7 @@ bool ModuleRender::CleanUp()
 	ENGINE_LOG("Destroying renderer");
 
 	//Destroy window
-	SDL_GL_DeleteContext(context);
+	SDL_GL_DeleteContext(Context);
 	
 	return true;
 }

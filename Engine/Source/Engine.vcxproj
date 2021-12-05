@@ -104,8 +104,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\DevIL Windows SDK\lib\x64\Release;..\..\Assimp\lib;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc141-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SDL\lib\x64\;..\..\DevIL Windows SDK\lib\x64\Release;..\..\Assimp\lib;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;assimp-vc141-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -304,7 +304,9 @@
     <ClInclude Include="Modules\inc\ModuleProgram.h" />
     <ClInclude Include="Modules\inc\ModuleRender.h" />
     <ClInclude Include="Modules\inc\ModuleWindow.h" />
+    <ClInclude Include="Performance.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\MathGeoLib\Geometry\KDTree.inl" />

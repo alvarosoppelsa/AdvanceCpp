@@ -10,6 +10,7 @@
 #include "ModuleTexture.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleCamara.h"
+#include "Performance.h"
 
 Application::Application() : ShuttingDown(false)
 {
@@ -21,10 +22,12 @@ Application::Application() : ShuttingDown(false)
 	modules.push_back(program	= new ModuleProgram());
 	modules.push_back(editor	= new ModuleEditor());
 	modules.push_back(ddraw     = new ModuleDebugDraw());
+	performance = new Performance();
 }
 
 Application::~Application()
 {
+	delete performance;
 	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
     {
         delete *it;
@@ -43,6 +46,8 @@ bool Application::Init()
 
 update_status Application::Update()
 {
+	performance->Start();
+
 	update_status ret = UPDATE_CONTINUE;
 
 	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
@@ -54,12 +59,14 @@ update_status Application::Update()
 	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 
+	performance->Snapshot();
 	return ret;
 }
 
 bool Application::CleanUp()
 {
 	ShuttingDown = true;
+	performance->Stop();
 	bool ret = true;
 
 	for (std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
