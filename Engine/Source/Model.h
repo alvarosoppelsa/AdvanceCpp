@@ -9,6 +9,27 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+class Model;
+
+struct Edge
+{
+    float min;
+    float max;
+};
+
+class ModelOBB
+{
+    friend Model;
+private:
+    Edge xBounds;
+    Edge yBounds;
+    Edge zBounds;
+public:
+    float DeltaX() const { return abs(xBounds.max - xBounds.min); }
+    float DeltaY() const { return abs(yBounds.max - yBounds.min); }
+    float DeltaZ() const { return abs(zBounds.max - zBounds.min); }
+};
+
 class Model
 {
 public:
@@ -24,12 +45,15 @@ public:
 	const float3& GetOrigin() const { return Position; }
     void SetOrigin(const float3& position) { Position = position; }
 
+    float GetModelSizeFactor() const;
 private:
     // model data
     std::vector<Mesh> Meshes;
     std::string Directory;
     std::vector<Texture> TexturesLoaded;
     float3 Position;
+
+    ModelOBB OBB;
 
     void Load(const char* file);
     void ProcessNode(aiNode* node, const aiScene* scene);

@@ -29,6 +29,7 @@ public:
 	void SetHorizontalFovInDegrees(float fov_deg);
 	float GetHorizontalFovDegrees() const;
 	void Look(const float3& position);
+	void LookModule();
 
 	void SetPlaneDistances(const float nearDist, const float farDist);
 	void SetDefaultValues();

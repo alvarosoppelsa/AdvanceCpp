@@ -1,7 +1,6 @@
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
-#include "ModuleProgram.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "Model.h"
@@ -37,7 +36,7 @@ bool ModuleCamera::Init()
     SetAspectRatio(screenSurface->w, screenSurface->h);
     SetHorizontalFovInDegrees(90.0f);
     SetPlaneDistances(0.1f, 100.0f);
-    SetPosition(float3(1.0f, 1.0f, 5.0f));
+    SetPosition(float3(8.0f, 8.0f, 8.0f));
     float3x3 rotation = float3x3::identity;
     CameraFrustum.SetFront(rotation.WorldZ());
     CameraFrustum.SetUp(rotation.WorldY());
@@ -139,6 +138,14 @@ void ModuleCamera::Look(const float3& position)
     CameraFrustum.SetUp(lookDir.MulDir(CameraFrustum.Up()).Normalized());
 }
 
+void ModuleCamera::LookModule()
+{
+    const float moduleSize = App->renderer->GetCurrentModel()->GetModelSizeFactor() * 0.0001f;
+    const float3 position = float3(8.0f + moduleSize, 8.0f + moduleSize, 8.0f + moduleSize);
+    SetPosition(position);
+    Look(App->renderer->GetCurrentModel()->GetOrigin());
+}
+
 void ModuleCamera::CameraInputs()
 {
     TranslationInputs();
@@ -193,28 +200,24 @@ inline void ModuleCamera::RotationInputs()
     if (App->input->GetKeyboard(SDL_SCANCODE_UP))
     {
         Pitch += GetSpeed();
-        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
         Rotate(GetSpeed(), 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
     {
         Pitch -= GetSpeed();
-        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
         Rotate(-GetSpeed(), 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
     {
         Yaw += GetSpeed();
-        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
         Rotate(0.0f, GetSpeed());
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
     {
         Yaw -= GetSpeed();
-        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
         Rotate(0.0f, -GetSpeed());
     }
@@ -224,7 +227,6 @@ inline void ModuleCamera::RotationInputs()
     {
         Yaw += App->input->GetMouseMotion().X * GetSpeed();
         Pitch += App->input->GetMouseMotion().Y * GetSpeed();
-        ENGINE_LOG("Yaw: %f - Pitch: %f - Roll: %f", Yaw, Pitch, Roll);
         // Deprecate below
         int mouseMotionX = App->input->GetMouseMotion().X;
         int mouseMotionY = App->input->GetMouseMotion().Y;

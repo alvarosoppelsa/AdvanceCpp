@@ -128,7 +128,7 @@ update_status ModuleInput::PostUpdate()
 
     SDL_free(DroppedFileDir);
     DroppedFileDir = nullptr;
-
+    App->camera->LookModule();
     return UPDATE_CONTINUE;
 }
 

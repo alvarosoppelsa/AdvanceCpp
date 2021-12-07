@@ -22,7 +22,7 @@ public:
 
 	void UpdateWindowSize();
 	bool LoadModule(const char* filePath);
-	const Model* GetCurrentModel() const { return RenderModel; };
+	const Model* GetCurrentModel() const { return RenderModel; }
 	void* GetContext() const
 	{
 		assert(Context != nullptr);

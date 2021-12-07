@@ -7,6 +7,7 @@
 #include <IL/ilu.h>
 #include "Math/float3.h"
 #include <assimp/DefaultLogger.hpp>
+#include <algorithm>
 
 Model::Model(const char* file)
 	: Position(0.0f, 0.0f, 0.0f)
@@ -83,6 +84,14 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
 
+    // Store the first values to be able to compare them later
+    OBB.xBounds.min = mesh->mVertices[0].x;
+    OBB.xBounds.max = mesh->mVertices[0].x;
+    OBB.yBounds.min = mesh->mVertices[0].y;
+    OBB.yBounds.max = mesh->mVertices[0].y;
+    OBB.zBounds.min = mesh->mVertices[0].z;
+    OBB.zBounds.max = mesh->mVertices[0].z;
+
     // process vertex positions, normals and texture coordinates
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -94,6 +103,14 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         vector.y = mesh->mVertices[i].y;
         vector.z = mesh->mVertices[i].z;
         vertex.Position = vector;
+         
+        OBB.xBounds.min = std::min(OBB.xBounds.min, vector.x);
+        OBB.xBounds.max = std::max(OBB.xBounds.max, vector.x);
+        OBB.yBounds.min = std::min(OBB.yBounds.min, vector.y);
+        OBB.yBounds.max = std::max(OBB.yBounds.max, vector.y);
+        OBB.zBounds.min = std::min(OBB.zBounds.min, vector.z);
+        OBB.zBounds.max = std::max(OBB.zBounds.max, vector.z);
+
         // Normals
         vector.x = mesh->mNormals[i].x;
         vector.y = mesh->mNormals[i].y;
@@ -156,18 +173,25 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
                 break;
             }
         }
-        if (!skip)
-        {   // if texture hasn't been loaded already, load it
-            Texture texture;
-        	const int texId = TextureFromFile(str.C_Str(), Directory);
-            assert(texId >= 0);
-            texture.Id = (unsigned)texId;
-            texture.Type = typeName;
-            texture.Path = str.C_Str();
-            textures.push_back(texture);
-            TexturesLoaded.push_back(texture); // add to loaded textures
+        if (skip)
+        {
+            continue;
         }
+        // if texture hasn't been loaded already, load it
+        Texture texture;
+        const int texId = TextureFromFile(str.C_Str(), Directory);
+        if (texId < 0)
+        {
+            ENGINE_LOG("Cannot Load Texture: %s", str.C_Str());
+            continue;
+        }
+        texture.Id = (unsigned)texId;
+        texture.Type = typeName;
+        texture.Path = str.C_Str();
+        textures.push_back(texture);
+        TexturesLoaded.push_back(texture); // add to loaded textures
     }
+
     return textures;
 }
 
@@ -177,6 +201,15 @@ void Model::Draw(const unsigned int programId, const float4x4& view, const float
 	{
         Meshes[i].Draw(programId, view, proj, model);
 	}
+}
+
+float Model::GetModelSizeFactor() const
+{
+    ENGINE_LOG("OBB.DeltaX: %f", OBB.DeltaX());
+    ENGINE_LOG("OBB.DeltaY: %f", OBB.DeltaY());
+    ENGINE_LOG("OBB.DeltaZ: %f", OBB.DeltaZ());
+
+    return OBB.DeltaX() * OBB.DeltaY() * OBB.DeltaZ();
 }
 
 int Model::TextureFromFile(const char* path, const std::string& directory) const
