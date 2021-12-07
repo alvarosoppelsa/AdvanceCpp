@@ -1,5 +1,7 @@
 #include "Mesh.h"
+#include "Globals.h"
 #include "GL/glew.h"
+
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
 {

@@ -282,6 +282,7 @@
     <ClInclude Include="..\..\MathGeoLib\Math\vec2d.h" />
     <ClInclude Include="..\..\MathGeoLib\Time\Clock.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AssimpLogger.h" />
     <ClInclude Include="debug draw\debugdraw.h" />
     <ClInclude Include="debug draw\debug_draw.hpp" />
     <ClInclude Include="Globals.h" />
@@ -307,6 +308,7 @@
     <ClInclude Include="Performance.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\MathGeoLib\Geometry\KDTree.inl" />

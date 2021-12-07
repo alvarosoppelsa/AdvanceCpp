@@ -1,15 +1,34 @@
 #include "Model.h"
-#include "Globals.h"
 
+#include "Globals.h"
+#include "AssimpLogger.h"
 #include "GL/glew.h"
 #include <IL/il.h>
 #include <IL/ilu.h>
 #include "Math/float3.h"
+#include <assimp/DefaultLogger.hpp>
 
 Model::Model(const char* file)
 	: Position(0.0f, 0.0f, 0.0f)
 {
+    // Create a logger instance 
+    DefaultLogger::create("", Logger::VERBOSE);
+
+    // Select the kinds of messages you want to receive on this log stream
+    const unsigned int severity = 
+        Assimp::Logger::Debugging | 
+    	Assimp::Logger::Info | 
+        Assimp::Logger::Err | 
+        Assimp::Logger::Warn;
+
+    // Attaching it to the default logger
+    Assimp::DefaultLogger::get()->attachStream(new AssimpLogger(), severity);
 	Load(file);
+}
+
+Model::~Model()
+{
+    DefaultLogger::kill();
 }
 
 /*
@@ -20,6 +39,7 @@ Model::Model(const char* file)
 */
 void Model::Load(const char* file)
 {
+    ENGINE_LOG("Loading Module: %s", file);
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(file, aiProcess_Triangulate | aiProcess_FlipUVs);
 
@@ -30,6 +50,14 @@ void Model::Load(const char* file)
 	}
 	std::string path = file;
 	Directory = path.substr(0, path.find_last_of('\\'));
+
+    ENGINE_LOG("Scene Summary");
+    ENGINE_LOG("Meshes: %d", scene->mNumMeshes);
+    ENGINE_LOG("Materials: %d", scene->mNumMaterials);
+    ENGINE_LOG("Textures: %d", scene->mNumTextures);
+    ENGINE_LOG("Cameras: %d", scene->mNumCameras);
+    ENGINE_LOG("Animations: %d", scene->mNumAnimations);
+    ENGINE_LOG("Lights: %d", scene->mNumLights);
 
 	ProcessNode(scene->mRootNode, scene);
 }
@@ -131,7 +159,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
         if (!skip)
         {   // if texture hasn't been loaded already, load it
             Texture texture;
-        	int texId = TextureFromFile(str.C_Str(), Directory);
+        	const int texId = TextureFromFile(str.C_Str(), Directory);
             assert(texId >= 0);
             texture.Id = (unsigned)texId;
             texture.Type = typeName;
@@ -151,7 +179,7 @@ void Model::Draw(const unsigned int programId, const float4x4& view, const float
 	}
 }
 
-int Model::TextureFromFile(const char* path, const std::string& directory)
+int Model::TextureFromFile(const char* path, const std::string& directory) const
 {
     ILuint texid;
 
@@ -164,12 +192,24 @@ int Model::TextureFromFile(const char* path, const std::string& directory)
     ilInit();
     ilGenImages(1, &texid);
     ilBindImage(texid);
-    std::string fullPath = directory + "\\" + std::string(path);
-	ILboolean success = ilLoadImage(fullPath.c_str());
+    std::string textureRelativePath = std::string(path);
+    std::string textureName = textureRelativePath.substr(textureRelativePath.find_last_of("/\\") + 1);
 
-    if (success != IL_TRUE)
+    std::vector<std::string> searchPaths;
+    searchPaths.push_back(directory + "\\" + textureRelativePath);
+    searchPaths.push_back(directory + "\\" + textureName);
+    searchPaths.push_back(std::string(DefaultTexturePath) + "\\" + textureName);
+    
+    ILboolean success = IL_FALSE;
+
+    for (int i = 0; i < searchPaths.size() && !success; ++i)
     {
-        ENGINE_LOG("[ERROR] Couldn't load texture: %s", fullPath );
+        ENGINE_LOG("Try to load texture in: %s", searchPaths[i].c_str());
+        success = ilLoadImage(searchPaths[i].c_str());
+    }
+
+    if (!success)
+    {
         return -1;
     }
 

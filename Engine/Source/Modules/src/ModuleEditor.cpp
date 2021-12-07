@@ -6,16 +6,16 @@
 #include "ModuleCamera.h"
 #include "Model.h"
 #include "Performance.h"
-#include "Timer.h"
+#include "Tools.h"
 
-#include "ImGui/imgui_impl_sdl.h"
-#include "ImGui/imgui_impl_opengl3.h"
-#include <GL/glew.h>
+#include <Psapi.h>
+#include <ImGui/imgui_impl_sdl.h>
+#include <ImGui/imgui_impl_opengl3.h>
 #include <SDL.h>
 
 #define MAX_CONSOLE_OUTPUT 100
 #define MAX_PERFORMANCE_LOG 60
-
+#define TO_MBYTES 1/(1024 * 1024)
 using namespace ImGui;
 
 ModuleEditor::ModuleEditor()
@@ -79,6 +79,12 @@ bool ModuleEditor::CleanUp()
     ImGui_ImplSDL2_Shutdown();
     DestroyContext();
 
+	for (auto it : ConsoleOutputs)
+    {
+        delete it;
+    }
+    ConsoleOutputs.clear();
+
 	return true;
 }
 
@@ -93,13 +99,19 @@ inline void ModuleEditor::About()
     {
         return;
     }
-    ImGuiWindowFlags wFlags = ImGuiWindowFlags_NoDecoration;
-    Begin("About", &ShowAboutWindow, wFlags);
-    Text("Super Awesome Engine");
-    Text("This is some description about the engine.");
-    Text("Alvaro Soppelsa");
-    Text("ImGui - SDL - glew - OpenGL");
-    Text("GNU GPL");
+    Begin("About", &ShowAboutWindow);
+    Text("Game Engine");
+    Text("This Game Engine has been developed for the\n UPC Master degree: 'Advance Programming for AAA Video Games'");
+    Separator();
+	Text("by Alvaro Soppelsa");
+    if (ImGui::Button("Github Repository", ImVec2(ImGui::GetContentRegionAvailWidth(), 0)))
+    {
+        // If Button is clicked, open the repository link in browser:
+        Tools::OpenLink(MY_REPO);
+    }
+    Separator();
+    Text("Libraries Used");
+    TextWrapped(LIBRARIES_USED);
     End();
 }
 
@@ -131,15 +143,22 @@ inline void ModuleEditor::Console()
 
     Begin("Console", &ShowConsole);
 
+    HoveredViewport = !IsWindowHovered();
+    
     // If vector size is greater than the max console output show MAX_CONSOLE_OUTPUT,
 	// otherwise show all content from 0 to size
     for (auto it = ConsoleOutputs.size() > MAX_CONSOLE_OUTPUT ? ConsoleOutputs.size() - MAX_CONSOLE_OUTPUT : 0;
         it < ConsoleOutputs.size(); ++it)
     {
         Text(ConsoleOutputs[it]);
+        Separator();
     }
-    if (ConsoleOutputs.size() == MAX_CONSOLE_OUTPUT * 10)
+    if (ConsoleOutputs.size() == MAX_CONSOLE_OUTPUT)
     {
+        for(auto it : ConsoleOutputs)
+        {
+            delete it;
+        }
         ConsoleOutputs.clear();
     }
     End();
@@ -213,8 +232,10 @@ inline void ModuleEditor::GeneralSettings()
         return;
     }
 
+    HoveredViewport = !IsWindowHovered();
+
     Separator();
-    if (BeginMenu("Editor Configuration"))
+    if (BeginMenu("Editor Tools"))
     {
         MenuItem("Console", NULL, &ShowConsole);
         Separator();
@@ -239,6 +260,12 @@ inline void ModuleEditor::GeneralSettings()
     if (CollapsingHeader("Module Info"))
     {
         ModelSettings();
+    }
+
+    Separator();
+    if (CollapsingHeader("System"))
+    {
+        SystemInfo();
     }
     End();
 }
@@ -316,4 +343,14 @@ inline void ModuleEditor::FrameRate()
     PlotHistogram("##milliseconds", &TimeMsOutputs[0], TimeMsOutputs.size(), 0, title, 0.0f, lastTimeMs + 10.0f, ImVec2(310, 100));
 
     End();
+}
+
+void ModuleEditor::SystemInfo()
+{
+    PROCESS_MEMORY_COUNTERS memCounter;
+    BOOL result = GetProcessMemoryInfo(GetCurrentProcess(),
+        &memCounter,
+        sizeof(memCounter));
+    Separator();
+    Text("Memory Consumption: %d Mb", memCounter.WorkingSetSize * TO_MBYTES);
 }

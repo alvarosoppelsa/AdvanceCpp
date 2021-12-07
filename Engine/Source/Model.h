@@ -13,6 +13,7 @@ class Model
 {
 public:
     Model(const char* file);
+    ~Model();
 
     void Draw(const unsigned int programId, const float4x4& view, const float4x4& proj, const float4x4& model);
 
@@ -34,6 +35,6 @@ private:
     void ProcessNode(aiNode* node, const aiScene* scene);
     Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
     std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-    int TextureFromFile(const char* path, const std::string& directory);
+    int TextureFromFile(const char* path, const std::string& directory) const;
 };
 

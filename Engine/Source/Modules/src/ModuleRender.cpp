@@ -6,6 +6,7 @@
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 #include "Model.h"
+#include "Tools.h"
 
 #include <cassert>
 
@@ -14,40 +15,15 @@
 
 #include "Math/float4x4.h"
 
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_opengl3.h"
-
-static const char* bakerHouseModel = ".\\Resources\\Models\\BakerHouse.fbx";
-
 ModuleRender::ModuleRender() 
-	: Context(nullptr)
-	, RenderModel(nullptr)
+	: RenderModel(nullptr)
+	, Context(nullptr)
 {
 }
 
 ModuleRender::~ModuleRender()
 {
 	delete RenderModel;
-}
-
-// TODO: This function doesn't belong here
-static void APIENTRY openglCallbackFunction(
-	GLenum source,
-	GLenum type,
-	GLuint id,
-	GLenum severity,
-	GLsizei length,
-	const GLchar* message,
-	const void* userParam
-) {
-	(void)source; (void)type; (void)id;
-	(void)severity; (void)length; (void)userParam;
-	fprintf(stderr, "%s\n", message);
-	ENGINE_LOG(message);
-	if (severity == GL_DEBUG_SEVERITY_HIGH) {
-		ENGINE_LOG("Aborting...\n");
-		abort();
-	}
 }
 
 bool ModuleRender::Init()
@@ -79,7 +55,7 @@ bool ModuleRender::Init()
 	// Enable the debug callback
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(openglCallbackFunction, nullptr);
+	glDebugMessageCallback(Tools::OpenGlCallbackFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
 
 	glEnable(GL_TEXTURE_2D);
@@ -87,7 +63,7 @@ bool ModuleRender::Init()
 	SDL_GetWindowSize(App->window->window, &Width, &Height);
 	glViewport(0, 0, Width, Height);
 
-	RenderModel = new Model(bakerHouseModel);
+	RenderModel = new Model(BakerHouse);
 	
 	return true;
 }
@@ -138,10 +114,7 @@ void ModuleRender::UpdateWindowSize()
 
 bool ModuleRender::LoadModule(const char* filePath)
 {
-	if (RenderModel != nullptr)
-	{
-		delete RenderModel;
-	}
+	delete RenderModel;
 	RenderModel = new Model(filePath);
 
 	return RenderModel->IsValid();

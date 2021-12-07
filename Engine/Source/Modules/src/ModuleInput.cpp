@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
 
 #include "ImGui/imgui_impl_sdl.h"
 
@@ -76,11 +77,11 @@ update_status ModuleInput::PreUpdate()
             }
             case SDL_MOUSEWHEEL:
             {
-                if (sdlEvent.wheel.y > 0) // scroll up
+                if (sdlEvent.wheel.y > 0 && App->editor->IsCursorOnViewport()) // scroll up
                 {
                     App->camera->ZoomInPosition();
                 }
-                else if (sdlEvent.wheel.y < 0) // scroll down
+                else if (sdlEvent.wheel.y < 0 && App->editor->IsCursorOnViewport()) // scroll down
                 {
                     App->camera->ZoomOutPosition();
                 }

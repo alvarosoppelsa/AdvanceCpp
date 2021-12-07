@@ -18,4 +18,14 @@ enum update_status
 #define SCREEN_HEIGHT 720
 #define FULLSCREEN false
 #define VSYNC true
-#define TITLE "Super Awesome Engine"
+#define TITLE "Game Engine"
+#define MY_REPO "https://github.com/alvarosoppelsa/AdvanceCpp/tree/master/Engine"
+#define LIBRARIES_USED "SDL 2.0.16\nGLEW 2.1.0\nDear ImGui 1.86\nDevIL 1.8.0"
+
+// Shaders ----------------
+static const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\FragmentShaderWithUniforms.glsl";
+static const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\VertexShaderWithUniforms.glsl";
+
+// Init Modules -----------
+static const char* BakerHouse = ".\\Resources\\Models\\BakerHouse.fbx";
+static const char* DefaultTexturePath = ".\\Resources\\Textures";

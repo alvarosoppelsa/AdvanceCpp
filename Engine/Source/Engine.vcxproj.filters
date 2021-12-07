@@ -477,6 +477,12 @@
     <ClInclude Include="Performance.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="AssimpLogger.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">

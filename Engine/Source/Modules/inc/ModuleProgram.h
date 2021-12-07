@@ -10,7 +10,7 @@ class ModuleProgram : public Module
 public:
 	ModuleProgram();
 	ModuleProgram(std::string& vertexPath, std::string& fragmentPath);
-	~ModuleProgram();
+	~ModuleProgram() = default;
 	
 	bool Init() override;
 	update_status PreUpdate() override;

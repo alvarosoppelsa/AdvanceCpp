@@ -22,9 +22,11 @@ public:
 	bool CleanUp() override;
 
 	void ConsoleLog(char* line);
+	bool IsCursorOnViewport() { return HoveredViewport; }
 
 private:
 	// General
+	bool HoveredViewport = true;
 	void GeneralSettings();
 	bool MainMenu();
 
@@ -59,5 +61,8 @@ private:
 
 	// Model
 	void ModelSettings();
+
+	// Hardware
+	void SystemInfo();
 };
 
