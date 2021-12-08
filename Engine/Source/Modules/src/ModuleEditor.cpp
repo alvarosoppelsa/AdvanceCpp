@@ -168,15 +168,42 @@ inline void ModuleEditor::CameraSettings()
 {
     Separator();
     Text("Translation");
-    CameraPos = App->camera->GetPosition();
-    if (SliderFloat3("X, Y, Z", &CameraPos[0], -250.0f, 250.0f))
+    float3 cameraPos = App->camera->GetPosition();
+    if (SliderFloat3("X, Y, Z", &cameraPos[0], -250.0f, 250.0f))
     {
-        App->camera->SetPosition(CameraPos);
+        App->camera->SetPosition(cameraPos);
     }
 
     Separator();
     Text("Rotation");
-	SliderFloat3("Roll, Pitch, Yaw", &CameraRotation[0], 0.5f, 10.0f);
+	SliderFloat3("Yaw, Pitch, Roll", &CameraRotation[0], 0.5f, 10.0f);
+
+    Separator();
+    Text("Camera Speed");
+    Separator();
+    float speed = App->camera->GetMoveSpeed();
+    if( SliderFloat("Move Speed", &speed, 0.05f, 1.0f))
+    {
+        App->camera->SetMoveSpeed(speed);
+    }
+    Separator();
+    speed = App->camera->GetRotationSpeed();
+    if (SliderFloat("Rotation Speed", &speed, 0.05f, 0.5f))
+    {
+        App->camera->SetRotationSpeed(speed);
+    }
+    Separator();
+    speed = App->camera->GetZoomPosSpeed();
+    if (SliderFloat("Zoom Speed", &speed, 0.1f, 2.0f))
+    {
+        App->camera->SetZoomPosSpeed(speed);
+    }
+    Separator();
+    speed = App->camera->GetOrbitSpeed();
+    if (SliderFloat("Orbit Speed", &speed, 0.1f, 1.0f))
+    {
+        App->camera->SetOrbitSpeed(speed);
+    }
 
     Separator();
     Text("Projection");

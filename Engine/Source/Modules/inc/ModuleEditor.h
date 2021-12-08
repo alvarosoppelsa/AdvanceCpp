@@ -51,7 +51,6 @@ private:
 	// Camera
 	float CameraAspect;
 	float CameraFOV;
-	float3 CameraPos;
 	float3 CameraRotation;
 	void CameraSettings();
 
