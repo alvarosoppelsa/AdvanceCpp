@@ -16,11 +16,11 @@ ModuleCamera::ModuleCamera()
 	, HorizontalFovDegree(0.0f)
 	, NearDistance(0.0f)
 	, FarDistance(0.0f)
-	, Speed(0.01f)
-	, RotationSpeed(0.005f)
-	, ZoomPosSpeed(0.05f)
+	, Speed(0.05f)
+	, RotationSpeed(0.05f)
+	, ZoomPosSpeed(0.1f)
 	, ZoomFovSpeed(0.0005f)
-	, OrbitSpeed(0.01f)
+	, OrbitSpeed(0.1f)
 	, Roll(0.0f)
 	, Pitch(0.0f)
 	, Yaw(0.0f)
@@ -229,6 +229,11 @@ inline void ModuleCamera::RotationInputs()
         Yaw -= GetSpeed(MoveType::ROTATION);
         // Deprecate below
         Rotate(0.0f, -GetSpeed(MoveType::ROTATION));
+    }
+
+    if (App->input->GetKeyboard(SDL_SCANCODE_F))
+    {
+        Look(App->renderer->GetCurrentModel()->GetOrigin());
     }
 
     // Mouse

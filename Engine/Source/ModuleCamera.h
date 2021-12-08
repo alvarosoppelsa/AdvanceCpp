@@ -46,6 +46,16 @@ public:
 	void ZoomInPosition();
 	void ZoomOutPosition();
 
+	float GetMoveSpeed() const { return Speed; };
+	float GetZoomPosSpeed() const { return ZoomPosSpeed; };
+	float GetRotationSpeed() const { return RotationSpeed; };
+	float GetOrbitSpeed() const { return OrbitSpeed; };
+
+	void SetMoveSpeed(const float speed) { Speed = speed; };
+	void SetZoomPosSpeed(const float speed) { ZoomPosSpeed = speed; };
+	void SetRotationSpeed(const float speed) { RotationSpeed = speed; };
+	void SetOrbitSpeed(const float speed) { OrbitSpeed = speed; };
+
 private:
 	Frustum CameraFrustum;
 
