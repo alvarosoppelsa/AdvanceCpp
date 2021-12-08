@@ -52,7 +52,10 @@ update_status ModuleEditor::PreUpdate()
     {
         retVal = UPDATE_STOP;
     }
-    GeneralSettings();
+    if (ShowGeneralSettings)
+    {
+        GeneralSettings();
+    }
     About();
     Console();
     FrameRate();
@@ -226,7 +229,7 @@ inline void ModuleEditor::CameraSettings()
     }
 }
 
-inline void ModuleEditor::WindowSettings()
+inline void ModuleEditor::WindowSettings() const
 {
     if (Button("Fullscreen", ImVec2(100, 30)))
     {
@@ -251,6 +254,8 @@ inline void ModuleEditor::GeneralSettings()
 {
     ImGuiWindowFlags wFlags = 0;
     wFlags |= ImGuiWindowFlags_MenuBar;
+	wFlags |= ImGuiWindowFlags_NoCollapse;
+	wFlags |= ImGuiWindowFlags_AlwaysAutoResize;
 
 	// TODO: Look up for docking flags
     Begin("General Settings", NULL, wFlags);
@@ -320,6 +325,12 @@ inline bool ModuleEditor::MainMenu()
     {
         MenuItem("Undo");
         MenuItem("Redo");
+        ImGui::EndMenu();
+    }
+
+    if (BeginMenu("View"))
+    {
+        MenuItem("General Settings", NULL, &ShowGeneralSettings);
         ImGui::EndMenu();
     }
 

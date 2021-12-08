@@ -27,6 +27,7 @@ public:
 private:
 	// General
 	bool HoveredViewport = true;
+	bool ShowGeneralSettings = true;
 	void GeneralSettings();
 	bool MainMenu();
 
@@ -45,7 +46,7 @@ private:
 
 	// Window
 	bool FullScreenWindow;
-	void WindowSettings();
+	void WindowSettings() const;
 	void SwapInterval() const;
 
 	// Camera
