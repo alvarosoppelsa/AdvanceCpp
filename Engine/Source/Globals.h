@@ -36,5 +36,5 @@ static const char* VERTEX_SHADER_FILE = ".\\Game\\shaders\\vertex.glsl";
 
 // Init Modules -----------
 static const char* BakerHouse = ".\\Game\\assets\\resource files\\BakerHouse.fbx";
-static const char* DefaultTexturePath = ".\\Game\\assets\\resource_files\\Textures";
+static const char* DefaultTexturePath = ".\\Game\\assets\\resource files\\Textures";
 #endif
