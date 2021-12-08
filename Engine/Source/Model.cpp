@@ -203,13 +203,13 @@ void Model::Draw(const unsigned int programId, const float4x4& view, const float
 	}
 }
 
-float Model::GetModelSizeFactor() const
+float3 Model::GetModelSizeFactor() const
 {
     ENGINE_LOG("OBB.DeltaX: %f", OBB.DeltaX());
     ENGINE_LOG("OBB.DeltaY: %f", OBB.DeltaY());
     ENGINE_LOG("OBB.DeltaZ: %f", OBB.DeltaZ());
 
-    return OBB.DeltaX() * OBB.DeltaY() * OBB.DeltaZ();
+    return float3(OBB.DeltaX(), OBB.DeltaY(), OBB.DeltaZ());
 }
 
 int Model::TextureFromFile(const char* path, const std::string& directory) const

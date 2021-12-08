@@ -45,7 +45,7 @@ public:
 	const float3& GetOrigin() const { return Position; }
     void SetOrigin(const float3& position) { Position = position; }
 
-    float GetModelSizeFactor() const;
+    float3 GetModelSizeFactor() const;
 private:
     // model data
     std::vector<Mesh> Meshes;

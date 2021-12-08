@@ -35,7 +35,7 @@ bool ModuleCamera::Init()
     SDL_Surface* screenSurface = App->window->ScreenSurface;
     SetAspectRatio(screenSurface->w, screenSurface->h);
     SetHorizontalFovInDegrees(90.0f);
-    SetPlaneDistances(0.1f, 100.0f);
+    SetPlaneDistances(0.1f, 200.0f);
     SetPosition(float3(8.0f, 8.0f, 8.0f));
     float3x3 rotation = float3x3::identity;
     CameraFrustum.SetFront(rotation.WorldZ());
@@ -140,8 +140,12 @@ void ModuleCamera::Look(const float3& position)
 
 void ModuleCamera::LookModule()
 {
-    const float moduleSize = App->renderer->GetCurrentModel()->GetModelSizeFactor() * 0.0001f;
-    const float3 position = float3(8.0f + moduleSize, 8.0f + moduleSize, 8.0f + moduleSize);
+    const float3 moduleSizes = App->renderer->GetCurrentModel()->GetModelSizeFactor();
+    const float iSum = 1 / (moduleSizes.x + moduleSizes.y + moduleSizes.z);
+    const float posX = (moduleSizes.y + moduleSizes.z) * moduleSizes.x * iSum;
+    const float posY = (moduleSizes.x + moduleSizes.z) * moduleSizes.y * iSum;
+    const float posZ = (moduleSizes.x + moduleSizes.y) * moduleSizes.z * iSum;
+    const float3 position = float3(8.0f + posX, 8.0f + posY, 8.0f + posZ);
     SetPosition(position);
     Look(App->renderer->GetCurrentModel()->GetOrigin());
 }
