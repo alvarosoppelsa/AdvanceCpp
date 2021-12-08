@@ -85,7 +85,7 @@ void ModuleWindow::WindowsSizeChanged()
 {
 	SDL_UpdateWindowSurface(window);
 	ScreenSurface = SDL_GetWindowSurface(window);
-	App->renderer->UpdateWindowSize();
+	App->renderer->UpdateWindowSize(ScreenSurface->w, ScreenSurface->h);
 	App->camera->SetAspectRatio(ScreenSurface->w, ScreenSurface->h);
 }
 

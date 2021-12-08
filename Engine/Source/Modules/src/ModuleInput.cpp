@@ -53,7 +53,7 @@ update_status ModuleInput::PreUpdate()
             {
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                 {
-                    App->renderer->UpdateWindowSize();
+                    App->window->WindowsSizeChanged();
                 }
                 break;
             }

@@ -20,7 +20,7 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
-	void UpdateWindowSize();
+	void UpdateWindowSize(int width, int height);
 	bool LoadModule(const char* filePath);
 	const Model* GetCurrentModel() const { return RenderModel; }
 	void* GetContext() const

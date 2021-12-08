@@ -78,9 +78,9 @@ update_status ModuleRender::PreUpdate()
 
 update_status ModuleRender::Update()
 {	
-	RenderModel->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), float4x4::identity);
+	RenderModel->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), float4x4::identity);
 
-	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), Width, Height);
+	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), Width, Height);
 
 	// Note: Debug draw disables blending
 	glEnable(GL_BLEND);
@@ -106,9 +106,10 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::UpdateWindowSize()
+void ModuleRender::UpdateWindowSize(int width, int height)
 {
-	SDL_GetWindowSize(App->window->window, &Width, &Height);
+	Width = width;
+	Height = height;
 	glViewport(0, 0, Width, Height);
 }
 
