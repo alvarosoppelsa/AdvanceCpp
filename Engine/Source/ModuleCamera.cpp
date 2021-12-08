@@ -32,8 +32,7 @@ ModuleCamera::~ModuleCamera()
 bool ModuleCamera::Init()
 {
     CameraFrustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-    SDL_Surface* screenSurface = App->window->ScreenSurface;
-    SetAspectRatio(screenSurface->w, screenSurface->h);
+    SetAspectRatio(App->window->GetScreenWidth(), App->window->GetScreenHeight());
     SetHorizontalFovInDegrees(90.0f);
     SetPlaneDistances(0.1f, 200.0f);
     SetPosition(float3(8.0f, 8.0f, 8.0f));
@@ -72,7 +71,7 @@ float4x4 ModuleCamera::GetViewMatrix()
     //return 
 }
 
-float4x4 ModuleCamera::GetProjectionMAtrix()
+float4x4 ModuleCamera::GetProjectionMatrix()
 {
     return CameraFrustum.ProjectionMatrix();
 }
@@ -288,14 +287,5 @@ void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
 
 void ModuleCamera::SetDefaultValues()
 {
-    CameraFrustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-    SDL_Surface* screenSurface = App->window->ScreenSurface;
-    SetAspectRatio(screenSurface->w, screenSurface->h);
-    SetHorizontalFovInDegrees(90.0f);
-    SetPlaneDistances(0.1f, 100.0f);
-    SetPosition(float3(1.0f, 1.0f, 5.0f));
-    float3x3 rotation = float3x3::identity;
-    CameraFrustum.SetFront(rotation.WorldZ());
-    CameraFrustum.SetUp(rotation.WorldY());
-    Look(float3(0.0f, 0.0f, 0.0f));
+    Init();
 }

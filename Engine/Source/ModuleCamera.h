@@ -18,7 +18,7 @@ public:
 	bool CleanUp() override;
 
 	float4x4 GetViewMatrix();
-	float4x4 GetProjectionMAtrix();
+	float4x4 GetProjectionMatrix();
 
 	void SetPosition(const float3& position);
 	const float3& GetPosition() const;
