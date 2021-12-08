@@ -13,6 +13,8 @@ INTRODUCTION
 
 Current Maintainer: Alvaro Soppelsa <alvarosoppelsa@gmail.com>
 
+GitHub: <https://github.com/alvarosoppelsa/AdvanceCpp/blob/master/Engine>
+
 GameEngine is an open source, easy to use & totally free game engine that has been developed for the UPC Master Degree 'Advance Programming for AAA Video Games'
 His main pourpose is to load and render 3D modules and have several settings to inspect them.
 It is based on SDL, Glew, ImGui, DevIl and MathGeoLib libraries.
@@ -47,7 +49,10 @@ System: Let the user know about memory consumption in real time
 
 In 'Editor Tools' you will find the Console that print usefull information and Performance Plots that print FPS and delta time.
 
-In Main Menu Bar, you can Close the program by doing File->Close and watch About window.
+In Main Menu Bar:
+- The GameEngine can be closed by doing File->Close
+- General Settings Hide/Show in View->GeneralSettings
+- About window.
 
 CAMERA CONTROLS
 ---------------
