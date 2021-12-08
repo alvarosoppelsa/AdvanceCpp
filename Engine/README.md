@@ -47,7 +47,10 @@ System: Let the user know about memory consumption in real time
 
 In 'Editor Tools' you will find the Console that print usefull information and Performance Plots that print FPS and delta time.
 
-In Main Menu Bar, you can Close the program by doing File->Close and watch About window.
+In Main Menu Bar:
+- The GameEngine can be closed by doing File->Close
+- General Settings Hide/Show in View->GeneralSettings
+- About window.
 
 CAMERA CONTROLS
 ---------------
