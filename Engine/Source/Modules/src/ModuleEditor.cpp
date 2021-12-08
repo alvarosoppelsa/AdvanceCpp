@@ -15,7 +15,7 @@
 
 #define MAX_CONSOLE_OUTPUT 100
 #define MAX_PERFORMANCE_LOG 60
-#define TO_MBYTES 1/(1024 * 1024)
+#define TO_KBYTES 1/1024
 using namespace ImGui;
 
 ModuleEditor::ModuleEditor()
@@ -379,5 +379,12 @@ void ModuleEditor::SystemInfo()
         &memCounter,
         sizeof(memCounter));
     Separator();
-    Text("Memory Consumption: %d Mb", memCounter.WorkingSetSize * TO_MBYTES);
+    Text("GPU: %s", glGetString(GL_VENDOR));
+    Text("Driver: %s", glGetString(GL_RENDERER));
+    Text("Memory Consumption: %d Kb", memCounter.WorkingSetSize * TO_KBYTES);
+    Separator();
+    Text("OpenGL v%s", glGetString(GL_VERSION));
+    Text("Glew v%s", glewGetString(GLEW_VERSION));
+    Text("GLSL v%s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
 }
