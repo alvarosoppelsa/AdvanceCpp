@@ -55,7 +55,8 @@ private:
 	float FarDistance;
 	float Speed;
 	float RotationSpeed;
-	float ZoomSpeed;
+	float ZoomPosSpeed;
+	float ZoomFovSpeed;
 	float OrbitSpeed;
 
 	float Roll;
