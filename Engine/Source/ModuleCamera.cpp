@@ -268,7 +268,8 @@ void ModuleCamera::OrbitModule()
     const float3 moduleOrigin = model->GetOrigin();
 
     // Radius is the distance to the module in xz plane
-    const float radius = sqrt(pow(Position.x - moduleOrigin.x, 2) + pow(Position.z - moduleOrigin.z, 2));
+    float2 distanceXZ = float2(Position.x - moduleOrigin.x, Position.z - moduleOrigin.z);
+    const float radius = sqrt((distanceXZ.x * distanceXZ.x) + (distanceXZ.y * distanceXZ.y));
 
     OrbitAngle += GetSpeed(MoveType::ORBIT);
     const float3 position = float3(sin(OrbitAngle * DEGTORAD) * radius, Position.y, cos(OrbitAngle * DEGTORAD) * radius);

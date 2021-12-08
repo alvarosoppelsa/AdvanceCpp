@@ -17,7 +17,7 @@ struct Edge
     float max;
 };
 
-class ModelOBB
+class ModelAABB
 {
     friend Model;
 private:
@@ -53,7 +53,7 @@ private:
     std::vector<Texture> TexturesLoaded;
     float3 Position;
 
-    ModelOBB OBB;
+    ModelAABB AABB;
 
     void Load(const char* file);
     void ProcessNode(aiNode* node, const aiScene* scene);

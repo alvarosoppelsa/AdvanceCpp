@@ -49,7 +49,7 @@ void Model::Load(const char* file)
 		ENGINE_LOG("ERROR::ASSIMP::%c", import.GetErrorString());
 		return;
 	}
-	std::string path = file;
+	const std::string path = file;
 	Directory = path.substr(0, path.find_last_of('\\'));
 
     ENGINE_LOG("Scene Summary");
@@ -85,12 +85,12 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Texture> textures;
 
     // Store the first values to be able to compare them later
-    OBB.xBounds.min = mesh->mVertices[0].x;
-    OBB.xBounds.max = mesh->mVertices[0].x;
-    OBB.yBounds.min = mesh->mVertices[0].y;
-    OBB.yBounds.max = mesh->mVertices[0].y;
-    OBB.zBounds.min = mesh->mVertices[0].z;
-    OBB.zBounds.max = mesh->mVertices[0].z;
+    AABB.xBounds.min = mesh->mVertices[0].x;
+    AABB.xBounds.max = mesh->mVertices[0].x;
+    AABB.yBounds.min = mesh->mVertices[0].y;
+    AABB.yBounds.max = mesh->mVertices[0].y;
+    AABB.zBounds.min = mesh->mVertices[0].z;
+    AABB.zBounds.max = mesh->mVertices[0].z;
 
     // process vertex positions, normals and texture coordinates
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -104,12 +104,12 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         vector.z = mesh->mVertices[i].z;
         vertex.Position = vector;
          
-        OBB.xBounds.min = std::min(OBB.xBounds.min, vector.x);
-        OBB.xBounds.max = std::max(OBB.xBounds.max, vector.x);
-        OBB.yBounds.min = std::min(OBB.yBounds.min, vector.y);
-        OBB.yBounds.max = std::max(OBB.yBounds.max, vector.y);
-        OBB.zBounds.min = std::min(OBB.zBounds.min, vector.z);
-        OBB.zBounds.max = std::max(OBB.zBounds.max, vector.z);
+        AABB.xBounds.min = std::min(AABB.xBounds.min, vector.x);
+        AABB.xBounds.max = std::max(AABB.xBounds.max, vector.x);
+        AABB.yBounds.min = std::min(AABB.yBounds.min, vector.y);
+        AABB.yBounds.max = std::max(AABB.yBounds.max, vector.y);
+        AABB.zBounds.min = std::min(AABB.zBounds.min, vector.z);
+        AABB.zBounds.max = std::max(AABB.zBounds.max, vector.z);
 
         // Normals
         vector.x = mesh->mNormals[i].x;
@@ -205,11 +205,11 @@ void Model::Draw(const unsigned int programId, const float4x4& view, const float
 
 float3 Model::GetModelSizeFactor() const
 {
-    ENGINE_LOG("OBB.DeltaX: %f", OBB.DeltaX());
-    ENGINE_LOG("OBB.DeltaY: %f", OBB.DeltaY());
-    ENGINE_LOG("OBB.DeltaZ: %f", OBB.DeltaZ());
+    ENGINE_LOG("AABB.DeltaX: %f", AABB.DeltaX());
+    ENGINE_LOG("AABB.DeltaY: %f", AABB.DeltaY());
+    ENGINE_LOG("AABB.DeltaZ: % f", AABB.DeltaZ());
 
-    return float3(OBB.DeltaX(), OBB.DeltaY(), OBB.DeltaZ());
+    return float3(AABB.DeltaX(), AABB.DeltaY(), AABB.DeltaZ());
 }
 
 int Model::TextureFromFile(const char* path, const std::string& directory) const
