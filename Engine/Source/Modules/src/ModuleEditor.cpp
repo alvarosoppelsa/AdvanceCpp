@@ -174,49 +174,49 @@ inline void ModuleEditor::CameraSettings()
         App->camera->SetPosition(cameraPos);
     }
 
-    Separator();
-    Text("Rotation");
-	SliderFloat3("Yaw, Pitch, Roll", &CameraRotation[0], 0.5f, 10.0f);
+ //   Separator();
+ //   Text("Rotation");
+	//SliderFloat3("Yaw, Pitch, Roll", &CameraRotation[0], 0.5f, 10.0f);
 
     Separator();
     Text("Camera Speed");
     Separator();
     float speed = App->camera->GetMoveSpeed();
-    if( SliderFloat("Move Speed", &speed, 0.05f, 1.0f))
+    if( SliderFloat("Move Speed", &speed, 0.001f, 0.5f))
     {
         App->camera->SetMoveSpeed(speed);
     }
     Separator();
     speed = App->camera->GetRotationSpeed();
-    if (SliderFloat("Rotation Speed", &speed, 0.05f, 0.5f))
+    if (SliderFloat("Rotation Speed", &speed, 0.001f, 0.5f))
     {
         App->camera->SetRotationSpeed(speed);
     }
     Separator();
     speed = App->camera->GetZoomPosSpeed();
-    if (SliderFloat("Zoom Speed", &speed, 0.1f, 2.0f))
+    if (SliderFloat("Zoom Speed", &speed, 0.01f, 1.0f))
     {
         App->camera->SetZoomPosSpeed(speed);
     }
     Separator();
     speed = App->camera->GetOrbitSpeed();
-    if (SliderFloat("Orbit Speed", &speed, 0.1f, 1.0f))
+    if (SliderFloat("Orbit Speed", &speed, 0.001f, 0.05f))
     {
         App->camera->SetOrbitSpeed(speed);
     }
 
     Separator();
     Text("Projection");
-    CameraAspect = App->camera->GetAspectRatio();
+    float cameraAspect = App->camera->GetAspectRatio();
 
     Separator();
-	ImGui::InputScalar("Aspect Ratio", ImGuiDataType_Float, &CameraAspect);
+	ImGui::InputScalar("Aspect Ratio", ImGuiDataType_Float, &cameraAspect);
 
     Separator();
-    CameraFOV = App->camera->GetHorizontalFovDegrees();
-    if (SliderFloat("Horizontal FOV", &CameraFOV, 0.1f, 120.0f))
+    float cameraFOV = App->camera->GetHorizontalFovDegrees();
+    if (SliderFloat("Horizontal FOV", &cameraFOV, 0.1f, 120.0f))
     {
-        App->camera->SetHorizontalFovInDegrees(CameraFOV);
+        App->camera->SetHorizontalFovInDegrees(cameraFOV);
     }
 
     Separator();

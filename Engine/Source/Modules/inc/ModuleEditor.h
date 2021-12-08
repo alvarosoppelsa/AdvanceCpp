@@ -49,9 +49,6 @@ private:
 	void SwapInterval() const;
 
 	// Camera
-	float CameraAspect;
-	float CameraFOV;
-	float3 CameraRotation;
 	void CameraSettings();
 
 	// About

@@ -12,15 +12,16 @@ static const float DEGTORAD = math::pi / 180.0;
 static const float EPSILON = 1e-5;
 
 ModuleCamera::ModuleCamera()
-	: AspectRatio(0.0f)
-	, HorizontalFovDegree(0.0f)
-	, NearDistance(0.0f)
-	, FarDistance(0.0f)
-	, Speed(0.05f)
-	, RotationSpeed(0.05f)
-	, ZoomPosSpeed(0.1f)
-	, ZoomFovSpeed(0.0005f)
-	, OrbitSpeed(0.1f)
+    : AspectRatio(0.0f)
+    , HorizontalFovDegree(0.0f)
+    , NearDistance(0.0f)
+    , FarDistance(0.0f)
+    , Speed(0.05f)
+    , RotationSpeed(0.05f)
+    , ZoomPosSpeed(0.1f)
+    , ZoomFovSpeed(0.0005f)
+    , OrbitSpeed(0.1f)
+    , OrbitAngle(0.0f)
 	, Roll(0.0f)
 	, Pitch(0.0f)
 	, Yaw(0.0f)
@@ -116,7 +117,7 @@ void ModuleCamera::SetAspectRatio(unsigned int width, unsigned int height)
     CameraFrustum.SetHorizontalFovAndAspectRatio(HorizontalFovDegree * DEGTORAD, AspectRatio);
 }
 
-float ModuleCamera::GetAspectRatio()
+float ModuleCamera::GetAspectRatio() const
 {
     return CameraFrustum.AspectRatio();
 }
@@ -155,6 +156,7 @@ void ModuleCamera::LookModule()
 
 void ModuleCamera::SetRotationMatrix()
 {
+    //WIP
 }
 
 void ModuleCamera::CameraInputs()
@@ -233,7 +235,7 @@ inline void ModuleCamera::RotationInputs()
 
     if (App->input->GetKeyboard(SDL_SCANCODE_F))
     {
-        Look(App->renderer->GetCurrentModel()->GetOrigin());
+        LookModule();
     }
 
     // Mouse
@@ -252,10 +254,26 @@ inline void ModuleCamera::RotationInputs()
         && App->input->GetMouseButton().button == SDL_BUTTON_LEFT 
         && App->input->GetMouseButton().state == SDL_PRESSED)
     {
-        float3 moduleOrigin = App->renderer->GetCurrentModel()->GetOrigin();
-        App->input->GetMouseMotion().X * GetSpeed();
-        Look(moduleOrigin);
+        OrbitModule();
     }
+}
+
+void ModuleCamera::OrbitModule()
+{
+    const Model* model = App->renderer->GetCurrentModel();
+    if (model == nullptr)
+    {
+        return;
+    }
+    const float3 moduleOrigin = model->GetOrigin();
+
+    // Radius is the distance to the module in xz plane
+    const float radius = sqrt(pow(Position.x - moduleOrigin.x, 2) + pow(Position.z - moduleOrigin.z, 2));
+
+    OrbitAngle += GetSpeed(MoveType::ORBIT);
+    const float3 position = float3(sin(OrbitAngle * DEGTORAD) * radius, Position.y, cos(OrbitAngle * DEGTORAD) * radius);
+    SetPosition(position);
+    Look(moduleOrigin);
 }
 
 void ModuleCamera::ZoomInPosition()
