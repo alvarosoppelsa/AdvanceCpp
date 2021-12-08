@@ -19,11 +19,11 @@ enum update_status
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "Game Engine"
-#define MY_REPO "https://github.com/alvarosoppelsa/AdvanceCpp/tree/master/Engine"
+#define MY_REPO "https://github.com/alvarosoppelsa/AdvanceCpp/tree/develop/Engine"
 #define LIBRARIES_USED "SDL 2.0.16\nGLEW 2.1.0\nDear ImGui 1.86\nDevIL 1.8.0"
 
 // Shaders ----------------
-#ifdef DEBUG
+#ifdef _DEBUG
 static const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\FragmentShaderWithUniforms.glsl";
 static const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\VertexShaderWithUniforms.glsl";
 

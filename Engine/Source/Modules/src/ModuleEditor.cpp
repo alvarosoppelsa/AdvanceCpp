@@ -188,7 +188,7 @@ inline void ModuleEditor::CameraSettings()
     }
     Separator();
     speed = App->camera->GetRotationSpeed();
-    if (SliderFloat("Rotation Speed", &speed, 0.001f, 0.5f))
+    if (SliderFloat("Rotation Speed", &speed, 0.0001f, 0.05f))
     {
         App->camera->SetRotationSpeed(speed);
     }
