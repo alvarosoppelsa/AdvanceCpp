@@ -23,9 +23,18 @@ enum update_status
 #define LIBRARIES_USED "SDL 2.0.16\nGLEW 2.1.0\nDear ImGui 1.86\nDevIL 1.8.0"
 
 // Shaders ----------------
+#ifdef DEBUG
 static const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\FragmentShaderWithUniforms.glsl";
 static const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\VertexShaderWithUniforms.glsl";
 
 // Init Modules -----------
 static const char* BakerHouse = ".\\Resources\\Models\\BakerHouse.fbx";
 static const char* DefaultTexturePath = ".\\Resources\\Textures";
+#else
+static const char* FRAGMENT_SHADER_FILE = ".\\Game\\shaders\\fragment.glsl";
+static const char* VERTEX_SHADER_FILE = ".\\Game\\shaders\\vertex.glsl";
+
+// Init Modules -----------
+static const char* BakerHouse = ".\\Game\\assets\\resource files\\BakerHouse.fbx";
+static const char* DefaultTexturePath = ".\\Game\\assets\\resource_files\\Textures";
+#endif
