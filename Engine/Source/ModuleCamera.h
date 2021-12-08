@@ -6,6 +6,15 @@
 #include "MathGeoLib.h"
 #include "Performance.h"
 
+enum class MoveType
+{
+	TRANSLATION = 0,
+	ROTATION,
+	ZOOM_POS,
+	ZOOM_FOV,
+	ORBIT
+};
+
 class ModuleCamera : public Module
 {
 public:
@@ -45,11 +54,18 @@ private:
 	float NearDistance;
 	float FarDistance;
 	float Speed;
-	float Angle;
+	float RotationSpeed;
+	float ZoomPosSpeed;
+	float ZoomFovSpeed;
+	float OrbitSpeed;
 
 	float Roll;
 	float Pitch;
 	float Yaw;
+	void SetRotationMatrix();
+
+	float4x4 RotationMatrix;
+	float4x4 TranslationMatrix;
 
 	float3 LookPosition;
 	float3 Position;
@@ -59,7 +75,7 @@ private:
 	void AspectInputs();
 	void RotationInputs();
 
-	float GetSpeed() const;
+	float GetSpeed(MoveType type = MoveType::TRANSLATION) const;
 	void ZoomOutFOV();
 	void ZoomInFOV();
 };
