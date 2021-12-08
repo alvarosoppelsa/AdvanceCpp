@@ -12,6 +12,7 @@ INTRODUCTION
 ------------
 
 Current Maintainer: Alvaro Soppelsa <alvarosoppelsa@gmail.com>
+GitHub: <https://github.com/alvarosoppelsa/AdvanceCpp/blob/master/Engine>
 
 GameEngine is an open source, easy to use & totally free game engine that has been developed for the UPC Master Degree 'Advance Programming for AAA Video Games'
 His main pourpose is to load and render 3D modules and have several settings to inspect them.
