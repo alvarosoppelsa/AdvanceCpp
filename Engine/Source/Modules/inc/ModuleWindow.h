@@ -10,21 +10,23 @@ class ModuleWindow : public Module
 {
 public:
 	ModuleWindow();
-	virtual ~ModuleWindow();
+	~ModuleWindow();
 
-	bool Init();
-	bool CleanUp();
+	bool Init() override;
+	bool CleanUp() override;
+
 	void WindowsSizeChanged();
-
 	void ToggleFullScreen();
+	void SetSwapInterval(int swapInterval) const;
+	int GetScreenWidth() const { return ScreenSurface->w; };
+	int GetScreenHeight() const { return ScreenSurface->h; };
 
 	SDL_Window* window = NULL;
-	SDL_Surface* ScreenSurface = NULL;
 
 private:
-
 	bool IsFullScreen = false;
 	int RefreshRate;
+	SDL_Surface* ScreenSurface = NULL;
 };
 
 #endif // __ModuleWindow_H__

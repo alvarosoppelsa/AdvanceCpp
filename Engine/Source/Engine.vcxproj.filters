@@ -40,12 +40,6 @@
     <ClCompile Include="Modules\src\ModuleRender.cpp">
       <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
-    <ClCompile Include="Modules\src\ModuleRenderExercise.cpp">
-      <Filter>Application Modules\SourceFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="Modules\src\ModuleTexture.cpp">
-      <Filter>Application Modules\SourceFiles</Filter>
-    </ClCompile>
     <ClCompile Include="Modules\src\ModuleWindow.cpp">
       <Filter>Application Modules\SourceFiles</Filter>
     </ClCompile>
@@ -229,12 +223,6 @@
       <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleRender.h">
-      <Filter>Application Modules\HeaderFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Modules\inc\ModuleRenderExercise.h">
-      <Filter>Application Modules\HeaderFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Modules\inc\ModuleTexture.h">
       <Filter>Application Modules\HeaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="Modules\inc\ModuleWindow.h">
@@ -483,6 +471,18 @@
     <ClInclude Include="Mesh.h">
       <Filter>Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Performance.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpLogger.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shaders">
@@ -535,6 +535,9 @@
     </Filter>
     <Filter Include="Geometry">
       <UniqueIdentifier>{6d39e779-28ec-4bd6-8d7a-83170c9f1239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{fadaf6d2-3320-4104-8d0a-b23cb478874f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

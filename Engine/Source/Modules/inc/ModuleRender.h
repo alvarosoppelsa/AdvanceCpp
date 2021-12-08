@@ -7,27 +7,31 @@ struct SDL_Renderer;
 struct SDL_Rect;
 class Model;
 
-class ModuleRenderExercise;
-
 class ModuleRender : public Module
 {
-	friend ModuleRenderExercise;
-
 public:
 	ModuleRender();
 	~ModuleRender();
 
-	void* context;
 
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	update_status PostUpdate();
-	bool CleanUp();
-	void WindowResized(unsigned width, unsigned height);
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status Update() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
+
+	void UpdateWindowSize(int width, int height);
+	bool LoadModule(const char* filePath);
+	const Model* GetCurrentModel() const { return RenderModel; }
+	void* GetContext() const
+	{
+		assert(Context != nullptr);
+		return Context;
+	}
 
 private:
 	int Width = 0;
 	int Height = 0;
-	Model* Modelito;
+	Model* RenderModel;
+	void* Context;
 };

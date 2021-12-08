@@ -1,13 +1,26 @@
 #include "ModuleProgram.h"
-#include <Geometry/Frustum.h>
+#include "Globals.h"
 #include <GL/glew.h>
 #include <cassert>
-#include "Math/float3.h"
-#include "Math/float4x4.h"
 #include "IL/il.h"
 
-static const char* FRAGMENT_SHADER_FILE = "..\\Source\\Shaders\\FragmentShaderWithUniforms.glsl";
-static const char* VERTEX_SHADER_FILE = "..\\Source\\Shaders\\VertexShaderWithUniforms.glsl";
+ModuleProgram::ModuleProgram()
+	: ProgramId(0)
+	, VertexId(0)
+	, FragmentId(0)
+{
+	VertexShaderPath = VERTEX_SHADER_FILE;
+	FragmentShaderPath = FRAGMENT_SHADER_FILE;
+}
+
+ModuleProgram::ModuleProgram(std::string& vertex_path, std::string& fragment_path)
+	: ProgramId(0)
+	, VertexId(0)
+	, FragmentId(0)
+{
+	VertexShaderPath = vertex_path;
+	FragmentShaderPath = fragment_path;
+}
 
 bool ModuleProgram::Init()
 {
@@ -119,20 +132,3 @@ unsigned int ModuleProgram::CreateProgram(unsigned vtx_shader, unsigned frg_shad
 	return program_id;
 }
 
-ModuleProgram::ModuleProgram() :
-	VertexId(0),
-	FragmentId(0),
-	ProgramId(0)
-{
-	VertexShaderPath = VERTEX_SHADER_FILE;
-	FragmentShaderPath = FRAGMENT_SHADER_FILE;
-}
-
-ModuleProgram::ModuleProgram(std::string& vertex_path, std::string& fragment_path) :
-	VertexId(0),
-	FragmentId(0),
-	ProgramId(0)
-{
-	VertexShaderPath = vertex_path;
-	FragmentShaderPath = fragment_path;
-}

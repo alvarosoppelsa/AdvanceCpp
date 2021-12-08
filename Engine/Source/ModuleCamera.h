@@ -4,12 +4,22 @@
 #include "Globals.h"
 #include "Math/float4x4.h"
 #include "MathGeoLib.h"
+#include "Performance.h"
+
+enum class MoveType
+{
+	TRANSLATION = 0,
+	ROTATION,
+	ZOOM_POS,
+	ZOOM_FOV,
+	ORBIT
+};
 
 class ModuleCamera : public Module
 {
 public:
 	ModuleCamera();
-	~ModuleCamera() = default;
+	~ModuleCamera();
 
 	bool Init() override;
 	update_status PreUpdate() override;
@@ -17,34 +27,55 @@ public:
 	bool CleanUp() override;
 
 	float4x4 GetViewMatrix();
-	float4x4 GetProjectionMAtrix();
+	float4x4 GetProjectionMatrix();
+	const float3& GetPosition() const;
+	float GetAspectRatio() const;
+	float GetHorizontalFovDegrees() const;
+
+	float GetMoveSpeed() const { return Speed; };
+	float GetZoomPosSpeed() const { return ZoomPosSpeed; };
+	float GetRotationSpeed() const { return RotationSpeed; };
+	float GetOrbitSpeed() const { return OrbitSpeed; };
 
 	void SetPosition(const float3& position);
-	const float3& GetPosition();
-	void Rotate(float pitch, float yaw);
-
+	void Rotate(float pitch, float yaw, float roll);
 	void SetAspectRatio(unsigned int width, unsigned int height);
-	float GetAspectRatio();
-	void SetHorizontalFovInDegrees(float fov_deg);
-	float GetHorizontalFovDegrees() const;
-	void Look(const float3& position);
-
+	void SetHorizontalFovInDegrees(float fovDegree);
 	void SetPlaneDistances(const float nearDist, const float farDist);
 	void SetDefaultValues();
 
+	void SetMoveSpeed(const float speed) { Speed = speed; };
+	void SetZoomPosSpeed(const float speed) { ZoomPosSpeed = speed; };
+	void SetRotationSpeed(const float speed) { RotationSpeed = speed; };
+	void SetOrbitSpeed(const float speed) { OrbitSpeed = speed; };
+
+	void Look(const float3& position);
+	void LookModule();
+	void ZoomInPosition();
+	void ZoomOutPosition();
+
 private:
 	Frustum CameraFrustum;
-
+	// Projection
 	float AspectRatio;
 	float HorizontalFovDegree;
 	float NearDistance;
 	float FarDistance;
-	float CameraSpeed;
-	float ZoomSpeed;
+	// Speed
+	float Speed;
+	float RotationSpeed;
+	float ZoomPosSpeed;
+	float ZoomFovSpeed;
+	float OrbitSpeed;
 
-	float3 Roll;
-	float3 Pitch;
-	float3 Yaw;
+	float OrbitAngle;
+	// Rotation (WIP)
+	float Roll;
+	float Pitch;
+	float Yaw;
+	void SetRotationMatrix();
+	float4x4 RotationMatrix;
+	float4x4 TranslationMatrix;
 
 	float3 LookPosition;
 	float3 Position;
@@ -53,7 +84,10 @@ private:
 	void TranslationInputs();
 	void AspectInputs();
 	void RotationInputs();
-	void ZoomIn();
-	void ZoomOut();
+	void OrbitModule();
+
+	float GetSpeed(MoveType type = MoveType::TRANSLATION) const;
+	void ZoomOutFOV();
+	void ZoomInFOV();
 };
 

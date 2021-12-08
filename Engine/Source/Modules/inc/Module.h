@@ -12,6 +12,10 @@ public:
 	{
 	}
 
+	virtual ~Module()
+	{
+	}
+
 	virtual bool Init() 
 	{
 		initialized = true;

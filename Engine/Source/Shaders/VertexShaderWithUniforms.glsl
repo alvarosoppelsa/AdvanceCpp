@@ -12,5 +12,5 @@ out vec2 uv0;
 void main()
 {
 	gl_Position = proj * view * vec4(vertex_position, 1.0);
-	uv0 = vec2(vertex_uv0.x, vertex_uv0.y);
+	uv0 = vertex_uv0;
 }

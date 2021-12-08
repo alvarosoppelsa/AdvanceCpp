@@ -104,8 +104,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\DevIL Windows SDK\lib\x64\Release;..\..\Assimp\lib;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc141-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SDL\lib\x64\;..\..\DevIL Windows SDK\lib\x64\Release;..\..\Assimp\lib;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;assimp-vc141-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -131,15 +131,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\;.\Modules\inc;..\..\DevIL Windows SDK\include;..\..\MathGeoLib\include;.\assimp\;.\glew\include;.\debug draw;.\SDL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\Modules\inc;..\..\Assimp\include;..\..\DevIL Windows SDK\include;..\..\MathGeoLib\;.\glew\include;.\debug draw;.\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\SDL\lib\x64\;..\..\DevIL Windows SDK\lib\x64\Release;..\..\Assimp\lib;.\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;assimp-vc141-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -203,8 +205,6 @@
     <ClCompile Include="Modules\src\ModuleInput.cpp" />
     <ClCompile Include="Modules\src\ModuleProgram.cpp" />
     <ClCompile Include="Modules\src\ModuleRender.cpp" />
-    <ClCompile Include="Modules\src\ModuleRenderExercise.cpp" />
-    <ClCompile Include="Modules\src\ModuleTexture.cpp" />
     <ClCompile Include="Modules\src\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -284,6 +284,7 @@
     <ClInclude Include="..\..\MathGeoLib\Math\vec2d.h" />
     <ClInclude Include="..\..\MathGeoLib\Time\Clock.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AssimpLogger.h" />
     <ClInclude Include="debug draw\debugdraw.h" />
     <ClInclude Include="debug draw\debug_draw.hpp" />
     <ClInclude Include="Globals.h" />
@@ -305,10 +306,11 @@
     <ClInclude Include="Modules\inc\ModuleInput.h" />
     <ClInclude Include="Modules\inc\ModuleProgram.h" />
     <ClInclude Include="Modules\inc\ModuleRender.h" />
-    <ClInclude Include="Modules\inc\ModuleRenderExercise.h" />
-    <ClInclude Include="Modules\inc\ModuleTexture.h" />
     <ClInclude Include="Modules\inc\ModuleWindow.h" />
+    <ClInclude Include="Performance.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\MathGeoLib\Geometry\KDTree.inl" />

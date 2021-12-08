@@ -2,48 +2,30 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "SDL.h"
-#include "GL/glew.h"
-#include <cassert>
-
+#include "ModuleProgram.h"
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_opengl3.h"
-
 #include "Model.h"
+#include "Tools.h"
 
-ModuleRender::ModuleRender() : 
-	context(nullptr)
+#include <cassert>
+
+#include "SDL.h"
+#include "GL/glew.h"
+
+#include "Math/float4x4.h"
+
+ModuleRender::ModuleRender() 
+	: RenderModel(nullptr)
+	, Context(nullptr)
 {
-	Modelito = new Model();
 }
 
-// Destructor
 ModuleRender::~ModuleRender()
 {
+	delete RenderModel;
 }
 
-static void APIENTRY openglCallbackFunction(
-	GLenum source,
-	GLenum type,
-	GLuint id,
-	GLenum severity,
-	GLsizei length,
-	const GLchar* message,
-	const void* userParam
-) {
-	(void)source; (void)type; (void)id;
-	(void)severity; (void)length; (void)userParam;
-	fprintf(stderr, "%s\n", message);
-	ENGINE_LOG(message);
-	if (severity == GL_DEBUG_SEVERITY_HIGH) {
-		ENGINE_LOG("Aborting...\n");
-		abort();
-	}
-}
-
-// Called before render is available
 bool ModuleRender::Init()
 {	
 	ENGINE_LOG("Creating Renderer context");
@@ -55,7 +37,7 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); // we want to have a stencil buffer with 8 bits
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
-	context = SDL_GL_CreateContext(App->window->window);
+	Context = SDL_GL_CreateContext(App->window->window);
 
 	GLenum err = glewInit();
 
@@ -73,7 +55,7 @@ bool ModuleRender::Init()
 	// Enable the debug callback
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(openglCallbackFunction, nullptr);
+	glDebugMessageCallback(Tools::OpenGlCallbackFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
 
 	glEnable(GL_TEXTURE_2D);
@@ -81,8 +63,8 @@ bool ModuleRender::Init()
 	SDL_GetWindowSize(App->window->window, &Width, &Height);
 	glViewport(0, 0, Width, Height);
 
-	Modelito->Load("./Resources/Models/BakerHouse.fbx");
-
+	RenderModel = new Model(BakerHouse);
+	
 	return true;
 }
 
@@ -95,9 +77,10 @@ update_status ModuleRender::PreUpdate()
 }
 
 update_status ModuleRender::Update()
-{
-	SDL_Surface* sdlSurface = App->window->ScreenSurface;
-	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMAtrix(), sdlSurface->w, sdlSurface->h);
+{	
+	RenderModel->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), float4x4::identity);
+
+	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), Width, Height);
 
 	// Note: Debug draw disables blending
 	glEnable(GL_BLEND);
@@ -118,13 +101,22 @@ bool ModuleRender::CleanUp()
 	ENGINE_LOG("Destroying renderer");
 
 	//Destroy window
-	SDL_GL_DeleteContext(context);
+	SDL_GL_DeleteContext(Context);
 	
 	return true;
 }
 
-void ModuleRender::WindowResized(unsigned width, unsigned height)
+void ModuleRender::UpdateWindowSize(int width, int height)
 {
-	SDL_GetWindowSize(App->window->window, &Width, &Height);
+	Width = width;
+	Height = height;
 	glViewport(0, 0, Width, Height);
+}
+
+bool ModuleRender::LoadModule(const char* filePath)
+{
+	delete RenderModel;
+	RenderModel = new Model(filePath);
+
+	return RenderModel->IsValid();
 }

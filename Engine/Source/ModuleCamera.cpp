@@ -1,37 +1,46 @@
+#include "Application.h"
 #include "ModuleCamera.h"
+#include "ModuleInput.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "Model.h"
+
 #include "GL/glew.h"
 #include "MathGeoLib.h"
-#include "Application.h"
-#include "ModuleInput.h"
-#include "ModuleProgram.h"
-#include "ModuleWindow.h"
 
 static const float DEGTORAD = math::pi / 180.0;
 static const float EPSILON = 1e-5;
 
 ModuleCamera::ModuleCamera()
-	: AspectRatio(0.0f)
-	, HorizontalFovDegree(0.0f)
-	, NearDistance(0.0f)
-	, FarDistance(0.0f)
-	, CameraSpeed(0.5f)
-	, ZoomSpeed(0.01f)
-	, Roll(1.0f, 0.0f, 0.0f)
-	, Pitch(0.0f, 1.0f, 0.0f)
-	, Yaw(0.0f, 0.0f, 1.0f)
+    : AspectRatio(0.0f)
+    , HorizontalFovDegree(0.0f)
+    , NearDistance(0.0f)
+    , FarDistance(0.0f)
+    , Speed(0.05f)
+    , RotationSpeed(0.05f)
+    , ZoomPosSpeed(0.1f)
+    , ZoomFovSpeed(0.0005f)
+    , OrbitSpeed(0.1f)
+    , OrbitAngle(0.0f)
+	, Roll(0.0f)
+	, Pitch(0.0f)
+	, Yaw(0.0f)
 	, LookPosition(float3::zero)
 	, Position(float3::zero)
+{
+}
+
+ModuleCamera::~ModuleCamera()
 {
 }
 
 bool ModuleCamera::Init()
 {
     CameraFrustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-    SDL_Surface* screenSurface = App->window->ScreenSurface;
-    SetAspectRatio(screenSurface->w, screenSurface->h);
+    SetAspectRatio(App->window->GetScreenWidth(), App->window->GetScreenHeight());
     SetHorizontalFovInDegrees(90.0f);
-    SetPlaneDistances(0.1f, 100.0f);
-    SetPosition(float3(1.0f, 1.0f, 5.0f));
+    SetPlaneDistances(0.1f, 200.0f);
+    SetPosition(float3(8.0f, 8.0f, 8.0f));
     float3x3 rotation = float3x3::identity;
     CameraFrustum.SetFront(rotation.WorldZ());
     CameraFrustum.SetUp(rotation.WorldY());
@@ -58,10 +67,16 @@ bool ModuleCamera::CleanUp()
 float4x4 ModuleCamera::GetViewMatrix()
 {
     // TODO: Return view matrix from roll, pitch & yaw values
+    Quat rotation = Quat();
+    rotation.RotateX(Pitch);
+    rotation.RotateY(Yaw);
+    rotation.RotateZ(Roll);
+    rotation.Inverse();
     return float4x4(CameraFrustum.ViewMatrix());
+    //return 
 }
 
-float4x4 ModuleCamera::GetProjectionMAtrix()
+float4x4 ModuleCamera::GetProjectionMatrix()
 {
     return CameraFrustum.ProjectionMatrix();
 }
@@ -71,12 +86,13 @@ void ModuleCamera::SetPosition(const float3& position)
     CameraFrustum.SetPos(Position = position);
 }
 
-const float3& ModuleCamera::GetPosition()
+const float3& ModuleCamera::GetPosition() const
 {
     return Position;
 }
 
-void ModuleCamera::Rotate(float pitch, float yaw)
+// Deprecate below method
+void ModuleCamera::Rotate(float pitch = 0.0f, float yaw = 0.0f, float roll = 0.0f)
 {
     if (yaw > EPSILON || yaw < EPSILON)
     {
@@ -101,7 +117,7 @@ void ModuleCamera::SetAspectRatio(unsigned int width, unsigned int height)
     CameraFrustum.SetHorizontalFovAndAspectRatio(HorizontalFovDegree * DEGTORAD, AspectRatio);
 }
 
-float ModuleCamera::GetAspectRatio()
+float ModuleCamera::GetAspectRatio() const
 {
     return CameraFrustum.AspectRatio();
 }
@@ -126,6 +142,23 @@ void ModuleCamera::Look(const float3& position)
     CameraFrustum.SetUp(lookDir.MulDir(CameraFrustum.Up()).Normalized());
 }
 
+void ModuleCamera::LookModule()
+{
+    const float3 moduleSizes = App->renderer->GetCurrentModel()->GetModelSizeFactor();
+    const float iSum = 1 / (moduleSizes.x + moduleSizes.y + moduleSizes.z);
+    const float posX = (moduleSizes.y + moduleSizes.z) * moduleSizes.x * iSum;
+    const float posY = (moduleSizes.x + moduleSizes.z) * moduleSizes.y * iSum;
+    const float posZ = (moduleSizes.x + moduleSizes.y) * moduleSizes.z * iSum;
+    const float3 position = float3(8.0f + posX, 8.0f + posY, 8.0f + posZ);
+    SetPosition(position);
+    Look(App->renderer->GetCurrentModel()->GetOrigin());
+}
+
+void ModuleCamera::SetRotationMatrix()
+{
+    //WIP
+}
+
 void ModuleCamera::CameraInputs()
 {
     TranslationInputs();
@@ -137,22 +170,22 @@ inline void ModuleCamera::TranslationInputs()
 {
     if (App->input->GetKeyboard(SDL_SCANCODE_W))
     {
-        Position += CameraFrustum.Front() * CameraSpeed;
+        Position += CameraFrustum.Front() * GetSpeed(MoveType::TRANSLATION);
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_S))
     {
-        Position -= CameraFrustum.Front() * CameraSpeed;
+        Position -= CameraFrustum.Front() * GetSpeed(MoveType::TRANSLATION);
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_D))
     {
-        Position += CameraFrustum.WorldRight() * CameraSpeed;
+        Position += CameraFrustum.WorldRight() * GetSpeed(MoveType::TRANSLATION);
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_A))
     {
-        Position -= CameraFrustum.WorldRight() * CameraSpeed;
+        Position -= CameraFrustum.WorldRight() * GetSpeed(MoveType::TRANSLATION);
     }
 
     SetPosition(Position);
@@ -162,66 +195,145 @@ inline void ModuleCamera::AspectInputs()
 {
     if (App->input->GetKeyboard(SDL_SCANCODE_Q))
     {
-        ZoomOut();
+        ZoomOutFOV();
     }
 
     if (App->input->GetKeyboard(SDL_SCANCODE_E))
     {
-        ZoomIn();
+        ZoomInFOV();
     }
     SetHorizontalFovInDegrees(HorizontalFovDegree);
 }
 
 inline void ModuleCamera::RotationInputs()
 {
-    // TODO: improve calls to application
-    
     // Keyboard
     if (App->input->GetKeyboard(SDL_SCANCODE_UP))
-        Rotate(ZoomSpeed, 0.0f);
+    {
+        Pitch += GetSpeed(MoveType::ROTATION);
+        // Deprecate below
+        Rotate(GetSpeed(MoveType::ROTATION), 0.0f);
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
-        Rotate(-ZoomSpeed, 0.0f);
+    {
+        Pitch -= GetSpeed(MoveType::ROTATION);
+        // Deprecate below
+        Rotate(-GetSpeed(MoveType::ROTATION), 0.0f);
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
-        Rotate(0.0f, ZoomSpeed);
+    {
+        Yaw += GetSpeed(MoveType::ROTATION);
+        // Deprecate below
+        Rotate(0.0f, GetSpeed(MoveType::ROTATION));
+    }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
-        Rotate(0.0f, -ZoomSpeed);
+    {
+        Yaw -= GetSpeed(MoveType::ROTATION);
+        // Deprecate below
+        Rotate(0.0f, -GetSpeed(MoveType::ROTATION));
+    }
+
+    if (App->input->GetKeyboard(SDL_SCANCODE_F))
+    {
+        LookModule();
+    }
 
     // Mouse
     if (App->input->GetMouseButton().button == SDL_BUTTON_RIGHT && App->input->GetMouseButton().state == SDL_PRESSED)
     {
+        Yaw += App->input->GetMouseMotion().X * GetSpeed(MoveType::ROTATION);
+        Pitch += App->input->GetMouseMotion().Y * GetSpeed(MoveType::ROTATION);
+        // Deprecate below
         int mouseMotionX = App->input->GetMouseMotion().X;
         int mouseMotionY = App->input->GetMouseMotion().Y;
         Rotate(-0.01 * (float)mouseMotionY, -0.01 * (float)mouseMotionX);
     }
 
-    // TODO: Until ModelInput fix it
-    //if (App->input->GetMouseWheelDeltaY() > 0)
-    //{
-    //    ZoomIn();
-    //}
-
-    //if (App->input->GetMouseWheelDeltaY() < 0)
-    //{
-    //    ZoomOut();
-    //}
+    // Orbit
+    if (App->input->IsModPressed(KMOD_ALT)
+        && App->input->GetMouseButton().button == SDL_BUTTON_LEFT 
+        && App->input->GetMouseButton().state == SDL_PRESSED)
+    {
+        OrbitModule();
+    }
 }
 
-inline void ModuleCamera::ZoomOut()
+void ModuleCamera::OrbitModule()
+{
+    const Model* model = App->renderer->GetCurrentModel();
+    if (model == nullptr)
+    {
+        return;
+    }
+    const float3 moduleOrigin = model->GetOrigin();
+
+    // Radius is the distance to the module in xz plane
+    const float radius = sqrt(pow(Position.x - moduleOrigin.x, 2) + pow(Position.z - moduleOrigin.z, 2));
+
+    OrbitAngle += GetSpeed(MoveType::ORBIT);
+    const float3 position = float3(sin(OrbitAngle * DEGTORAD) * radius, Position.y, cos(OrbitAngle * DEGTORAD) * radius);
+    SetPosition(position);
+    Look(moduleOrigin);
+}
+
+void ModuleCamera::ZoomInPosition()
+{
+    Position += CameraFrustum.Front() * GetSpeed(MoveType::ZOOM_POS);
+}
+
+void ModuleCamera::ZoomOutPosition()
+{
+    Position -= CameraFrustum.Front() * GetSpeed(MoveType::ZOOM_POS);
+}
+
+inline void ModuleCamera::ZoomOutFOV()
 {
     if (HorizontalFovDegree >= 120.0f)
     {
         return;
     }
-    HorizontalFovDegree += HorizontalFovDegree * ZoomSpeed;
+    HorizontalFovDegree += HorizontalFovDegree * GetSpeed(MoveType::ZOOM_FOV);
 }
 
-inline void ModuleCamera::ZoomIn()
+inline void ModuleCamera::ZoomInFOV()
 {
     if (HorizontalFovDegree <= 0.1)
     {
         return;
     }
-    HorizontalFovDegree -= HorizontalFovDegree * ZoomSpeed;
+    HorizontalFovDegree -= HorizontalFovDegree * GetSpeed(MoveType::ZOOM_FOV);
+}
+
+inline float ModuleCamera::GetSpeed(MoveType type) const
+{
+    float speed = 0.0f;
+    int mult = 1;
+	switch (type)
+	{
+    case MoveType::TRANSLATION:
+        speed = Speed;
+        break;
+    case MoveType::ROTATION:
+        speed = RotationSpeed;
+        break;
+    case MoveType::ZOOM_POS:
+        speed = ZoomPosSpeed;
+        break;
+    case MoveType::ZOOM_FOV:
+        speed = ZoomFovSpeed;
+        break;
+    case MoveType::ORBIT:
+        speed = OrbitSpeed;
+        break;
+    default:
+        speed = Speed;
+        break;
+	}
+    if (App->input->IsModPressed(KMOD_SHIFT))
+    {
+        mult = 2;
+    }
+    return speed * App->performance->GetDeltaTime() * mult;
 }
 
 void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
@@ -231,14 +343,5 @@ void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
 
 void ModuleCamera::SetDefaultValues()
 {
-    CameraFrustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-    SDL_Surface* screenSurface = App->window->ScreenSurface;
-    SetAspectRatio(screenSurface->w, screenSurface->h);
-    SetHorizontalFovInDegrees(90.0f);
-    SetPlaneDistances(0.1f, 100.0f);
-    SetPosition(float3(1.0f, 1.0f, 5.0f));
-    float3x3 rotation = float3x3::identity;
-    CameraFrustum.SetFront(rotation.WorldZ());
-    CameraFrustum.SetUp(rotation.WorldY());
-    Look(float3(0.0f, 0.0f, 0.0f));
+    Init();
 }

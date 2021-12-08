@@ -25,9 +25,11 @@ public:
 	ModuleInput();
 	~ModuleInput();
 
-	bool Init();
-	update_status Update();
-	bool CleanUp();
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status Update() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
 
 	const unsigned GetKeyboard(SDL_Scancode key) const
 	{
@@ -49,16 +51,16 @@ public:
 		return MouseButton;
 	}
 
-	const int GetMouseWheelDeltaY()
+	bool IsModPressed(SDL_Keymod keymod)
 	{
-		// TODO: This does not work
-		WheelDeltaY = MouseWheel.y - WheelDeltaY;
-		return WheelDeltaY;
+		return (Keymod & keymod);
 	}
 
 private:
+	char* DroppedFileDir;
 	const Uint8* Keyboard = NULL;
 	Uint32 Mouse;
+	SDL_Keymod Keymod;
 	SDL_MouseButtonEvent MouseButton;
 	SDL_MouseWheelEvent MouseWheel;
 	MouseMotion Motion;

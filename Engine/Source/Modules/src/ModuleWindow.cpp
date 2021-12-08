@@ -5,10 +5,10 @@
 #include "ModuleCamera.h"
 
 ModuleWindow::ModuleWindow()
+	: RefreshRate(0)
 {
 }
 
-// Destructor
 ModuleWindow::~ModuleWindow()
 {
 }
@@ -27,8 +27,6 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if(FULLSCREEN == true)
@@ -36,6 +34,16 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
+		int width = SCREEN_WIDTH;
+		int height = SCREEN_HEIGHT;
+
+		SDL_DisplayMode DM;
+		if (!SDL_GetCurrentDisplayMode(0, &DM))
+		{
+			width = DM.w * 0.95;
+			height = DM.h * 0.95;
+		}
+		
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(window == NULL)
@@ -47,8 +55,10 @@ bool ModuleWindow::Init()
 		//Get window surface & configure
 		ScreenSurface = SDL_GetWindowSurface(window);
 		SDL_SetWindowResizable(window, SDL_TRUE);
+		SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 		SDL_DisplayMode mode;
 		SDL_GetDisplayMode(0, 0, &mode);
+		SetSwapInterval(1); // Vsync active
 		RefreshRate = mode.refresh_rate;
 	}
 
@@ -75,7 +85,7 @@ void ModuleWindow::WindowsSizeChanged()
 {
 	SDL_UpdateWindowSurface(window);
 	ScreenSurface = SDL_GetWindowSurface(window);
-	App->renderer->WindowResized(ScreenSurface->w, ScreenSurface->h);
+	App->renderer->UpdateWindowSize(ScreenSurface->w, ScreenSurface->h);
 	App->camera->SetAspectRatio(ScreenSurface->w, ScreenSurface->h);
 }
 
@@ -90,6 +100,15 @@ void ModuleWindow::ToggleFullScreen()
 	{
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		IsFullScreen = true;
+	}
+}
+
+void ModuleWindow::SetSwapInterval(int swapInterval) const
+{
+	ENGINE_LOG("ModuleWindow - SetSwapInterval: %d", swapInterval);
+	if (SDL_GL_SetSwapInterval(swapInterval) == -1)
+	{
+		SDL_GL_SetSwapInterval(1);
 	}
 }
 

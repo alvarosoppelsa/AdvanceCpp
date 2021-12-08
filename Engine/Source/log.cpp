@@ -22,10 +22,14 @@ void log(const char file[], int line, const char* format, ...)
 		return;	// At this point we cannot ensure the editor still running
 	}
 
+	// WARNING!! ModuleEditor is responsible for deleting console outputs
+	char* editor = new char[sizeof(tmp_string)];
+	memcpy(editor, tmp_string, sizeof(tmp_string));
+
 	//If ModuleEditor is not initialized we store data in a temporal vector until we are able to send data
 	if (App->editor->IsInitialized() && temp_console.empty())
 	{
-		App->editor->ConsoleLog(tmp_string2);
+		App->editor->ConsoleLog(editor);
 	}
 	else if (App->editor->IsInitialized() && !temp_console.empty())
 	{
@@ -33,9 +37,11 @@ void log(const char file[], int line, const char* format, ...)
 		{
 			App->editor->ConsoleLog(*it);
 		}
+		// Once sent is time to clean temporal console outputs
+		temp_console.clear();
 	}
 	else
 	{
-		temp_console.push_back(tmp_string);
+		temp_console.push_back(editor);
 	}
 }

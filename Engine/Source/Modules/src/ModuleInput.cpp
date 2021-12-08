@@ -1,17 +1,27 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleCamera.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
+
 #include "ImGui/imgui_impl_sdl.h"
 
 ModuleInput::ModuleInput()
-{}
+	: DroppedFileDir(nullptr)
+	, Keyboard(nullptr)
+	, Mouse(0)
+    , MouseX(0)
+    , MouseY(0)
+    , WheelDeltaY(0)
+{
+}
 
-// Destructor
 ModuleInput::~ModuleInput()
-{}
+{
+}
 
-// Called before render is available
 bool ModuleInput::Init()
 {
     ENGINE_LOG("Init SDL input event system");
@@ -27,40 +37,98 @@ bool ModuleInput::Init()
 	return ret;
 }
 
-// Called every draw update
-update_status ModuleInput::Update()
+update_status ModuleInput::PreUpdate()
 {
     SDL_Event sdlEvent;
-
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
         ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
         switch (sdlEvent.type)
         {
             case SDL_QUIT:
+            {
                 return UPDATE_STOP;
+            }
             case SDL_WINDOWEVENT:
+            {
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-                    App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                {
+                    App->window->WindowsSizeChanged();
+                }
                 break;
+            }
+            // Mouse
             case SDL_MOUSEMOTION:
+            {
                 Motion.X = sdlEvent.motion.xrel;
                 Motion.Y = sdlEvent.motion.yrel;
                 break;
+            }
             case SDL_MOUSEBUTTONDOWN:
+            {
                 MouseButton = sdlEvent.button;
                 Motion = 0;
                 break;
+            }
             case SDL_MOUSEBUTTONUP:
+            {
                 MouseButton = sdlEvent.button;
                 break;
+            }
             case SDL_MOUSEWHEEL:
-                MouseWheel = sdlEvent.wheel;
+            {
+                if (sdlEvent.wheel.y > 0 && App->editor->IsCursorOnViewport()) // scroll up
+                {
+                    App->camera->ZoomInPosition();
+                }
+                else if (sdlEvent.wheel.y < 0 && App->editor->IsCursorOnViewport()) // scroll down
+                {
+                    App->camera->ZoomOutPosition();
+                }
+                break;
+            }
+            case SDL_DROPFILE:
+            {   
+                DroppedFileDir = sdlEvent.drop.file;
+                break;
+            }
+            default:
                 break;
         }
     }
+
     Keyboard = SDL_GetKeyboardState(NULL);
     Mouse = SDL_GetMouseState(&MouseX, &MouseY);
+    Keymod = SDL_GetModState();
+
+    return UPDATE_CONTINUE;
+}
+
+update_status ModuleInput::Update()
+{
+    return UPDATE_CONTINUE;
+}
+
+update_status ModuleInput::PostUpdate()
+{
+    if (DroppedFileDir == nullptr)
+    {
+        return UPDATE_CONTINUE;
+    }
+    
+    if (!App->renderer->LoadModule(DroppedFileDir))
+    {
+        // Shows directory of dropped file
+        SDL_ShowSimpleMessageBox(
+            SDL_MESSAGEBOX_INFORMATION,
+            "File not supported",
+            DroppedFileDir,
+            App->window->window);
+    }
+
+    SDL_free(DroppedFileDir);
+    DroppedFileDir = nullptr;
+    App->camera->LookModule();
     return UPDATE_CONTINUE;
 }
 
@@ -69,5 +137,6 @@ bool ModuleInput::CleanUp()
 {
     ENGINE_LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+
 	return true;
 }
