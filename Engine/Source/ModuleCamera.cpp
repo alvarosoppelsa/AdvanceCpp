@@ -149,6 +149,10 @@ void ModuleCamera::LookModule()
     Look(App->renderer->GetCurrentModel()->GetOrigin());
 }
 
+void ModuleCamera::SetRotationMatrix()
+{
+}
+
 void ModuleCamera::CameraInputs()
 {
     TranslationInputs();
@@ -275,9 +279,31 @@ inline void ModuleCamera::ZoomInFOV()
     HorizontalFovDegree -= HorizontalFovDegree * GetSpeed();
 }
 
-inline float ModuleCamera::GetSpeed() const
+inline float ModuleCamera::GetSpeed(MoveType type) const
 {
-    return Speed * App->performance->GetDeltaTime();
+    float speed = 0.0f;
+	switch (type)
+	{
+    case MoveType::TRANSLATION:
+        speed = Speed;
+        break;
+    case MoveType::ROTATION:
+        speed = RotationSpeed;
+        break;
+    case MoveType::ZOOM_POS:
+        speed = ZoomSpeed;
+        break;
+    case MoveType::ZOOM_FOV:
+        speed = ZoomSpeed;
+        break;
+    case MoveType::ORBIT:
+        speed = OrbitSpeed;
+        break;
+    default:
+        speed = Speed;
+        break;
+	}
+    return speed * App->performance->GetDeltaTime();
 }
 
 void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
