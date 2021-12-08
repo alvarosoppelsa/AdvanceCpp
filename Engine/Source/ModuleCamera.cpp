@@ -65,14 +65,14 @@ bool ModuleCamera::CleanUp()
 
 float4x4 ModuleCamera::GetViewMatrix()
 {
-    // TODO: Return view matrix from roll, pitch & yaw values
-    Quat rotation = Quat();
-    rotation.RotateX(Pitch);
-    rotation.RotateY(Yaw);
-    rotation.RotateZ(Roll);
-    rotation.Inverse();
-    return float4x4(CameraFrustum.ViewMatrix());
-    //return 
+    //// TODO: Return view matrix from roll, pitch & yaw values
+    //Quat rotation = Quat();
+    //rotation.RotateX(Pitch);
+    //rotation.RotateY(Yaw);
+    //rotation.RotateZ(Roll);
+    //rotation.Inverse();
+    //return float4x4(CameraFrustum.ViewMatrix());
+    return RotationMatrix.Mul(TranslationMatrix);
 }
 
 float4x4 ModuleCamera::GetProjectionMatrix()
@@ -82,6 +82,9 @@ float4x4 ModuleCamera::GetProjectionMatrix()
 
 void ModuleCamera::SetPosition(const float3& position)
 {
+    TranslationMatrix[0][3] = -position.x;
+    TranslationMatrix[1][3] = -position.y;
+    TranslationMatrix[2][3] = -position.z;
     CameraFrustum.SetPos(Position = position);
 }
 
@@ -90,24 +93,12 @@ const float3& ModuleCamera::GetPosition() const
     return Position;
 }
 
-// Deprecate below method
-void ModuleCamera::Rotate(float pitch = 0.0f, float yaw = 0.0f, float roll = 0.0f)
+void ModuleCamera::Rotate(float3 rotation)
 {
-    if (yaw > EPSILON || yaw < EPSILON)
-    {
-        // Rotate in Y absolut axis
-        Quat rot = Quat::RotateY(yaw);
-        CameraFrustum.SetFront(rot.Mul(CameraFrustum.Front()).Normalized());
-        CameraFrustum.SetUp(rot.Mul(CameraFrustum.Up()).Normalized());
-    }
-
-    if (pitch > EPSILON || pitch < EPSILON)
-    {
-        // Rotate in X local axis
-        Quat rot = Quat::RotateAxisAngle(CameraFrustum.WorldRight(), pitch);
-        CameraFrustum.SetUp(rot.Mul(CameraFrustum.Up()).Normalized());
-        CameraFrustum.SetFront(rot.Mul(CameraFrustum.Front()).Normalized());
-    }
+    Pitch = rotation.x;
+    Yaw = rotation.y;
+    Roll = rotation.z;
+    UpdateRotationMatrix();
 }
 
 void ModuleCamera::SetAspectRatio(unsigned int width, unsigned int height)
@@ -153,8 +144,10 @@ void ModuleCamera::LookModule()
     Look(App->renderer->GetCurrentModel()->GetOrigin());
 }
 
-void ModuleCamera::SetRotationMatrix()
+void ModuleCamera::UpdateRotationMatrix()
 {
+    Quat rot = Quat::FromEulerXYZ(Pitch, Yaw, Roll);
+    RotationMatrix = rot * float4x4::identity;
 }
 
 void ModuleCamera::CameraInputs()
@@ -210,30 +203,25 @@ inline void ModuleCamera::RotationInputs()
     {
         Pitch += GetSpeed(MoveType::ROTATION);
         // Deprecate below
-        Rotate(GetSpeed(MoveType::ROTATION), 0.0f);
+        //Rotate(GetSpeed(MoveType::ROTATION), 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_DOWN))
     {
         Pitch -= GetSpeed(MoveType::ROTATION);
         // Deprecate below
-        Rotate(-GetSpeed(MoveType::ROTATION), 0.0f);
+        //Rotate(-GetSpeed(MoveType::ROTATION), 0.0f);
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_LEFT))
     {
         Yaw += GetSpeed(MoveType::ROTATION);
         // Deprecate below
-        Rotate(0.0f, GetSpeed(MoveType::ROTATION));
+        //Rotate(0.0f, GetSpeed(MoveType::ROTATION));
     }
     if (App->input->GetKeyboard(SDL_SCANCODE_RIGHT))
     {
         Yaw -= GetSpeed(MoveType::ROTATION);
         // Deprecate below
-        Rotate(0.0f, -GetSpeed(MoveType::ROTATION));
-    }
-
-    if (App->input->GetKeyboard(SDL_SCANCODE_F))
-    {
-        Look(App->renderer->GetCurrentModel()->GetOrigin());
+        //Rotate(0.0f, -GetSpeed(MoveType::ROTATION));
     }
 
     // Mouse
@@ -242,9 +230,17 @@ inline void ModuleCamera::RotationInputs()
         Yaw += App->input->GetMouseMotion().X * GetSpeed(MoveType::ROTATION);
         Pitch += App->input->GetMouseMotion().Y * GetSpeed(MoveType::ROTATION);
         // Deprecate below
-        int mouseMotionX = App->input->GetMouseMotion().X;
-        int mouseMotionY = App->input->GetMouseMotion().Y;
-        Rotate(-0.01 * (float)mouseMotionY, -0.01 * (float)mouseMotionX);
+        //int mouseMotionX = App->input->GetMouseMotion().X;
+        //int mouseMotionY = App->input->GetMouseMotion().Y;
+        //Rotate(-0.01 * (float)mouseMotionY, -0.01 * (float)mouseMotionX);
+    }
+
+    UpdateRotationMatrix();
+
+    // Look Model
+    if (App->input->GetKeyboard(SDL_SCANCODE_F))
+    {
+        Look(App->renderer->GetCurrentModel()->GetOrigin());
     }
 
     // Orbit
@@ -326,4 +322,50 @@ void ModuleCamera::SetPlaneDistances(const float nearDist, const float farDist)
 void ModuleCamera::SetDefaultValues()
 {
     Init();
+}
+
+float3 ModuleCamera::GetUp() const
+{
+    return float3(RotationMatrix[1][0], RotationMatrix[1][1], RotationMatrix[1][2]);
+}
+
+float3 ModuleCamera::GetFront() const
+{
+    return -GetDirection();
+}
+
+float3 ModuleCamera::GetDirection() const
+{
+    return float3(RotationMatrix[2][0], RotationMatrix[2][1], RotationMatrix[2][2]);
+}
+
+float3 ModuleCamera::GetRight() const
+{
+    return float3(RotationMatrix[0][0], RotationMatrix[0][1], RotationMatrix[0][2]);
+}
+
+void ModuleCamera::SetUp(float3 up)
+{
+    RotationMatrix[1][0] = up.x;
+    RotationMatrix[1][1] = up.y;
+    RotationMatrix[1][2] = up.z;
+}
+
+void ModuleCamera::SetFront(float3 front)
+{
+    SetDirection(-front);
+}
+
+void ModuleCamera::SetDirection(float3 direction)
+{
+    RotationMatrix[2][0] = direction.x;
+    RotationMatrix[2][1] = direction.y;
+    RotationMatrix[2][2] = direction.z;
+}
+
+void ModuleCamera::SetRight(float3 right)
+{
+    RotationMatrix[0][0] = right.x;
+    RotationMatrix[0][1] = right.y;
+    RotationMatrix[0][2] = right.z;
 }

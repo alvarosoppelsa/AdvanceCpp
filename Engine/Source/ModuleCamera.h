@@ -31,7 +31,7 @@ public:
 
 	void SetPosition(const float3& position);
 	const float3& GetPosition() const;
-	void Rotate(float pitch, float yaw, float roll);
+	void Rotate(float3 rotation);
 
 	void SetAspectRatio(unsigned int width, unsigned int height);
 	float GetAspectRatio();
@@ -58,28 +58,29 @@ public:
 
 private:
 	Frustum CameraFrustum;
-
+	// Projection
 	float AspectRatio;
 	float HorizontalFovDegree;
 	float NearDistance;
 	float FarDistance;
+	// Rotation
+	float Roll;
+	float Pitch;
+	float Yaw;
+	void UpdateRotationMatrix();
+	// Speed
 	float Speed;
 	float RotationSpeed;
 	float ZoomPosSpeed;
 	float ZoomFovSpeed;
 	float OrbitSpeed;
-
-	float Roll;
-	float Pitch;
-	float Yaw;
-	void SetRotationMatrix();
-
+	//Matrices
 	float4x4 RotationMatrix;
 	float4x4 TranslationMatrix;
-
+	// Translation
 	float3 LookPosition;
 	float3 Position;
-
+	// Inputs
 	void CameraInputs();
 	void TranslationInputs();
 	void AspectInputs();
@@ -88,5 +89,15 @@ private:
 	float GetSpeed(MoveType type = MoveType::TRANSLATION) const;
 	void ZoomOutFOV();
 	void ZoomInFOV();
+
+	float3 GetUp() const;
+	float3 GetFront() const;
+	float3 GetDirection() const;
+	float3 GetRight() const;
+
+	void SetUp(float3 new_up);
+	void SetFront(float3 new_front);
+	void SetDirection(float3 new_direction);
+	void SetRight(float3 new_right);
 };
 
