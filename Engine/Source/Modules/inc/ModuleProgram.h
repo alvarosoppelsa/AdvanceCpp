@@ -17,11 +17,12 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	unsigned int ProgramId;
+	int GetProgramId() const { return ProgramId; }
 
 private:
 	unsigned int VertexId;
 	unsigned int FragmentId;
+	unsigned int ProgramId;
 
 	std::string VertexShaderPath;
 	std::string FragmentShaderPath;

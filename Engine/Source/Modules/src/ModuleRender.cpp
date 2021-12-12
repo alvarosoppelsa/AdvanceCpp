@@ -18,6 +18,11 @@
 ModuleRender::ModuleRender() 
 	: RenderModel(nullptr)
 	, Context(nullptr)
+	, DiffuseLightIntensity(0.5f)
+	, SpecularLightIntensity(0.5f)
+	, AmbientLightIntensity(0.150f)
+	, LightColor(1.0f, 1.0f, 1.0f)
+	, LightPosition(0.0f, 20.0f, 20.0f)
 {
 }
 
@@ -78,7 +83,17 @@ update_status ModuleRender::PreUpdate()
 
 update_status ModuleRender::Update()
 {	
-	RenderModel->Draw(App->program->ProgramId, App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), float4x4::identity);
+	// Lighting
+	int programId = App->program->GetProgramId();
+	glUseProgram(programId);
+	glUniform1f(glGetUniformLocation(programId, "diffuseIntensity"), DiffuseLightIntensity);
+	glUniform1f(glGetUniformLocation(programId, "specularIntensity"), SpecularLightIntensity);
+	glUniform1f(glGetUniformLocation(programId, "ambientIntensity"), AmbientLightIntensity);
+	glUniform3fv(glGetUniformLocation(programId, "lightColor"), 1, (const float*)&LightColor);
+	glUniform3fv(glGetUniformLocation(programId, "lightPos"), 1, (const float*)&LightPosition);
+	glUniform3fv(glGetUniformLocation(programId, "viewPos"), 1, (const float*)&App->camera->GetPosition());
+
+	RenderModel->Draw(programId, App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), float4x4::identity);
 
 	App->ddraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), Width, Height);
 

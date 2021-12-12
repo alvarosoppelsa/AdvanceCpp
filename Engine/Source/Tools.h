@@ -27,8 +27,10 @@ namespace Tools
 		(void)source; (void)type; (void)id;
 		(void)severity; (void)length; (void)userParam;
 		fprintf(stderr, "%s\n", message);
-		if (severity == GL_DEBUG_SEVERITY_HIGH) {
-			ENGINE_LOG("Aborting...\n");
+		if (severity == GL_DEBUG_SEVERITY_HIGH)
+		{
+			ENGINE_LOG("%s", message);
+			ENGINE_LOG("Aborting...");
 			abort();
 		}
 	}
