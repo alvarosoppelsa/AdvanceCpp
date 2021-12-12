@@ -59,6 +59,9 @@ private:
 	// Model
 	void ModelSettings();
 
+	// Lighting
+	void Lighting();
+
 	// Hardware
 	void SystemInfo();
 };

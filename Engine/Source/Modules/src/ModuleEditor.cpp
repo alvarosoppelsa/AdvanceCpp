@@ -137,6 +137,45 @@ inline void ModuleEditor::ModelSettings()
     }
 }
 
+void ModuleEditor::Lighting()
+{
+    float3 lightPosition = App->renderer->GetLightPosition();
+    float3 lightColor = App->renderer->GetLightColor();
+    float diffuseIntensity = App->renderer->GetDiffuseLightIntensity();
+    float ambientIntensity = App->renderer->GetAmbientLightIntensity();
+    float specularIntensity = App->renderer->GetSpecularLightIntensity();
+
+    if (SliderFloat("Diffuse Light Intensity", &diffuseIntensity, 0.0f, 10.0f))
+    {
+        App->renderer->SetDiffuseLightIntensity(diffuseIntensity);
+    }
+
+    if (SliderFloat("Specular Light Intensity", &specularIntensity, 0.0f, 10.0f))
+    {
+        App->renderer->SetSpecularLightIntensity(specularIntensity);
+    }
+
+    if (SliderFloat("Ambient Light Intensity", &ambientIntensity, 0.0f, 1.0f))
+    {
+        App->renderer->SetAmbientLightIntensity(ambientIntensity);
+    }
+    
+    Separator();
+    Text("Light Position");
+    if (SliderFloat3("X, Y, Z", &lightPosition[0], -100.0f, 100.0f))
+    {
+        App->renderer->SetLightPosition(lightPosition);
+    }
+    
+    Separator();
+    Text("Light Color");
+    if (ImGui::ColorPicker3("R, G, B", &lightColor[0]))
+    {
+        App->renderer->SetLightColor(lightColor);
+    }
+
+}
+
 inline void ModuleEditor::Console()
 {
     if (!ShowConsole)
@@ -292,6 +331,12 @@ inline void ModuleEditor::GeneralSettings()
     if (CollapsingHeader("Module Info"))
     {
         ModelSettings();
+    }
+
+    Separator();
+    if (CollapsingHeader("Lighting"))
+    {
+        Lighting();
     }
 
     Separator();
