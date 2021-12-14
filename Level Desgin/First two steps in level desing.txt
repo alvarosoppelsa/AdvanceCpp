@@ -1,0 +1,12 @@
+Personal notes
+
+- Take a look to mario levels
+- Until we have not tested and qa we cannot be sure that the idea is good
+- Make start and end of the level clear
+- Definir zonas seguras, zonas de entrenamiento, zonas de deasfio, secrets, etc. Luego explicar que sucede en cada parte
+- En la parte del level que se usa para tutorial, todo debe ser safe
+
+choose one existing super mario level, any level of dificulty
+main mechanics and where are revealed
+
+
