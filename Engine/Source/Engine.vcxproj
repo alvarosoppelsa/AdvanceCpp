@@ -199,7 +199,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="Modules\src\ModuleCamera.cpp" />
     <ClCompile Include="Modules\src\ModuleDebugDraw.cpp" />
     <ClCompile Include="Modules\src\ModuleEditor.cpp" />
     <ClCompile Include="Modules\src\ModuleInput.cpp" />
@@ -299,8 +299,8 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="Modules\inc\Module.h" />
+    <ClInclude Include="Modules\inc\ModuleCamera.h" />
     <ClInclude Include="Modules\inc\ModuleDebugDraw.h" />
     <ClInclude Include="Modules\inc\ModuleEditor.h" />
     <ClInclude Include="Modules\inc\ModuleInput.h" />
